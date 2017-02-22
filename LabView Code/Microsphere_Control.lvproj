@@ -10,7 +10,8 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
-		<Item Name="valves.vi" Type="VI" URL="../../valves.vi"/>
+		<Item Name="Move Stage.vi" Type="VI" URL="../Move Stage.vi"/>
+		<Item Name="valves.vi" Type="VI" URL="../valves.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>
@@ -174,13 +175,18 @@
 				<Item Name="Set Bold Text.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Set Bold Text.vi"/>
 				<Item Name="Set String Value.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Set String Value.vi"/>
 				<Item Name="Simple Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Simple Error Handler.vi"/>
+				<Item Name="subTimeDelay.vi" Type="VI" URL="/&lt;vilib&gt;/express/express execution control/TimeDelayBlock.llb/subTimeDelay.vi"/>
 				<Item Name="TagReturnType.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/TagReturnType.ctl"/>
 				<Item Name="Three Button Dialog CORE.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Three Button Dialog CORE.vi"/>
 				<Item Name="Three Button Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Three Button Dialog.vi"/>
 				<Item Name="Trim Whitespace.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Trim Whitespace.vi"/>
 				<Item Name="whitespace.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/whitespace.ctl"/>
 			</Item>
-			<Item Name="DAQ.vi" Type="VI" URL="../../DAQ.vi"/>
+			<Item Name="AG-UC2-UC8_Close.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Close.vi"/>
+			<Item Name="AG-UC2-UC8_Open.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Open.vi"/>
+			<Item Name="AgilisCmdLib.dll" Type="Document" URL="../../../../../../../Program Files/Newport/Piezo Motion Control/Newport AG-UC2-UC8 Applet/Samples/LabVIEW 2009/AgilisCmdLib.dll"/>
+			<Item Name="ChooseCorrectInstrument.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/ChooseCorrectInstrument.vi"/>
+			<Item Name="DAQ.vi" Type="VI" URL="../DAQ.vi"/>
 			<Item Name="nilvaiu.dll" Type="Document" URL="nilvaiu.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
