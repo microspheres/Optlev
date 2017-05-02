@@ -10,10 +10,17 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
-		<Item Name="beads_DAQ.vi" Type="VI" URL="../DAQ/beads_DAQ.vi"/>
+		<Item Name="bead_dropperAdam.vi" Type="VI" URL="../bead_dropperAdam.vi"/>
+		<Item Name="DAQ.vi" Type="VI" URL="../DAQ/DAQ.vi"/>
 		<Item Name="Move Stage.vi" Type="VI" URL="../Move Stage.vi"/>
+		<Item Name="valve_lights.vi" Type="VI" URL="../valve_lights.vi"/>
 		<Item Name="valves.vi" Type="VI" URL="../valves.vi"/>
+		<Item Name="valvesAdam&apos;sEmpireExpands.vi" Type="VI" URL="../valvesAdam&apos;sEmpireExpands.vi"/>
+		<Item Name="VISA_Query.vi" Type="VI" URL="../VISA_Query.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
+			<Item Name="instr.lib" Type="Folder">
+				<Item Name="Agilent 33XXX Series.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Agilent 33XXX Series/Agilent 33XXX Series.lvlib"/>
+			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Application Directory.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Application Directory.vi"/>
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>
@@ -23,8 +30,6 @@
 				<Item Name="Close File+.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Close File+.vi"/>
 				<Item Name="compatReadText.vi" Type="VI" URL="/&lt;vilib&gt;/_oldvers/_oldvers.llb/compatReadText.vi"/>
 				<Item Name="Convert property node font to graphics font.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Convert property node font to graphics font.vi"/>
-				<Item Name="DAQmx Advance Trigger (Digital Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Advance Trigger (Digital Edge).vi"/>
-				<Item Name="DAQmx Advance Trigger (None).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Advance Trigger (None).vi"/>
 				<Item Name="DAQmx Clear Task.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/task.llb/DAQmx Clear Task.vi"/>
 				<Item Name="DAQmx Create AI Channel (sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create AI Channel (sub).vi"/>
 				<Item Name="DAQmx Create AI Channel TEDS(sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create AI Channel TEDS(sub).vi"/>
@@ -161,19 +166,9 @@
 				<Item Name="DAQmx Read (Raw 1D U16).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Raw 1D U16).vi"/>
 				<Item Name="DAQmx Read (Raw 1D U32).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Raw 1D U32).vi"/>
 				<Item Name="DAQmx Read.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read.vi"/>
-				<Item Name="DAQmx Reference Trigger (Analog Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Reference Trigger (Analog Edge).vi"/>
-				<Item Name="DAQmx Reference Trigger (Analog Window).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Reference Trigger (Analog Window).vi"/>
-				<Item Name="DAQmx Reference Trigger (Digital Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Reference Trigger (Digital Edge).vi"/>
-				<Item Name="DAQmx Reference Trigger (Digital Pattern).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Reference Trigger (Digital Pattern).vi"/>
-				<Item Name="DAQmx Reference Trigger (None).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Reference Trigger (None).vi"/>
 				<Item Name="DAQmx Rollback Channel If Error.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Rollback Channel If Error.vi"/>
 				<Item Name="DAQmx Set CJC Parameters (sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Set CJC Parameters (sub).vi"/>
 				<Item Name="DAQmx Start Task.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/task.llb/DAQmx Start Task.vi"/>
-				<Item Name="DAQmx Start Trigger (Analog Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (Analog Edge).vi"/>
-				<Item Name="DAQmx Start Trigger (Analog Window).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (Analog Window).vi"/>
-				<Item Name="DAQmx Start Trigger (Digital Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (Digital Edge).vi"/>
-				<Item Name="DAQmx Start Trigger (Digital Pattern).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (Digital Pattern).vi"/>
-				<Item Name="DAQmx Start Trigger (None).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (None).vi"/>
 				<Item Name="DAQmx Stop Task.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/task.llb/DAQmx Stop Task.vi"/>
 				<Item Name="DAQmx Timing (Burst Export Clock).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/timing.llb/DAQmx Timing (Burst Export Clock).vi"/>
 				<Item Name="DAQmx Timing (Burst Import Clock).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/timing.llb/DAQmx Timing (Burst Import Clock).vi"/>
@@ -184,7 +179,6 @@
 				<Item Name="DAQmx Timing (Sample Clock).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/timing.llb/DAQmx Timing (Sample Clock).vi"/>
 				<Item Name="DAQmx Timing (Use Waveform).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/timing.llb/DAQmx Timing (Use Waveform).vi"/>
 				<Item Name="DAQmx Timing.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/timing.llb/DAQmx Timing.vi"/>
-				<Item Name="DAQmx Trigger.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Trigger.vi"/>
 				<Item Name="DAQmx Wait Until Done.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/task.llb/DAQmx Wait Until Done.vi"/>
 				<Item Name="DAQmx Write (Analog 1D DBL 1Chan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/write.llb/DAQmx Write (Analog 1D DBL 1Chan NSamp).vi"/>
 				<Item Name="DAQmx Write (Analog 1D DBL NChan 1Samp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/write.llb/DAQmx Write (Analog 1D DBL NChan 1Samp).vi"/>
@@ -263,9 +257,7 @@
 				<Item Name="Longest Line Length in Pixels.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Longest Line Length in Pixels.vi"/>
 				<Item Name="LVBoundsTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVBoundsTypeDef.ctl"/>
 				<Item Name="LVRectTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVRectTypeDef.ctl"/>
-				<Item Name="NI_AALBase.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/NI_AALBase.lvlib"/>
 				<Item Name="NI_FileType.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/lvfile.llb/NI_FileType.lvlib"/>
-				<Item Name="NI_MABase.lvlib" Type="Library" URL="/&lt;vilib&gt;/measure/NI_MABase.lvlib"/>
 				<Item Name="NI_PackedLibraryUtility.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/LVLibp/NI_PackedLibraryUtility.lvlib"/>
 				<Item Name="Not Found Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Not Found Dialog.vi"/>
 				<Item Name="Open File+.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Open File+.vi"/>
@@ -286,17 +278,11 @@
 				<Item Name="Three Button Dialog CORE.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Three Button Dialog CORE.vi"/>
 				<Item Name="Three Button Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Three Button Dialog.vi"/>
 				<Item Name="Trim Whitespace.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Trim Whitespace.vi"/>
+				<Item Name="VISA Open Access Mode.ctl" Type="VI" URL="/&lt;vilib&gt;/Instr/_visa.llb/VISA Open Access Mode.ctl"/>
 				<Item Name="whitespace.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/whitespace.ctl"/>
 			</Item>
 			<Item Name="AG-UC2-UC8_Close.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Close.vi"/>
 			<Item Name="AG-UC2-UC8_Open.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Open.vi"/>
-			<Item Name="ag33xxx - Close.vi" Type="VI" URL="../a33120a/ag33xxx.llb/ag33xxx - Close.vi"/>
-			<Item Name="ag33xxx - Config Waveform.vi" Type="VI" URL="../a33120a/ag33xxx.llb/ag33xxx - Config Waveform.vi"/>
-			<Item Name="ag33xxx - Error Message.vi" Type="VI" URL="../a33120a/ag33xxx.llb/ag33xxx - Error Message.vi"/>
-			<Item Name="ag33xxx - Error Query.vi" Type="VI" URL="../a33120a/ag33xxx.llb/ag33xxx - Error Query.vi"/>
-			<Item Name="ag33xxx - Initialize.vi" Type="VI" URL="../a33120a/ag33xxx.llb/ag33xxx - Initialize.vi"/>
-			<Item Name="ag33xxx - Select User Def Wfm.vi" Type="VI" URL="../a33120a/ag33xxx.llb/ag33xxx - Select User Def Wfm.vi"/>
-			<Item Name="Agilent E364X Series Output Single Channel DC Volts.vi" Type="VI" URL="/../../../&lt;instrlib&gt;/Agilent E364X Series/Examples/Agilent E364X Series Output Single Channel DC Volts.vi"/>
 			<Item Name="AgilisCmdLib.dll" Type="Document" URL="../../../../../../../Program Files/Newport/Piezo Motion Control/Newport AG-UC2-UC8 Applet/Samples/LabVIEW 2009/AgilisCmdLib.dll"/>
 			<Item Name="arange (SubVI).vi" Type="VI" URL="../DAQ/arange (SubVI).vi"/>
 			<Item Name="check_folder (SubVI).vi" Type="VI" URL="../DAQ/check_folder (SubVI).vi"/>
@@ -308,12 +294,9 @@
 			<Item Name="create_file_name (SubVI).vi" Type="VI" URL="../DAQ/create_file_name (SubVI).vi"/>
 			<Item Name="create_process_list (SubVI).vi" Type="VI" URL="../DAQ/create_process_list (SubVI).vi"/>
 			<Item Name="create_subarray (SubVI).vi" Type="VI" URL="../DAQ/create_subarray (SubVI).vi"/>
-			<Item Name="DAQ.vi" Type="VI" URL="../DAQ.vi"/>
-			<Item Name="display_environ (SubVI).vi" Type="VI" URL="../valve_control/display_environ (SubVI).vi"/>
 			<Item Name="flash_lamp (SubVI).vi" Type="VI" URL="../DAQ/flash_lamp (SubVI).vi"/>
 			<Item Name="Get Full Terminal Name.vi" Type="VI" URL="../old/DAQ/Get Full Terminal Name.vi"/>
 			<Item Name="initialize_instruments (SubVI).vi" Type="VI" URL="../DAQ/initialize_instruments (SubVI).vi"/>
-			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="make_dc_array (SubVI).vi" Type="VI" URL="../DAQ/make_dc_array (SubVI).vi"/>
 			<Item Name="make_electrode_array (SubVI).vi" Type="VI" URL="../DAQ/make_electrode_array (SubVI).vi"/>
 			<Item Name="make_stage_array (SubVI).vi" Type="VI" URL="../DAQ/make_stage_array (SubVI).vi"/>
@@ -322,15 +305,13 @@
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
 			<Item Name="read_data (SubVI).vi" Type="VI" URL="../DAQ/read_data (SubVI).vi"/>
-			<Item Name="read_environment (SubVI).vi" Type="VI" URL="../read_environment (SubVI).vi"/>
 			<Item Name="replace_sub_array (SubVI).vi" Type="VI" URL="../DAQ/replace_sub_array (SubVI).vi"/>
 			<Item Name="save_data (SubVI).vi" Type="VI" URL="../DAQ/save_data (SubVI).vi"/>
-			<Item Name="set_dc_supply (SubVI).vi" Type="VI" URL="../DAQ/set_dc_supply (SubVI).vi"/>
-			<Item Name="set_electrodes (SubVI).vi" Type="VI" URL="../DAQ/set_electrodes (SubVI).vi"/>
 			<Item Name="set_instruments (SubVI).vi" Type="VI" URL="../DAQ/set_instruments (SubVI).vi"/>
-			<Item Name="set_stage (SubVI).vi" Type="VI" URL="../DAQ/set_stage (SubVI).vi"/>
-			<Item Name="synth_set (SubVI).vi" Type="VI" URL="../DAQ/synth_set (SubVI).vi"/>
+			<Item Name="sweep.vi" Type="VI" URL="../sweep.vi"/>
 			<Item Name="take_data (SubVI).vi" Type="VI" URL="../DAQ/take_data (SubVI).vi"/>
+			<Item Name="Valve_open.vi" Type="VI" URL="../Valve_open.vi"/>
+			<Item Name="VISA_QueryICannotBeStopped.vi" Type="VI" URL="../VISA_QueryICannotBeStopped.vi"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build"/>
 	</Item>

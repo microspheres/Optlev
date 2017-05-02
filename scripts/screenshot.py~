@@ -1,0 +1,4 @@
+import PIL.ImageGrab as ig
+
+im = ig.grab()
+im.save("test.png")
