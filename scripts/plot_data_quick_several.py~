@@ -5,9 +5,9 @@ import scipy.signal as sp
 import numpy as np
 
 
-refname = r"auto_xyzcool_G20_100s_synth6000mV41Hz0mVdc.h5"
+refname = r"250s_G50__synth3mV41Hz0mVdc.h5"
 fname0 = r""
-path = r"C:\data\20170504\bead5_15um_QWP\new_sensor_feedback\charge8"
+path = r"C:\data\20170428\bead2_15um_QWP\new_sensor_feedback\charge10"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
@@ -30,7 +30,7 @@ if fname0 == "":
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**19
+NFFT = 2**17
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -116,3 +116,30 @@ if refname:
         plt.loglog(data1[0], np.sqrt(data1[5]))
 plt.xlabel("Frequency[Hz]")
 plt.show()
+
+plot1 = r"250s_G50__synth3mV41Hz0mVdc.h5"
+plot2 = r"250s_G50__synth3mV41Hz1000mVdc.h5"
+plot3 = r"250s_G50__synth3500mV41Hz0mVdc.h5"
+plot4 = r"250s_G50__synth3500mV41Hz1000mVdc.h5"
+
+dplot1 = getdata(os.path.join(path,plot1))
+dplot2 = getdata(os.path.join(path,plot2))
+dplot3 = getdata(os.path.join(path,plot3))
+dplot4 = getdata(os.path.join(path,plot4))
+
+fig1 = plt.figure()
+plt.subplot(4, 1, 1)
+plt.loglog(dplot1[0][400:1200],np.sqrt(dplot1[1][400:1200]))
+plt.subplot(4, 1, 2)
+plt.loglog(dplot2[0][400:1200],np.sqrt(dplot2[1][400:1200]))
+plt.subplot(4, 1, 3)
+plt.loglog(dplot3[0][400:1200],np.sqrt(dplot3[1][400:1200]))
+plt.subplot(4, 1, 4)
+plt.loglog(dplot3[0][400:1200],np.sqrt(dplot4[1][400:1200]))
+plt.xlabel("Frequency[Hz]")
+plt.show()
+
+
+
+
+

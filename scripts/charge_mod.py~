@@ -11,7 +11,9 @@ import scipy.signal as sp
 import scipy.optimize as opt
 import cPickle as pickle
 
-path = r"C:\data\20170504\bead9_15um_QWP\new_sensor_feedback\charge7"
+from scipy.optimize import curve_fit
+
+path = r"/Volumes/FERNANDO/lab/charge7"
 ts = 1.
 
 fdrive = 41.
@@ -76,43 +78,49 @@ def get_most_recent_file(p):
 
     fnum = re.findall('\d+.h5', mrf)[0][:-3]
     return mrf#.replace(fnum, str(int(fnum)-1))
-
-
-best_phase = None
-corr_data = []
-
-if make_plot:
-    fig0 = plt.figure()
-    plt.hold(False)
-
-last_file = ""
-while( True ):
-    ## get the most recent file in the directory and calculate the correlation
-
-    cfile = get_most_recent_file( path )
     
-    ## wait a sufficient amount of time to ensure the file is closed
-    print cfile
-    time.sleep(ts)
 
-    if( cfile == last_file ): 
-        continue
-    else:
-        last_file = cfile
+    
+def list_file_time_order(p):
+    filelist = glob.glob(os.path.join(p,"*.h5"))
+    filelist.sort(key=os.path.getmtime)
+    return filelist
+    
+ 
+best_phase = []
+corr = []
+   
+for i in np.arange(len(list_file_time_order(path))):
+        best_phase.append(getphase( list_file_time_order(path)[i] ))
+        corr.append(getdata(list_file_time_order(path)[i],best_phase[i]))
 
-    ## this ensures that the file is closed before we try to read it
-    time.sleep( 1 )
+#time = []
+#T = 0
+#
+#for i in np.arange(len(list_file_time_order(path)) - 1):
+#    t = os.path.getmtime(list_file_time_order(path)[i+1])-os.path.getmtime(list_file_time_order(path)[i])
+#    T = T + t
+#    time.append(T)
 
-    if( not best_phase ):
-        best_phase = getphase( cfile )
+plt.plot(corr)
+plt.grid()
 
-    corr = getdata( cfile, best_phase )
-    corr_data.append(corr )
+def Line(A, B):
+    return 0.0*A + 1.0*B
 
-    np.savetxt( os.path.join(path, "current_corr.txt"), [corr,] )
+time = []
+for i in np.arange(len(list_file_time_order(path))):
+    i = i+1
+    time.append(i)
 
-    if make_plot:
-        plt.plot(np.array(corr_data))
-        plt.draw()
-        plt.pause(0.001)
-        plt.grid()
+coor2 = []
+for i in np.arange(len(list_file_time_order(path))):
+    a = corr[i][0]
+    coor2.append(a)
+    
+
+popt1, pcov1 = curve_fit(Line, time[31:42], coor2[31:42])
+
+popt2, pcov2 = curve_fit(Line, time[48:58], coor2[48:58])
+
+popt3, pcov3 = curve_fit(Line, time[63:72], coor2[63:72])

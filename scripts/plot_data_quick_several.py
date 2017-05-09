@@ -5,9 +5,9 @@ import scipy.signal as sp
 import numpy as np
 
 
-refname = r"auto_xyzcool_G50_1Vpp_-20V_0.h5"
-fname0 = r"auto_4Vpp_trek_7.h5"
-path = r"C:\data\20170428\bead2_15um_QWP\new_sensor_feedback"
+refname = r"1mbar_zcool_G5.h5"
+fname0 = r"1mbar_zcool_G5.h5"
+path = r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
@@ -30,7 +30,7 @@ if fname0 == "":
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**17
+NFFT = 2**12
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -116,3 +116,54 @@ if refname:
         plt.loglog(data1[0], np.sqrt(data1[5]))
 plt.xlabel("Frequency[Hz]")
 plt.show()
+
+plot1 = r"2_8E-6mbar_xyzcool_G5.h5"
+plot2 = r"2_7E-6mbar2_xyzcool_G5.h5"
+plot3 = r"2_6E-6mbar_xyzcool_G5.h5"
+plot4 = r"2_5E-6mbar_xyzcool_G5.h5"
+plot5 = r"2_4E-6mbar2_xyzcool_G5.h5"
+
+dplot1 = getdata(os.path.join(path,plot1))
+dplot2 = getdata(os.path.join(path,plot2))
+dplot3 = getdata(os.path.join(path,plot3))
+dplot4 = getdata(os.path.join(path,plot4))
+dplot5 = getdata(os.path.join(path,plot5))
+
+fig1 = plt.figure()
+plt.subplot(5, 1, 1)
+plt.loglog(dplot1[0][8:],np.sqrt(dplot1[1][8:]))
+plt.subplot(5, 1, 2)
+plt.loglog(dplot2[0][8:],np.sqrt(dplot2[1][8:]))
+plt.subplot(5, 1, 3)
+plt.loglog(dplot3[0][8:],np.sqrt(dplot3[1][8:]))
+plt.subplot(5, 1, 4)
+plt.loglog(dplot4[0][8:],np.sqrt(dplot4[1][8:]))
+plt.subplot(5, 1, 5)
+plt.loglog(dplot5[0][8:],np.sqrt(dplot5[1][8:]))
+plt.xlabel("Frequency[Hz]")
+plt.show()
+
+t1 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_8E-6mbar_xyzcool_G5.h5")
+
+t2 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_7E-6mbar2_xyzcool_G5.h5")
+
+t3 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_6E-6mbar_xyzcool_G5.h5")
+
+t4 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_5E-6mbar_xyzcool_G5.h5")
+
+t5 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_4E-6mbar2_xyzcool_G5.h5")
+
+print t1 - t2
+
+print t2 - t3
+
+print t3 - t4
+
+print t4 - t5
+
+
+
+
+
+
+

@@ -1,5 +1,6 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <Project Type="Project" LVVersion="16008000">
+	<Property Name="varPersistentID:{EB4068BB-9052-4EAB-9C7F-55681EB452BF}" Type="Ref">/My Computer/20170502.lvlib/Tot Synth Arr</Property>
 	<Item Name="My Computer" Type="My Computer">
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="server.control.propertiesEnabled" Type="Bool">true</Property>
@@ -10,9 +11,11 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
+		<Item Name="20170502.lvlib" Type="Library" URL="../20170502.lvlib"/>
 		<Item Name="bead_dropperAdam.vi" Type="VI" URL="../bead_dropperAdam.vi"/>
 		<Item Name="DAQ.vi" Type="VI" URL="../DAQ/DAQ.vi"/>
 		<Item Name="Move Stage.vi" Type="VI" URL="../Move Stage.vi"/>
+		<Item Name="set_synth.vi" Type="VI" URL="../set_synth.vi"/>
 		<Item Name="valve_lights.vi" Type="VI" URL="../valve_lights.vi"/>
 		<Item Name="valves.vi" Type="VI" URL="../valves.vi"/>
 		<Item Name="valvesAdam&apos;sEmpireExpands.vi" Type="VI" URL="../valvesAdam&apos;sEmpireExpands.vi"/>

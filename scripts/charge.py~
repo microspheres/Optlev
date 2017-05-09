@@ -11,14 +11,14 @@ import scipy.signal as sp
 import scipy.optimize as opt
 import cPickle as pickle
 
-path = r"C:\Data\20160808\bead1\20160808_chargelp_cal3"
+path = r"C:\data\20170504\bead5_15um_QWP\new_sensor_feedback\charge9"
 ts = 1.
 
 fdrive = 41.
 make_plot = True
 
-data_columns = [0, 1] ## column to calculate the correlation against
-drive_column = 12 ##-1 ## column containing drive signal
+data_columns = [0, 0] ## column to calculate the correlation against
+drive_column = 5 ##-1 ## column containing drive signal
 
 def getphase(fname):
         print "Getting phase from: ", fname 
@@ -48,7 +48,8 @@ def getdata(fname, maxv):
 
         lentrace = len(xdat)
         ## zero pad one cycle
-        corr_full = bu.corr_func( dat[:,drive_column], xdat, fsamp, fdrive)
+        MinusDC = dat[:,drive_column]
+        corr_full = bu.corr_func(MinusDC - np.median(MinusDC), xdat, fsamp, fdrive)
 
         #plt.figure()
         #plt.plot( xdat)
@@ -61,7 +62,7 @@ def getdata(fname, maxv):
 def get_most_recent_file(p):
 
     ## only consider single frequency files, not chirps
-    filelist = glob.glob(os.path.join(p,"*Hz*.h5"))  ##os.listdir(p)
+    filelist = glob.glob(os.path.join(p,"*.h5"))  ##os.listdir(p)
     #filelist = [filelist[0]]
     mtime = 0
     mrf = ""
@@ -92,7 +93,7 @@ while( True ):
     
     ## wait a sufficient amount of time to ensure the file is closed
     print cfile
-    time.sleep(1)
+    time.sleep(ts)
 
     if( cfile == last_file ): 
         continue
@@ -100,7 +101,7 @@ while( True ):
         last_file = cfile
 
     ## this ensures that the file is closed before we try to read it
-    time.sleep( ts )
+    time.sleep( 1 )
 
     if( not best_phase ):
         best_phase = getphase( cfile )
