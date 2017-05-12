@@ -1,6 +1,7 @@
 import numpy as np
-from force_calibration_charge import getdata, conversion
+from force_calibration_charge import getdata
 path = r"/data/20170511/bead2_15um_QWP/new_sensor_feedback/charge7_piezo_56.9_74.9_75.4"
+conversion = 4.1000e-13
 
 def getACAmplitudeGraphs(file_list):
     """output AC voltages and corresponding amplitudes at both omega and 2 omega"""
