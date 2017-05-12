@@ -13,7 +13,7 @@ import cPickle as pickle
 
 from scipy.optimize import curve_fit
 
-path = r"C:\data\20170504\bead9_15um_QWP\new_sensor_feedback\charge7"
+path = r"/Volumes/FERNANDO/lab/20170511/bead2_15um_QWP/charge6"
 ts = 1.
 
 fdrive = 41.
@@ -82,7 +82,7 @@ def get_most_recent_file(p):
 
     
 def list_file_time_order(p):
-    filelist = glob.glob(os.path.join(p,"*20Vpp*.h5"))
+    filelist = glob.glob(os.path.join(p,"*.h5"))
     filelist.sort(key=os.path.getmtime)
     return filelist
     
@@ -102,26 +102,30 @@ for i in np.arange(len(list_file_time_order(path))):
 #    T = T + t
 #    time.append(T)
 
+plt.figure()
 plt.plot(corr)
 plt.grid()
 plt.show()
 
-# def Line(A, B):
-#     return 0.0*A + 1.0*B
 
-# time = []
-# for i in np.arange(len(list_file_time_order(path))):
-#     i = i+1
-#     time.append(i)
 
-# coor2 = []
-# for i in np.arange(len(list_file_time_order(path))):
-#     a = corr[i][0]
-#     coor2.append(a)
-    
 
-# popt1, pcov1 = curve_fit(Line, time[31:42], coor2[31:42])
-
-# popt2, pcov2 = curve_fit(Line, time[48:58], coor2[48:58])
-
-# popt3, pcov3 = curve_fit(Line, time[63:72], coor2[63:72])
+#def Line(A, B):
+#    return 0.0*A + 1.0*B
+#
+#time = []
+#for i in np.arange(len(list_file_time_order(path))):
+#    i = i+1
+#    time.append(i)
+#
+#coor2 = []
+#for i in np.arange(len(list_file_time_order(path))):
+#    a = corr[i][0]
+#    coor2.append(a)
+#    
+#
+#popt1, pcov1 = curve_fit(Line, time[31:42], coor2[31:42])
+#
+#popt2, pcov2 = curve_fit(Line, time[48:58], coor2[48:58])
+#
+#popt3, pcov3 = curve_fit(Line, time[63:72], coor2[63:72])
