@@ -1,8 +1,9 @@
-import numpy, h5py, matplotlib, os
+import numpy, h5py, matplotlib, os, glob
 path = r"/data/20170511/bead2_15um_QWP/new_sensor_feedback/charge7_piezo_56.9_74.9_75.4"
 conversion = 4.1e-13
 Fs = 10e3  ## this is ignored with HDF5 files
 NFFT = 2 ** 13
+file_list = glob.glob(path+"*.h5")
 
 def getdata(fname):
     print "Opening file: ", fname
