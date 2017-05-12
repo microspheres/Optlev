@@ -16,6 +16,8 @@ import bead_util as bu
 
 electric_charge = 1.602e-19
 distance = 0.002 #mm
+conversion = 4.1000e-13
+
 
 
 path = r"/Volumes/FERNANDO/lab/20170511/bead2_15um_QWP/charge6"
@@ -115,9 +117,6 @@ def PSD_Newton_1s(position, p, conversion):
     plt.loglog(freq,new_x)
     plt.grid()
     plt.show()
-
-conversion = convert_voltage_to_force(0, 57, 100, 157, path)
-PSD_Newton_1s(100, path, conversion)
 
 # adding the AC voltage vs. frequency amplitude here
 # also, path here is
