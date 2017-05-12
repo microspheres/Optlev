@@ -53,3 +53,7 @@ def getACAmplitudeGraphs(file_list):
         omegaAmplitudes[index] = constant*x[i]
         twoOmegaAmplitudes[index] = constant*x[2*i]
     return ACvoltages, omegaAmplitudes, twoOmegaAmplitudes
+
+ACvoltages, omegaAmplitudes, twoOmegaAmplitudes = getACAmplitudeGraphs(file_list)
+
+np.savetxt(path+'/amplitudes.txt', (ACvoltages, omegaAmplitudes, twoOmegaAmplitudes))
