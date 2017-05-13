@@ -1,8 +1,10 @@
-import numpy
-import h5py
-import matplotlib
+import numpy, h5py, matplotlib
+import matplotlib.pyplot as plt
 import os
-import glob
+import scipy.signal as sp
+import numpy as np
+import numpy, h5py, matplotlib, os, glob
+
 path = r"/data/20170511/bead2_15um_QWP/new_sensor_feedback/charge7_piezo_56.9_74.9_75.4"
 conversion = 4.1e-13
 Fs = 10e3  ## this is ignored with HDF5 files
@@ -10,7 +12,6 @@ NFFT = 2 ** 13
 file_list = glob.glob(path+"/*.h5")
 
 def getdata(fname):
-    print "Opening file: ", fname
     ## guess at file type from extension
     _, fext = os.path.splitext(fname)
     if (fext == ".h5"):
@@ -53,9 +54,9 @@ def getACAmplitudeGraphs(file_list):
     twoOmegaAmplitudes = range(N1)
     """Now insert the amplitude for the requisite frequencies"""
     for index in range(N1):
-        voltage = ACvoltages[index]
-        i = numpy.argmax(dx[voltage])
-        psd = x[voltage]
+        volt = ACvoltages[index]
+        i = numpy.argmax(dx[volt])
+        psd = x[volt]
         omegaAmplitudes[index] = constant*psd[i]
         twoOmegaAmplitudes[index] = constant*psd[2*i]
     return ACvoltages, omegaAmplitudes, twoOmegaAmplitudes
