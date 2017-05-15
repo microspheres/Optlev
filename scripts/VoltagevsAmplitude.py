@@ -35,7 +35,7 @@ def getACAmplitudeGraphs(file_list):
     constant = conversion/N
     x = {} # input only numpy arrays as values
     dx = {} # input only numpy arrays as values
-    voltageCount = {} # input integers that count how many times an AC voltage value has shown up
+    #voltageCount = {} # input integers that count how many times an AC voltage value has shown up
     for index in range(N):
         f = file_list[index]
         a = getdata(f)
@@ -47,11 +47,11 @@ def getACAmplitudeGraphs(file_list):
         DCvoltage = float(f[l:j])/1000.
         if ACvoltage in x:
             if DCvoltage == 0:
-                voltageCount[ACvoltage] += 1
+                #voltageCount[ACvoltage] += 1
                 x[ACvoltage] += numpy.sqrt(a[1])
                 dx[ACvoltage] += numpy.sqrt(a[2])
         else:
-            voltageCount[ACvoltage] = 1
+            #voltageCount[ACvoltage] = 1
             x[ACvoltage] = numpy.sqrt(a[1])
             dx[ACvoltage] = numpy.sqrt(a[2])
     ACvoltages = x.keys()
@@ -74,7 +74,7 @@ def getACandDCAmplitudeGraphs(file_list):
     constant = conversion/N
     x = {} # input only numpy arrays as values
     dx = {} # input only numpy arrays as values
-    voltageCount = {} # input integers that count how many times an AC voltage value has shown up
+    #voltageCount = {} # input integers that count how many times an AC/DC pair has shown up
     for index in range(N):
         f = file_list[index]
         a = getdata(f)
@@ -87,21 +87,24 @@ def getACandDCAmplitudeGraphs(file_list):
         voltages = (ACvoltage, DCvoltage)
         if voltages in x:
             if DCvoltage != 0:
-                voltageCount[voltages] += 1
+                #voltageCount[voltages] += 1
                 x[voltages] += numpy.sqrt(a[1])
                 dx[voltages] += numpy.sqrt(a[2])
         else:
-            voltageCount[voltages] = 1
+            #voltageCount[voltages] = 1
             x[voltages] = numpy.sqrt(a[1])
             dx[voltages] = numpy.sqrt(a[2])
     voltageValues = x.keys()
-    ACvoltages, DCvoltages = zip(*voltageValues)
-    N1 = len(ACvoltages)
+    N1 = len(voltageValues)
+    ACvoltages = range(N1)
     omegaAmplitudes = range(N1)
     twoOmegaAmplitudes = range(N1)
+    DCvoltages = range(N1)
     """Now insert the amplitude for the requisite frequencies"""
     for index in range(N1):
         volt = voltageValues[index]
+        ACvoltages[index] = volt[0]
+        DCvoltages[index] = volt[1]
         i = numpy.argmax(dx[volt])
         psd = x[volt]
         omegaAmplitudes[index] = constant*psd[i]
