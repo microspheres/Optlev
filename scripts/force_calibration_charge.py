@@ -18,7 +18,7 @@ electric_charge = 1.602e-19
 distance = 0.002 #mm
 
 
-path = r"/Volumes/FERNANDO/lab/20170511/bead2_15um_QWP/charge6"
+path = r"/data/20170511/bead2_15um_QWP/new_sensor_feedback/charge7_piezo_56.9_74.9_75.4"
 
 make_plot_vs_time = True
 		 
