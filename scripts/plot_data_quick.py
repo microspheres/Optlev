@@ -5,9 +5,9 @@ import scipy.signal as sp
 import numpy as np
 
 
-refname = r"auto_xyzcool_G200_20.h5"
-fname0 = r"auto_xyzcool_G200_20.h5"
-path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge26_freqcomb_piezo_60.0_74.9_75.4"
+refname = r"auto_xyzcool_G200_synth7000mV41Hz0mVdc_1.h5"
+fname0 = r"auto_xyzcool_G200_synth4201mV41Hz0mVdc_1.h5"
+path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge44_whole_points\60.0_74.9_0.0"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
@@ -30,7 +30,7 @@ if fname0 == "":
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**12
+NFFT = 2**17
 
 def getdata(fname):
 	print "Opening file: ", fname

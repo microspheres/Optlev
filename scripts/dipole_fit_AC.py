@@ -13,7 +13,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.mlab as mlab
 
-path = r'C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge19_piezo_40.0_74.9_75.4'
+path = r'C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge44_whole_points\60.0_74.9_150.0'
 
 file_name = 'ACamplitudes.txt'
 
@@ -104,26 +104,26 @@ popt_W, pcov_W = curve_fit(Fw, (Ea_order, g_from_fit), force_W_order)
 
 
 
-plt.figure()
-plt.plot(Ea_order, force_W_order, ".")
-plt.plot(Ea_order, force_2W_order, ".")
-plt.plot(Ea_order, Fw((np.array(Ea_order),np.array(g_from_fit)), *popt_W))
-plt.plot(Ea_order, F2w((np.array(Ea_order),np.array(alpha0)), *popt_2W))
+# plt.figure()
+# plt.plot(Ea_order, force_W_order, ".")
+# plt.plot(Ea_order, force_2W_order, ".")
+# plt.plot(Ea_order, Fw((np.array(Ea_order),np.array(g_from_fit)), *popt_W))
+# plt.plot(Ea_order, F2w((np.array(Ea_order),np.array(alpha0)), *popt_2W))
 
-plt.ylabel("Force (N)")
-plt.xlabel("AC field amplitude (N/e)")
-plt.title(path[path.rfind('\\'):])
-plt.show()
+# plt.ylabel("Force (N)")
+# plt.xlabel("AC field amplitude (N/e)")
+# plt.title(path[path.rfind('\\'):])
+# plt.show()
 
 
 
-print 'alpha0'
-print alpha_0(7.5)
-print 'g = '
-print popt_2W[0]
-print 'error g = '
-print np.sqrt(pcov_2W[0][0])
-print 'p0 = '
-print popt_W[0]
-print 'background (N)'
-print popt_W[1]
+# print 'alpha0'
+# print alpha_0(7.5)
+# print 'g = '
+# print popt_2W[0]
+# print 'error g = '
+# print np.sqrt(pcov_2W[0][0])
+# print 'p0 = '
+# print popt_W[0]
+# print 'background (N)'
+# print popt_W[1]

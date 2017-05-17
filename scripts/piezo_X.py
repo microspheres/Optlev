@@ -6,25 +6,30 @@ import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.mlab as mlab
 
-X = [0., 30., 40., 56.9, 90]
-
-# mW
-g = [0.39, 0.35, 0.020, 0.19, 0.79]
-
-dg = [0.029, 0.029, 0.032, 0.036, 0.046]
 
 
-def para(x, A, B, C):
-    return A*(x-B)**2 + C
+X1 = [0., 20., 40., 60., 80., 100.]
 
-popt, pcov = curve_fit(para, X, g, sigma = dg)
+g1 = -np.array([2.32, 2.45, 1.61, 0.57, 0.75, 1.80])# actually this isn't g this is corr(2 omega)
 
-A = 1.*np.arange(100)
+dg1 = np.array([0.06, 0.07, 0.04, 0.04, 0.09, 0.06]) # error bar
 
-plt.figure(1)
-#plt.plot(X, g,'ro', color="red")
-plt.errorbar(X, g, yerr = dg, fmt='o' , color="red")
-plt.plot(A, para(A, *popt))
+# norm2 = np.amin(g2)
+
+# g1 = g2/norm2
+# dg1 = dg2/norm2
+
+def para(x,a,b,c):
+    return a*(x-b)**2 + c
+
+popt1, pcov1 = curve_fit(para, X1, g1, sigma = dg1)
+
+plt.figure()
+
+A = np.arange(110)
+
+plt.errorbar(X1, g1, yerr = dg1, fmt='o')
+plt.plot(A, para(A, *popt1))
 plt.xlabel('piezo_X')
 plt.ylabel('$\propto$ dE/E')
 plt.grid()
