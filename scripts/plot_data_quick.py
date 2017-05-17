@@ -5,9 +5,9 @@ import scipy.signal as sp
 import numpy as np
 
 
-refname = r"1mbar_zcool_G5.h5"
-fname0 = r""
-path = r"C:\data\20170504\bead9_15um_QWP\new_sensor_feedback"
+refname = r"auto_xyzcool_G200_20.h5"
+fname0 = r"auto_xyzcool_G200_20.h5"
+path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge26_freqcomb_piezo_60.0_74.9_75.4"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
@@ -54,6 +54,8 @@ def getdata(fname):
 	ypsd, freqs = matplotlib.mlab.psd(dat[:, 1]-numpy.mean(dat[:, 1]), Fs = Fs, NFFT = NFFT)
         zpsd, freqs = matplotlib.mlab.psd(dat[:, 2]-numpy.mean(dat[:, 2]), Fs = Fs, NFFT = NFFT)
         xpsd_new, freqs = matplotlib.mlab.psd(dat[:, 6]-numpy.mean(dat[:, 6]), Fs = Fs, NFFT = NFFT)
+        # Ddrive = dat[:, 5]*np.gradient(dat[:,5])
+        # DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT)
 
 
 	norm = numpy.median(dat[:, 2])
@@ -116,3 +118,7 @@ if refname:
         plt.loglog(data1[0], np.sqrt(data1[5]))
 plt.xlabel("Frequency[Hz]")
 plt.show()
+
+# fig = plt.figure
+# plt.loglog(data1[0], np.sqrt(data1[6]))
+# plt.show()

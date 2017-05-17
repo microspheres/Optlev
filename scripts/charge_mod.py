@@ -13,7 +13,7 @@ import cPickle as pickle
 
 from scipy.optimize import curve_fit
 
-path = r"C:\data\20170504\bead9_15um_QWP\new_sensor_feedback\charge7"
+path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge26_freqcomb_piezo_60.0_74.9_75.4"
 ts = 1.
 
 fdrive = 41.
@@ -82,7 +82,8 @@ def get_most_recent_file(p):
 
     
 def list_file_time_order(p):
-    filelist = glob.glob(os.path.join(p,"*20Vpp*.h5"))
+    #filelist = glob.glob(os.path.join(p,"*20Vpp*.h5"))
+    filelist = glob.glob(os.path.join(p,"*.h5"))
     filelist.sort(key=os.path.getmtime)
     return filelist
     
@@ -102,12 +103,21 @@ for i in np.arange(len(list_file_time_order(path))):
 #    T = T + t
 #    time.append(T)
 
+def Line(A, B):
+    return 0.0*A + 1.0*B
+
+X, Y = zip(*corr)
+
+print 'mean'
+print np.mean(X)
+print 'std'
+print np.std(X)/np.sqrt(len(X))
+
+
 plt.plot(corr)
 plt.grid()
 plt.show()
 
-# def Line(A, B):
-#     return 0.0*A + 1.0*B
 
 # time = []
 # for i in np.arange(len(list_file_time_order(path))):

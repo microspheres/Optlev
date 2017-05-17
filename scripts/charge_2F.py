@@ -11,7 +11,7 @@ import scipy.signal as sp
 import scipy.optimize as opt
 import cPickle as pickle
 
-path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge26_freqcomb_piezo_60.0_74.9_75.4"
+path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge30_freqcomb_piezo_80.0_74.9_75.4"
 ts = 1.
 
 fdrive = 41.
@@ -27,7 +27,9 @@ def getphase(fname):
         xdat = dat[:,data_columns[1]]
 
         xdat = np.append(xdat, np.zeros( int(fsamp/fdrive) ))
-        corr2 = np.correlate(xdat,dat[:,drive_column])
+        driver = dat[:,drive_column]
+        Ddriver = np.gradient(driver)
+        corr2 = np.correlate(xdat,driver*Ddriver)
         maxv = np.argmax(corr2) 
 
         cf.close()
@@ -109,7 +111,7 @@ while( True ):
     corr = getdata( cfile, best_phase )
     corr_data.append(corr )
 
-    # np.savetxt( os.path.join(path, "current_corr.txt"), [corr,] )
+    np.savetxt( os.path.join(path, "current_corr.txt"), [corr,] )
 
     if make_plot:
         plt.plot(np.array(corr_data))

@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import scipy.optimize as opt
 import scipy.signal as sp
 import scipy.interpolate as interp
+import matplotlib.cm as cmx
+import matplotlib.colors as colors
 
 bead_radius = 2.53e-6 ##m
 bead_rho = 2.0e3 ## kg/m^3
@@ -309,3 +311,12 @@ def gauss_fun(x, A, mu, sig):
 
 def get_chameleon_force( sep ):
     return cham_spl(sep)
+
+def get_color_map( n ):
+    jet = plt.get_cmap('jet') 
+    cNorm  = colors.Normalize(vmin=0, vmax=n-1)
+    scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=jet)
+    outmap = []
+    for i in range(n):
+        outmap.append( scalarMap.to_rgba(i) )
+    return outmap
