@@ -11,8 +11,8 @@ import scipy.signal as sp
 import scipy.optimize as opt
 import cPickle as pickle
 
-path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge26_freqcomb_piezo_60.0_74.9_75.4"
-ts = 1.
+path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge46"
+ts = 30.
 
 fdrive = 41.
 make_plot = True
