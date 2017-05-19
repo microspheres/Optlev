@@ -12,18 +12,19 @@
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
 		<Item Name="20170502.lvlib" Type="Library" URL="../20170502.lvlib"/>
+		<Item Name="Agilent 33XXX Series.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Agilent 33XXX Series/Agilent 33XXX Series.lvlib"/>
 		<Item Name="bead_dropperAdam.vi" Type="VI" URL="../bead_dropperAdam.vi"/>
 		<Item Name="DAQ.vi" Type="VI" URL="../DAQ/DAQ.vi"/>
+		<Item Name="flash_lamp (SubVI).vi" Type="VI" URL="../DAQ/flash_lamp (SubVI).vi"/>
+		<Item Name="load_arbitrary_waveform.vi" Type="VI" URL="../load_arbitrary_waveform.vi"/>
 		<Item Name="Move Stage.vi" Type="VI" URL="../Move Stage.vi"/>
+		<Item Name="set_piezos (SubVI).vi" Type="VI" URL="../DAQ/set_piezos (SubVI).vi"/>
 		<Item Name="set_synth.vi" Type="VI" URL="../set_synth.vi"/>
 		<Item Name="valve_lights.vi" Type="VI" URL="../valve_lights.vi"/>
 		<Item Name="valves.vi" Type="VI" URL="../valves.vi"/>
 		<Item Name="valvesAdam&apos;sEmpireExpands.vi" Type="VI" URL="../valvesAdam&apos;sEmpireExpands.vi"/>
 		<Item Name="VISA_Query.vi" Type="VI" URL="../VISA_Query.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
-			<Item Name="instr.lib" Type="Folder">
-				<Item Name="Agilent 33XXX Series.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Agilent 33XXX Series/Agilent 33XXX Series.lvlib"/>
-			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Application Directory.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Application Directory.vi"/>
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>
@@ -264,11 +265,16 @@
 				<Item Name="NI_PackedLibraryUtility.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/LVLibp/NI_PackedLibraryUtility.lvlib"/>
 				<Item Name="Not Found Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Not Found Dialog.vi"/>
 				<Item Name="Open File+.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Open File+.vi"/>
+				<Item Name="Read Delimited Spreadsheet (DBL).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read Delimited Spreadsheet (DBL).vi"/>
+				<Item Name="Read Delimited Spreadsheet (I64).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read Delimited Spreadsheet (I64).vi"/>
+				<Item Name="Read Delimited Spreadsheet (string).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read Delimited Spreadsheet (string).vi"/>
+				<Item Name="Read Delimited Spreadsheet.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read Delimited Spreadsheet.vi"/>
 				<Item Name="Read File+ (string).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read File+ (string).vi"/>
 				<Item Name="Read From Spreadsheet File (DBL).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read From Spreadsheet File (DBL).vi"/>
 				<Item Name="Read From Spreadsheet File (I64).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read From Spreadsheet File (I64).vi"/>
 				<Item Name="Read From Spreadsheet File (string).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read From Spreadsheet File (string).vi"/>
 				<Item Name="Read From Spreadsheet File.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read From Spreadsheet File.vi"/>
+				<Item Name="Read Lines From File (with error IO).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read Lines From File (with error IO).vi"/>
 				<Item Name="Read Lines From File.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read Lines From File.vi"/>
 				<Item Name="rel_path.vi" Type="VI" URL="/&lt;vilib&gt;/addons/h5labview2/base/rel_path.vi"/>
 				<Item Name="Search and Replace Pattern.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Search and Replace Pattern.vi"/>
@@ -297,7 +303,6 @@
 			<Item Name="create_file_name (SubVI).vi" Type="VI" URL="../DAQ/create_file_name (SubVI).vi"/>
 			<Item Name="create_process_list (SubVI).vi" Type="VI" URL="../DAQ/create_process_list (SubVI).vi"/>
 			<Item Name="create_subarray (SubVI).vi" Type="VI" URL="../DAQ/create_subarray (SubVI).vi"/>
-			<Item Name="flash_lamp (SubVI).vi" Type="VI" URL="../DAQ/flash_lamp (SubVI).vi"/>
 			<Item Name="Get Full Terminal Name.vi" Type="VI" URL="../old/DAQ/Get Full Terminal Name.vi"/>
 			<Item Name="initialize_instruments (SubVI).vi" Type="VI" URL="../DAQ/initialize_instruments (SubVI).vi"/>
 			<Item Name="make_dc_array (SubVI).vi" Type="VI" URL="../DAQ/make_dc_array (SubVI).vi"/>
