@@ -22,6 +22,8 @@
 		<Item Name="DAQ.vi" Type="VI" URL="../DAQ/DAQ.vi"/>
 		<Item Name="load_arbitrary_waveform.vi" Type="VI" URL="../load_arbitrary_waveform.vi"/>
 		<Item Name="Move Stage.vi" Type="VI" URL="../Move Stage.vi"/>
+		<Item Name="valve_lights.vi" Type="VI" URL="../valve_lights.vi"/>
+		<Item Name="valve_pressures.vi" Type="VI" URL="../valve_pressures.vi"/>
 		<Item Name="valves.vi" Type="VI" URL="../valves.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
