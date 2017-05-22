@@ -11,19 +11,18 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
+		<Item Name="Sub VIs" Type="Folder">
+			<Item Name="flash_lamp (SubVI).vi" Type="VI" URL="../DAQ/flash_lamp (SubVI).vi"/>
+			<Item Name="set_piezos (SubVI).vi" Type="VI" URL="../DAQ/set_piezos (SubVI).vi"/>
+			<Item Name="set_synth.vi" Type="VI" URL="../set_synth.vi"/>
+		</Item>
 		<Item Name="20170502.lvlib" Type="Library" URL="../20170502.lvlib"/>
 		<Item Name="Agilent 33XXX Series.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Agilent 33XXX Series/Agilent 33XXX Series.lvlib"/>
-		<Item Name="bead_dropperAdam.vi" Type="VI" URL="../bead_dropperAdam.vi"/>
+		<Item Name="bead_dropper.vi" Type="VI" URL="../bead_dropper.vi"/>
 		<Item Name="DAQ.vi" Type="VI" URL="../DAQ/DAQ.vi"/>
-		<Item Name="flash_lamp (SubVI).vi" Type="VI" URL="../DAQ/flash_lamp (SubVI).vi"/>
 		<Item Name="load_arbitrary_waveform.vi" Type="VI" URL="../load_arbitrary_waveform.vi"/>
 		<Item Name="Move Stage.vi" Type="VI" URL="../Move Stage.vi"/>
-		<Item Name="set_piezos (SubVI).vi" Type="VI" URL="../DAQ/set_piezos (SubVI).vi"/>
-		<Item Name="set_synth.vi" Type="VI" URL="../set_synth.vi"/>
-		<Item Name="valve_lights.vi" Type="VI" URL="../valve_lights.vi"/>
 		<Item Name="valves.vi" Type="VI" URL="../valves.vi"/>
-		<Item Name="valvesAdam&apos;sEmpireExpands.vi" Type="VI" URL="../valvesAdam&apos;sEmpireExpands.vi"/>
-		<Item Name="VISA_Query.vi" Type="VI" URL="../VISA_Query.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Application Directory.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Application Directory.vi"/>
@@ -318,8 +317,7 @@
 			<Item Name="set_instruments (SubVI).vi" Type="VI" URL="../DAQ/set_instruments (SubVI).vi"/>
 			<Item Name="sweep.vi" Type="VI" URL="../sweep.vi"/>
 			<Item Name="take_data (SubVI).vi" Type="VI" URL="../DAQ/take_data (SubVI).vi"/>
-			<Item Name="Valve_open.vi" Type="VI" URL="../Valve_open.vi"/>
-			<Item Name="VISA_QueryICannotBeStopped.vi" Type="VI" URL="../VISA_QueryICannotBeStopped.vi"/>
+			<Item Name="VISA_Query.vi" Type="VI" URL="../VISA_Query.vi"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build"/>
 	</Item>
