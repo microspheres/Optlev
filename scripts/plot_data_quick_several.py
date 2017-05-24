@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import scipy.signal as sp
 import numpy as np
+import bead_util as bu
 
 
 refname = r"1mbar_zcool_G5.h5"
@@ -50,16 +51,16 @@ def getdata(fname):
 	else:
 		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
 
-	xpsd, freqs = matplotlib.mlab.psd(dat[:, 0]-numpy.mean(dat[:, 0]), Fs = Fs, NFFT = NFFT) 
-	ypsd, freqs = matplotlib.mlab.psd(dat[:, 1]-numpy.mean(dat[:, 1]), Fs = Fs, NFFT = NFFT)
-        zpsd, freqs = matplotlib.mlab.psd(dat[:, 2]-numpy.mean(dat[:, 2]), Fs = Fs, NFFT = NFFT)
-        xpsd_new, freqs = matplotlib.mlab.psd(dat[:, 6]-numpy.mean(dat[:, 6]), Fs = Fs, NFFT = NFFT)
+	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT) 
+	ypsd, freqs = matplotlib.mlab.psd(dat[:, bu.yi]-numpy.mean(dat[:, bu.yi]), Fs = Fs, NFFT = NFFT)
+        zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
+        xpsd_old, freqs = matplotlib.mlab.psd(dat[:, bu.xi_old]-numpy.mean(dat[:, bu.xi_old]), Fs = Fs, NFFT = NFFT)
 
 
-	norm = numpy.median(dat[:, 2])
+	norm = numpy.median(dat[:, bu.zi])
         #for h in [xpsd, ypsd, zpsd]:
-        #        h /= numpy.median(dat[:,2])**2
-	return [freqs, xpsd, ypsd, dat, zpsd, xpsd_new]
+        #        h /= numpy.median(dat[:,bu.zi])**2
+	return [freqs, xpsd, ypsd, dat, zpsd, xpsd_old]
 
 data0 = getdata(os.path.join(path, fname0))
 
@@ -79,19 +80,19 @@ if make_plot_vs_time:
         fig = plt.figure()
         plt.subplot(3, 1, 1)
 
-        plt.plot(data0[3][:,0] - np.mean(data0[3][:, 0]) )
+        plt.plot(data0[3][:,bu.xi] - np.mean(data0[3][:, bu.xi]) )
         if(refname):
-                plt.plot(data1[3][:, 0] - np.mean(data1[3][:, 0]) )
+                plt.plot(data1[3][:, bu.xi] - np.mean(data1[3][:, bu.xi]) )
 
         plt.subplot(3, 1, 2)
-        plt.plot(data0[3][:, 1] - np.mean(data0[3][:, 1]) )
+        plt.plot(data0[3][:, bu.yi] - np.mean(data0[3][:, bu.yi]) )
         if(refname):
-                plt.plot(data1[3][:, 1] - np.mean(data1[3][:, 1]) )
+                plt.plot(data1[3][:, bu.yi] - np.mean(data1[3][:, bu.yi]) )
 
         plt.subplot(3, 1, 3)
-        plt.plot(data0[3][:, 2] - np.mean(data0[3][:, 2]) )
+        plt.plot(data0[3][:, bu.zi] - np.mean(data0[3][:, bu.zi]) )
         if(refname):
-                plt.plot(data1[3][:, 2] - np.mean(data1[3][:, 2]) )
+                plt.plot(data1[3][:, bu.zi] - np.mean(data1[3][:, bu.zi]) )
        
 
 fig = plt.figure()

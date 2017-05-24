@@ -35,22 +35,22 @@ def getdata(fname):
 	else:
 		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
 
-	xpsd, freqs = matplotlib.mlab.psd(dat[:, 0]-numpy.mean(dat[:, 0]), Fs = Fs, NFFT = NFFT) 
-        drive, freqs = matplotlib.mlab.psd(dat[:, 5]-numpy.mean(dat[:, 5]), Fs = Fs, NFFT = NFFT)
-        # zpsd, freqs = matplotlib.mlab.psd(dat[:, 2]-numpy.mean(dat[:, 2]), Fs = Fs, NFFT = NFFT)
+	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT) 
+        drive, freqs = matplotlib.mlab.psd(dat[:, bu.drive]-numpy.mean(dat[:, bu.drive]), Fs = Fs, NFFT = NFFT)
+        # zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
 
-	# norm = numpy.median(dat[:, 2])
+	# norm = numpy.median(dat[:, bu.zi])
         #for h in [xpsd, ypsd, zpsd]:
-        #        h /= numpy.median(dat[:,2])**2
+        #        h /= numpy.median(dat[:,bu.zi])**2
 	# return [freqs, xpsd, ypsd, dat, zpsd]
         return [freqs, xpsd, drive]
 
 #data0 = getdata(os.path.join(path, fname0))
 
-def rotate(vec1, vec2, theta):
-    vecn1 = numpy.cos(theta)*vec1 + numpy.sin(theta)*vec2
-    vecn2 = numpy.sin(theta)*vec1 + numpy.cos(theta)*vec2
-    return [vec1, vec2]
+# def rotate(vec1, vec2, theta):
+#     vecn1 = numpy.cos(theta)*vec1 + numpy.sin(theta)*vec2
+#     vecn2 = numpy.sin(theta)*vec1 + numpy.cos(theta)*vec2
+#     return [vec1, vec2]
 
 
 
@@ -88,50 +88,3 @@ plt.show()
 
 
 
-
-
-
-
-
-
-
-
-
-#if make_plot_vs_time:	
-#
-#        fig = plt.figure()
-#        plt.subplot(3, 1, 1)
-#
-#        plt.plot(data0[3][:,0] - np.mean(data0[3][:, 0]) )
-#        if(refname):
-#                plt.plot(data1[3][:, 0] - np.mean(data1[3][:, 0]) )
-#
-#        plt.subplot(3, 1, 2)
-#        plt.plot(data0[3][:, 1] - np.mean(data0[3][:, 1]) )
-#        if(refname):
-#                plt.plot(data1[3][:, 1] - np.mean(data1[3][:, 1]) )
-#
-#        plt.subplot(3, 1, 3)
-#        plt.plot(data0[3][:, 2] - np.mean(data0[3][:, 2]) )
-#        if(refname):
-#                plt.plot(data1[3][:, 2] - np.mean(data1[3][:, 2]) )
-#       
-#
-#fig = plt.figure()
-#plt.subplot(3, 1, 1)
-#plt.loglog(data0[0], np.sqrt(data0[1]),label="test")
-#if refname:
-#	plt.loglog(data1[0], np.sqrt(data1[1]),label="ref")
-#plt.ylabel("V$^2$/Hz")
-#plt.legend(loc=3)
-#plt.subplot(3, 1, 2)
-#plt.loglog(data0[0], np.sqrt(data0[2]))
-#if refname:
-#	plt.loglog(data1[0], np.sqrt(data1[2]))
-#plt.subplot(3, 1, 3)
-#plt.loglog(data0[0],  np.sqrt(data0[4]))
-#if refname:
-#	plt.loglog(data1[0], np.sqrt(data1[4]))
-#plt.ylabel("V$^2$/Hz")
-#plt.xlabel("Frequency[Hz]")
-#plt.show()

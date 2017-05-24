@@ -5,6 +5,7 @@ import scipy.signal as sp
 import numpy as np
 import numpy, h5py, matplotlib, os, glob
 from bead_util import get_color_map
+import bead_util as bu
 
 ### The functions "saveACfile" and "saveACandDCfile" take in a path string (as below)
 ### then find the file_list and save the values from that list
@@ -27,8 +28,8 @@ def getdata(fname):
         dat = dat * 10. / (2 ** 15 - 1)
     else:
         dat = numpy.loadtxt(fname, skiprows=5, usecols=[2, 3, 4, 5, 6])
-    xpsd, freqs = matplotlib.mlab.psd(dat[:, 0] - numpy.mean(dat[:, 0]), Fs=Fs, NFFT=NFFT)
-    drive, freqs = matplotlib.mlab.psd(dat[:, 5] - numpy.mean(dat[:, 5]), Fs=Fs, NFFT=NFFT)
+    xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi] - numpy.mean(dat[:, bu.xi]), Fs=Fs, NFFT=NFFT)
+    drive, freqs = matplotlib.mlab.psd(dat[:, bu.drive] - numpy.mean(dat[:, bu.drive]), Fs=Fs, NFFT=NFFT)
     return [freqs, xpsd, drive]
 
 def getACAmplitudeGraphs(file_list, make_plots = False, zeroDC = True):

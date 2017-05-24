@@ -15,10 +15,24 @@ bead_rho = 2.0e3 ## kg/m^3
 kb = 1.3806488e-23 #J/K
 bead_mass = 4./3*np.pi*bead_radius**3 * bead_rho
 
-## default columns for data files
-data_columns = [0, 1] ## column to calculate the correlation against
-drive_column = -1
-laser_column = 3
+## default columns for data files FOR FILES CREATED AFTER 5/23/2017
+xi = 0
+yi = 1
+zi = 2
+xl = 3
+yl = 4
+zl = 5
+drive = 6
+xi_old = 7
+
+## default columns for data files FOR FILES CREATED BEFORE 5/23/2017
+# xi = 0
+# yi = 1
+# zi = 2
+# xl = 3
+# yl = 4
+# drive = 5
+# xi_old = 6
 
 ## get the shape of the chameleon force vs. distance from Maxime's calculation
 #cforce = np.loadtxt(r"c:\GitHub\opt_lev\scripts\data\chameleon_force.txt", delimiter=",")

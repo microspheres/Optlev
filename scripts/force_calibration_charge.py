@@ -43,13 +43,13 @@ def getdata(fname):
 	else:
 		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
 
-	xpsd, freqs = matplotlib.mlab.psd(dat[:, 0]-numpy.mean(dat[:, 0]), Fs = Fs, NFFT = NFFT) 
-        drive, freqs = matplotlib.mlab.psd(dat[:, 5]-numpy.mean(dat[:, 5]), Fs = Fs, NFFT = NFFT)
-        # zpsd, freqs = matplotlib.mlab.psd(dat[:, 2]-numpy.mean(dat[:, 2]), Fs = Fs, NFFT = NFFT)
+	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT) 
+        drive, freqs = matplotlib.mlab.psd(dat[:, bu.drive]-numpy.mean(dat[:, bu.drive]), Fs = Fs, NFFT = NFFT)
+        # zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
 
-	# norm = numpy.median(dat[:, 2])
+	# norm = numpy.median(dat[:, bu.zi])
         #for h in [xpsd, ypsd, zpsd]:
-        #        h /= numpy.median(dat[:,2])**2
+        #        h /= numpy.median(dat[:,bu.zi])**2
 	# return [freqs, xpsd, ypsd, dat, zpsd]
         return [freqs, xpsd, drive]
 

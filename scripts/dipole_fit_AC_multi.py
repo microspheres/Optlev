@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from bead_util import get_color_map
 from dipole_fit_AC import F2w, alpha_0
+import bead_util as bu
 
 """Files"""
 path = r'C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge44_whole_points'
