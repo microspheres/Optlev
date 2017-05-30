@@ -7,7 +7,7 @@ import bead_util as bu
 
 refname = r"1mbar_zcoll_G5_att.h5"
 fname0 = r""
-path = r"C:\data\20170530\bead2_15um_QWP"
+path = r"C:\data\20170530\bead3_15um_QWP"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
