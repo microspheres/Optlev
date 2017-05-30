@@ -13,14 +13,14 @@ import cPickle as pickle
 
 from scipy.optimize import curve_fit
 
-path = r"/Volumes/FERNANDO/lab/20170511/bead2_15um_QWP/charge6"
+path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge46"
 ts = 1.
 
 fdrive = 41.
 make_plot = True
 
-data_columns = [0, 0] ## column to calculate the correlation against
-drive_column = 5 ##-1 ## column containing drive signal
+data_columns = [0, bu.xi] ## column to calculate the correlation against
+drive_column = bu.drive ##-1 ## column containing drive signal
 
 def getphase(fname):
         print "Getting phase from: ", fname 
@@ -82,6 +82,7 @@ def get_most_recent_file(p):
 
     
 def list_file_time_order(p):
+    #filelist = glob.glob(os.path.join(p,"*20Vpp*.h5"))
     filelist = glob.glob(os.path.join(p,"*.h5"))
     filelist.sort(key=os.path.getmtime)
     return filelist
@@ -102,30 +103,35 @@ for i in np.arange(len(list_file_time_order(path))):
 #    T = T + t
 #    time.append(T)
 
-plt.figure()
+def Line(A, B):
+    return 0.0*A + 1.0*B
+
+X, Y = zip(*corr)
+
+print 'mean'
+print np.mean(X)
+print 'std'
+print np.std(X)/np.sqrt(len(X))
+
+
 plt.plot(corr)
 plt.grid()
 plt.show()
 
 
+# time = []
+# for i in np.arange(len(list_file_time_order(path))):
+#     i = i+1
+#     time.append(i)
 
+# coor2 = []
+# for i in np.arange(len(list_file_time_order(path))):
+#     a = corr[i][0]
+#     coor2.append(a)
+    
 
-#def Line(A, B):
-#    return 0.0*A + 1.0*B
-#
-#time = []
-#for i in np.arange(len(list_file_time_order(path))):
-#    i = i+1
-#    time.append(i)
-#
-#coor2 = []
-#for i in np.arange(len(list_file_time_order(path))):
-#    a = corr[i][0]
-#    coor2.append(a)
-#    
-#
-#popt1, pcov1 = curve_fit(Line, time[31:42], coor2[31:42])
-#
-#popt2, pcov2 = curve_fit(Line, time[48:58], coor2[48:58])
-#
-#popt3, pcov3 = curve_fit(Line, time[63:72], coor2[63:72])
+# popt1, pcov1 = curve_fit(Line, time[31:42], coor2[31:42])
+
+# popt2, pcov2 = curve_fit(Line, time[48:58], coor2[48:58])
+
+# popt3, pcov3 = curve_fit(Line, time[63:72], coor2[63:72])
