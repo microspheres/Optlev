@@ -7,16 +7,32 @@ import matplotlib.pyplot as plt
 import scipy.optimize as opt
 import scipy.signal as sp
 import scipy.interpolate as interp
+import matplotlib.cm as cmx
+import matplotlib.colors as colors
 
 bead_radius = 2.53e-6 ##m
 bead_rho = 2.0e3 ## kg/m^3
 kb = 1.3806488e-23 #J/K
 bead_mass = 4./3*np.pi*bead_radius**3 * bead_rho
 
-## default columns for data files
-data_columns = [0, 1] ## column to calculate the correlation against
-drive_column = -1
-laser_column = 3
+## default columns for data files FOR FILES CREATED AFTER 5/23/2017
+xi = 0
+yi = 1
+zi = 2
+xl = 3
+yl = 4
+zl = 5
+drive = 6
+xi_old = 7
+
+## default columns for data files FOR FILES CREATED BEFORE 5/23/2017
+# xi = 0
+# yi = 1
+# zi = 2
+# xl = 3
+# yl = 4
+# drive = 5
+# xi_old = 6
 
 ## get the shape of the chameleon force vs. distance from Maxime's calculation
 #cforce = np.loadtxt(r"c:\GitHub\opt_lev\scripts\data\chameleon_force.txt", delimiter=",")
@@ -309,3 +325,12 @@ def gauss_fun(x, A, mu, sig):
 
 def get_chameleon_force( sep ):
     return cham_spl(sep)
+
+def get_color_map( n ):
+    jet = plt.get_cmap('jet') 
+    cNorm  = colors.Normalize(vmin=0, vmax=n-1)
+    scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=jet)
+    outmap = []
+    for i in range(n):
+        outmap.append( scalarMap.to_rgba(i) )
+    return outmap

@@ -3,11 +3,12 @@ import matplotlib.pyplot as plt
 import os
 import scipy.signal as sp
 import numpy as np
+import bead_util as bu
 
 
-refname = r"1mbar_zcool_G5.h5"
-fname0 = r"1mbar_zcool_G5.h5"
-path = r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback"
+refname = r"1mbar_G5_zcool.h5"
+fname0 = r"1mbar_G5_zcool.h5"
+path = r"C:\data\20170526\bead4_15um_QWP"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
@@ -30,7 +31,7 @@ if fname0 == "":
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**12
+NFFT = 2**13
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -50,16 +51,16 @@ def getdata(fname):
 	else:
 		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
 
-	xpsd, freqs = matplotlib.mlab.psd(dat[:, 0]-numpy.mean(dat[:, 0]), Fs = Fs, NFFT = NFFT) 
-	ypsd, freqs = matplotlib.mlab.psd(dat[:, 1]-numpy.mean(dat[:, 1]), Fs = Fs, NFFT = NFFT)
-        zpsd, freqs = matplotlib.mlab.psd(dat[:, 2]-numpy.mean(dat[:, 2]), Fs = Fs, NFFT = NFFT)
-        xpsd_new, freqs = matplotlib.mlab.psd(dat[:, 6]-numpy.mean(dat[:, 6]), Fs = Fs, NFFT = NFFT)
+	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT) 
+	ypsd, freqs = matplotlib.mlab.psd(dat[:, bu.yi]-numpy.mean(dat[:, bu.yi]), Fs = Fs, NFFT = NFFT)
+        zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
+        xpsd_old, freqs = matplotlib.mlab.psd(dat[:, bu.xi_old]-numpy.mean(dat[:, bu.xi_old]), Fs = Fs, NFFT = NFFT)
 
 
-	norm = numpy.median(dat[:, 2])
+	norm = numpy.median(dat[:, bu.zi])
         #for h in [xpsd, ypsd, zpsd]:
-        #        h /= numpy.median(dat[:,2])**2
-	return [freqs, xpsd, ypsd, dat, zpsd, xpsd_new]
+        #        h /= numpy.median(dat[:,bu.zi])**2
+	return [freqs, xpsd, ypsd, dat, zpsd, xpsd_old]
 
 data0 = getdata(os.path.join(path, fname0))
 
@@ -79,19 +80,19 @@ if make_plot_vs_time:
         fig = plt.figure()
         plt.subplot(3, 1, 1)
 
-        plt.plot(data0[3][:,0] - np.mean(data0[3][:, 0]) )
+        plt.plot(data0[3][:,bu.xi] - np.mean(data0[3][:, bu.xi]) )
         if(refname):
-                plt.plot(data1[3][:, 0] - np.mean(data1[3][:, 0]) )
+                plt.plot(data1[3][:, bu.xi] - np.mean(data1[3][:, bu.xi]) )
 
         plt.subplot(3, 1, 2)
-        plt.plot(data0[3][:, 1] - np.mean(data0[3][:, 1]) )
+        plt.plot(data0[3][:, bu.yi] - np.mean(data0[3][:, bu.yi]) )
         if(refname):
-                plt.plot(data1[3][:, 1] - np.mean(data1[3][:, 1]) )
+                plt.plot(data1[3][:, bu.yi] - np.mean(data1[3][:, bu.yi]) )
 
         plt.subplot(3, 1, 3)
-        plt.plot(data0[3][:, 2] - np.mean(data0[3][:, 2]) )
+        plt.plot(data0[3][:, bu.zi] - np.mean(data0[3][:, bu.zi]) )
         if(refname):
-                plt.plot(data1[3][:, 2] - np.mean(data1[3][:, 2]) )
+                plt.plot(data1[3][:, bu.zi] - np.mean(data1[3][:, bu.zi]) )
        
 
 fig = plt.figure()
@@ -117,49 +118,63 @@ if refname:
 plt.xlabel("Frequency[Hz]")
 plt.show()
 
-plot1 = r"2_8E-6mbar_xyzcool_G5.h5"
-plot2 = r"2_7E-6mbar2_xyzcool_G5.h5"
-plot3 = r"2_6E-6mbar_xyzcool_G5.h5"
-plot4 = r"2_5E-6mbar_xyzcool_G5.h5"
-plot5 = r"2_4E-6mbar2_xyzcool_G5.h5"
+plot1 = r"1_8E-6mbar_G50_zyNxcool.h5"
+plot2 = r"1_8E-6mbar_G50_zyPxcool.h5"
+plot3 = r"1_8E-6mbar_G50_zyxcool.h5"
+# plot4 = r"2_5E-6mbar_xyzcool_G5.h5"
+# plot5 = r"2_4E-6mbar2_xyzcool_G5.h5"
 
 dplot1 = getdata(os.path.join(path,plot1))
 dplot2 = getdata(os.path.join(path,plot2))
 dplot3 = getdata(os.path.join(path,plot3))
-dplot4 = getdata(os.path.join(path,plot4))
-dplot5 = getdata(os.path.join(path,plot5))
+# dplot4 = getdata(os.path.join(path,plot4))
+# dplot5 = getdata(os.path.join(path,plot5))
+
+# fig1 = plt.figure()
+# plt.subplot(3, 1, 1)
+# plt.loglog(dplot1[0][8:],np.sqrt(dplot1[1][8:]), label='Line 2')
+# plt.ylabel("V/rtHz")
+# plt.subplot(3, 1, 2)
+# plt.loglog(dplot2[0][8:],np.sqrt(dplot2[1][8:]))
+# plt.subplot(3, 1, 3)
+# plt.loglog(dplot3[0][8:],np.sqrt(dplot3[1][8:]))
+# plt.ylabel("V/rtHz")
+# # plt.subplot(5, 1, 4)
+# # plt.loglog(dplot4[0][8:],np.sqrt(dplot4[1][8:]))
+# # plt.subplot(5, 1, 5)
+# # plt.loglog(dplot5[0][8:],np.sqrt(dplot5[1][8:]))
+# plt.xlabel("Frequency[Hz]")
+# plt.show()
 
 fig1 = plt.figure()
-plt.subplot(5, 1, 1)
-plt.loglog(dplot1[0][8:],np.sqrt(dplot1[1][8:]))
-plt.subplot(5, 1, 2)
-plt.loglog(dplot2[0][8:],np.sqrt(dplot2[1][8:]))
-plt.subplot(5, 1, 3)
-plt.loglog(dplot3[0][8:],np.sqrt(dplot3[1][8:]))
-plt.subplot(5, 1, 4)
-plt.loglog(dplot4[0][8:],np.sqrt(dplot4[1][8:]))
-plt.subplot(5, 1, 5)
-plt.loglog(dplot5[0][8:],np.sqrt(dplot5[1][8:]))
+plt.loglog(dplot1[0][8:],np.sqrt(dplot1[1][8:]), label='New_feedback')
+plt.loglog(dplot2[0][8:],np.sqrt(dplot2[1][8:]), label='Old_feedback with Pg')
+plt.loglog(dplot3[0][8:],np.sqrt(dplot3[1][8:]), label='Old_feedback')
+plt.ylabel("V/rtHz")
 plt.xlabel("Frequency[Hz]")
+plt.legend(loc='upper left')
+plt.ylim(1E-4, 1E-2)
+plt.xlim(20, 1E+2)
+plt.grid()
 plt.show()
 
-t1 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_8E-6mbar_xyzcool_G5.h5")
+# t1 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_8E-6mbar_xyzcool_G5.h5")
 
-t2 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_7E-6mbar2_xyzcool_G5.h5")
+# t2 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_7E-6mbar2_xyzcool_G5.h5")
 
-t3 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_6E-6mbar_xyzcool_G5.h5")
+# t3 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_6E-6mbar_xyzcool_G5.h5")
 
-t4 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_5E-6mbar_xyzcool_G5.h5")
+# t4 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_5E-6mbar_xyzcool_G5.h5")
 
-t5 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_4E-6mbar2_xyzcool_G5.h5")
+# t5 = os.path.getmtime(r"C:\data\20170504\bead4_15um_QWP\new_sensor_feedback\2_4E-6mbar2_xyzcool_G5.h5")
 
-print t1 - t2
+# print t1 - t2
 
-print t2 - t3
+# print t2 - t3
 
-print t3 - t4
+# print t3 - t4
 
-print t4 - t5
+# print t4 - t5
 
 
 
