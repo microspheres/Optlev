@@ -6,7 +6,7 @@ import numpy as np
 import bead_util as bu
 
 refname = r"test2.h5"
-fname0 = r"15um_QWP\1mbar_500s_G10.h5"
+fname0 = r"15um_QWP\1mbar_200s_G50.h5"
 path = r"C:\data\20170523_cross_correlation"
 make_plot_vs_time = True
 conv_fac = 4.4e-14
@@ -27,7 +27,7 @@ if fname0 == "":
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**12
+NFFT = 2**13
 
 def getdata_cross(fname):
 	print "Opening file: ", fname

@@ -13,7 +13,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.mlab as mlab
 
-path = r'C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge44_whole_points\60.0_74.9_150.0'
+path = r'C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge45_whole_points\60.0_74.9_150.0'
 
 file_name = 'ACamplitudes.txt'
 
