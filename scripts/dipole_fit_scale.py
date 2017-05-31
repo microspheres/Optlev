@@ -1,10 +1,3 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-"""
-Created on Sat May 13 14:49:30 2017
-@author: fernandomonteiro
-"""
-
 import numpy, h5py, matplotlib
 import matplotlib.pyplot as plt
 import os
@@ -13,7 +6,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.mlab as mlab
 
-path = r'C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge45_whole_points\60.0_74.9_150.0'
+path = '/data/20170511/bead2_15um_QWP/new_sensor_feedback/charge45_whole_points/60.0_74.9_150.0'
 
 file_name = 'ACamplitudes.txt'
 
@@ -31,9 +24,6 @@ F = np.loadtxt(os.path.join(path, file_name))
 Ea = trek*Vpp_to_Vamp*F[0]/distance
 
 # Ed =  trek*Vpp_to_Vamp*0.1/distance
-         
-
-
               
 #g = dE/E
 
@@ -104,16 +94,16 @@ popt_W, pcov_W = curve_fit(Fw, (Ea_order, g_from_fit), force_W_order)
 
 
 
-# plt.figure()
-# plt.plot(Ea_order, force_W_order, ".")
-# plt.plot(Ea_order, force_2W_order, ".")
-# plt.plot(Ea_order, Fw((np.array(Ea_order),np.array(g_from_fit)), *popt_W))
-# plt.plot(Ea_order, F2w((np.array(Ea_order),np.array(alpha0)), *popt_2W))
+plt.figure()
+plt.loglog(Ea_order, force_W_order, ".")
+plt.loglog(Ea_order, force_2W_order, ".")
+plt.loglog(Ea_order, Fw((np.array(Ea_order),np.array(g_from_fit)), *popt_W))
+plt.loglog(Ea_order, F2w((np.array(Ea_order),np.array(alpha0)), *popt_2W))
 
-# plt.ylabel("Force (N)")
-# plt.xlabel("AC field amplitude (N/e)")
-# plt.title(path[path.rfind('\\'):])
-# plt.show()
+plt.ylabel("Force (N)")
+plt.xlabel("AC field amplitude (N/e)")
+plt.title(path[path.rfind('\\'):])
+plt.show()
 
 
 
