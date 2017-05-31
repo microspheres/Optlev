@@ -1,6 +1,5 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <Project Type="Project" LVVersion="16008000">
-	<Property Name="varPersistentID:{EB4068BB-9052-4EAB-9C7F-55681EB452BF}" Type="Ref">/My Computer/20170502.lvlib/Tot Synth Arr</Property>
 	<Item Name="My Computer" Type="My Computer">
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="server.control.propertiesEnabled" Type="Bool">true</Property>
@@ -16,7 +15,6 @@
 			<Item Name="set_piezos (SubVI).vi" Type="VI" URL="../DAQ/set_piezos (SubVI).vi"/>
 			<Item Name="set_synth.vi" Type="VI" URL="../set_synth.vi"/>
 		</Item>
-		<Item Name="20170502.lvlib" Type="Library" URL="../20170502.lvlib"/>
 		<Item Name="Agilent 33XXX Series.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Agilent 33XXX Series/Agilent 33XXX Series.lvlib"/>
 		<Item Name="bead_dropper.vi" Type="VI" URL="../bead_dropper.vi"/>
 		<Item Name="DAQ.vi" Type="VI" URL="../DAQ/DAQ.vi"/>
