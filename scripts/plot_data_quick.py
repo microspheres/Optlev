@@ -5,12 +5,15 @@ import scipy.signal as sp
 import numpy as np
 import bead_util as bu
 
-refname = r"3_25E-7mbar_xyzcool_G5_att10.h5"
-fname0 = r"3_25E-7mbar_xyzcool_G5_att7.h5"
-path = r"C:\data\20170530\bead4_15um_QWP"
+path = '/data/20170511/bead2_15um_QWP/new_sensor_feedback/charge43_whole_points/60.0_74.9_75.4'
+refname = r"auto_xyzcool_G200_synth7000mV41Hz200mVdc_1.h5"
+fname0 = r"auto_xyzcool_G200_synth7000mV41Hz200mVdc_1.h5"
+
+#path = r"C:\data\20170530\bead4_15um_QWP"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
+
 make_plot_vs_time = True
 conv_fac = 4.4e-14
 if fname0 == "":
@@ -30,7 +33,7 @@ if fname0 == "":
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**12
+NFFT = 2**17
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -49,19 +52,22 @@ def getdata(fname):
                 
 	else:
 		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
+        #plt.figure()
+        #plt.plot(dat)
+        #plt.show()
 
 	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT) 
 	ypsd, freqs = matplotlib.mlab.psd(dat[:, bu.yi]-numpy.mean(dat[:, bu.yi]), Fs = Fs, NFFT = NFFT)
         zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
         xpsd_old, freqs = matplotlib.mlab.psd(dat[:, bu.xi_old]-numpy.mean(dat[:, bu.xi_old]), Fs = Fs, NFFT = NFFT)
-        # Ddrive = dat[:, bu.drive]*np.gradient(dat[:,bu.drive])
-        # DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT)
-
+        #Ddrive = dat[:, bu.drive]*np.gradient(dat[:,bu.drive])
+        #DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT)
+        drivepsd, freqs =  matplotlib.mlab.psd(dat[:, bu.drive]-numpy.mean(dat[:, bu.drive]), Fs = Fs, NFFT = NFFT)
 
 	norm = numpy.median(dat[:, bu.zi])
         #for h in [xpsd, ypsd, zpsd]:
         #        h /= numpy.median(dat[:,bu.zi])**2
-	return [freqs, xpsd, ypsd, dat, zpsd, xpsd_old]
+	return [freqs, xpsd, ypsd, dat, zpsd, xpsd_old, drivepsd]
 
 data0 = getdata(os.path.join(path, fname0))
 
@@ -122,3 +128,8 @@ plt.show()
 # fig = plt.figure
 # plt.loglog(data1[0], np.sqrt(data1[6]))
 # plt.show()
+
+#plt.loglog(data0[0], np.sqrt(data0[-1]))
+#plt.ylabel("V/rtHz")
+#plt.xlabel("Frequency[Hz]")
+#plt.show()

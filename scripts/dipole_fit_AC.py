@@ -58,43 +58,16 @@ def alpha_0(r): # in um
     """alpha0 , r is the radius in um"""
     r1 = 1.0*r/(1e6)
     epsilon0 = 8.854e-12
-    return 3.*epsilon0*(2./5.)*(4.*np.pi/3.)*(r1**3)
+    return 3.*epsilon0*(2./5.)*(4.*np.pi/3.)*(r1**3)      
 
-
-
-def getmin_index(A):
-    a = np.argmin(A)
-    return a           
-
-
-Ea_order = []
-force_W_order = []
-force_2W_order = []
 
 def order(A,B,C):
-    x = A
-    y = B
-    z = C
-    im = getmin_index(A)
-    s1 = x[im]
-    s2 = y[im]
-    s3 = z[im]
-    Ea_order.append(s1)
-    force_W_order.append(s2)
-    force_2W_order.append(s3)
-    x = np.delete(x,im)
-    y = np.delete(y,im)
-    z = np.delete(z,im)
-    
-    if len(x) > 0:
-        order(x,y,z)
-    else:
-        return Ea_order, force_W_order, force_2W_order
+    return zip(*sorted(zip(A,B,C)))
 
 
 alpha0 = np.ones(len(Ea))*alpha_0(7.5)
 
-order(Ea, F[1], F[2])
+Ea_order, force_W_order, force_2W_order = order(Ea, F[1], F[2])
 
 popt_2W, pcov_2W = curve_fit(F2w, (Ea_order, alpha0), force_2W_order)
 
@@ -103,9 +76,7 @@ g_from_fit = np.ones(len(Ea))*popt_2W[0]
 popt_W, pcov_W = curve_fit(Fw, (Ea_order, g_from_fit), force_W_order)
 
 
-
-
-print 'alpha0'
+print 'alpha0 = '
 print alpha_0(7.5)
 print 'g = '
 print popt_2W[0]
@@ -113,7 +84,7 @@ print 'error g = '
 print np.sqrt(pcov_2W[0][0])
 print 'p0 = '
 print popt_W[0]
-print 'background (N)'
+print 'background (N) = '
 print popt_W[1]
 
 

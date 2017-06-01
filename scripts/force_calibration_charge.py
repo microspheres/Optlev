@@ -14,10 +14,13 @@ import os, re, time, glob
 import bead_util as bu
 
 electric_charge = 1.602e-19
-distance = 0.002 #mm
+distance = 0.002 # m
 
+# for Linux
+path = r"//data/20170511/bead2_15um_QWP/new_sensor_feedback/charge6"
 
-path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge6"
+# for Windows
+#path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge6"
 
 make_plot_vs_time = True
 		 
@@ -68,23 +71,25 @@ def list_file_time_order(p):
 #            b = B[i]
 #    return 1.0*b
 
-def get_max_bin(limI,limS,p): # output in V/sqrt(Hz)
+def get_AC_voltage(limI,limS,p): # output in V
     freq = np.zeros(NFFT/2 + 1)
-    x = np.zeros(NFFT/2 + 1)
-    dx = np.zeros(NFFT/2 + 1)
+    ax = np.zeros(NFFT/2 + 1)
+    adx = np.zeros(NFFT/2 + 1)
     for file in list_file_time_order(p)[limI:limS]:
         a = getdata(file)
         freq = a[0]
-        x += np.sqrt(a[1])
-        dx += np.sqrt(a[2])
-    a1 = np.max(dx)
-    b1 = 0
-    for i in np.arange(len(dx)):
-        if a1 == dx[i]:
-            b1 = x[i]
-    return 1.0*b1/len(list_file_time_order(p)[limI:limS])
+        ax += np.array(a[1])
+        adx += np.array(a[2])
+    N = len(list_file_time_order(p)[limI:limS])
+    binF = freq[2] - freq[1]
+    x = np.sqrt(ax/N)
+    dx = np.sqrt(adx/N)
+    a1 = np.argmax(dx)
+    b1 = x[a1]*np.sqrt(binF)
+    return 1.0*b1
 
-def get_field_AC(p): # all files MUST have the same fields value!!!
+def get_field_AC(p):
+    """all files in path MUST have the same fields value!!!"""
     trek_factor = 200.0
     Vpp_to_Vamp = 0.5
     filelist = glob.glob(os.path.join(p,"*.h5"))
@@ -96,10 +101,13 @@ def get_field_AC(p): # all files MUST have the same fields value!!!
     voltage = float(file1)/1000.
     return Vpp_to_Vamp*trek_factor*(voltage)/distance
 
-def convert_voltage_to_force(limI_1e, limS_1e, limI_0e, limS_0e, p): #gives the convertion factor from V/sqrtHz to Newtons
+def convert_voltage_to_force(limI_1e, limS_1e, limI_0e, limS_0e, p):
+    """gives the convertion factor from V to Newtons"""
     force = electric_charge*get_field_AC(path)
-    delta_v = get_max_bin(limI_1e,limS_1e,p) - get_max_bin(limI_0e,limS_0e,p)
-    return 1.0*force/delta_v
+    v1 = get_AC_voltage(limI_1e,limS_1e,p)
+    v2 = get_AC_voltage(limI_0e,limS_0e,p)
+    delta_v = v1 - v2
+    return 1.0*(force/delta_v)
 
 def PSD_Newton_1s(position, p, conversion):
     freq = np.zeros(NFFT/2 + 1)
@@ -116,6 +124,7 @@ def PSD_Newton_1s(position, p, conversion):
     plt.show()
 
 conversion = convert_voltage_to_force(0, 57, 100, 157, path)
-PSD_Newton_1s(100, path, conversion)
 
 print conversion
+
+PSD_Newton_1s(100, path, conversion)
