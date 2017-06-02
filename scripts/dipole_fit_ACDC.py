@@ -12,6 +12,7 @@ import scipy.signal as sp
 import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.mlab as mlab
+import bead_util as bu
 
 path = r'C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge16_piezo_56.9_74.9_75.4'
 
