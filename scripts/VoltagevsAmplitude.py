@@ -50,8 +50,8 @@ def getACAmplitudeGraphs(file_list, make_plots = False, zeroDC = True):
         j = f.rfind("mV")
         k = f.rfind("mV",0,j)
         l = f.rfind("Hz") + 2
-        ACvoltage = float(f[i:k])/1000.
-        DCvoltage = float(f[l:j])/1000.
+        ACvoltage = float(f[i:k])/1000. # V
+        DCvoltage = float(f[l:j])/1000. # V
         if ACvoltage in ax:
             if zeroDC:
                 if DCvoltage == 0:
@@ -111,7 +111,7 @@ def plot_psds(psd_plots, frequencies, labels, index):
     plt.ylim([0, np.amax(psd_plots[-1][np.argmin(np.abs(frequencies - 20)):np.argmin(np.abs(frequencies - 100))])])
     #plt.title(path[path.rfind('\\'):])
     plt.legend()
-    plt.show()
+    plt.show(block = False)
 
 # Make the plots requested here
 #file_list = glob.glob(path+"/*.h5")

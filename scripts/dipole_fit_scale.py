@@ -9,11 +9,14 @@ import matplotlib.mlab as mlab
 #path = '/data/20170511/bead2_15um_QWP/new_sensor_feedback/charge43_whole_points/60.0_74.9_75.4'
 
 distance = 0.002 #m
-Vpp_to_Vamp = 0.5
+Vpp_to_Vamp = 0.5 # files are saved in Vpp
 trek = 200.0 # gain of the trek
 
 def Fw(X, p0, back):
-    """fit dipole ac field only at freq w"""
+    """fit dipole ac field only at freq w
+       Fw in N
+       p0 in N m^2 / V
+       g in m^-1"""
     Eac, g = X
     return p0*Eac*g + back
 
@@ -27,8 +30,9 @@ def Fwacdc(X, g, p0, back, alpha):
     Eac, Edc = X
     return p0*Eac*g + back + alpha*(2.0*g*Edc*Eac)
 
-def alpha_0(r): # in um
-    """alpha0 , r is the radius in um"""
+def alpha_0(r):
+    """alpha0 N m^3 / V^2
+       r is the radius in um"""
     r1 = 1.0*r/(1e6)
     epsilon0 = 8.854e-12
     return 3.*epsilon0*(2./5.)*(4.*np.pi/3.)*(r1**3)
@@ -45,19 +49,19 @@ def get_param(path, useDC = False):
     else:
         file_name = 'ACamplitudes.txt'
 
-    F = np.loadtxt(os.path.join(path, file_name))
-    Ea = trek*Vpp_to_Vamp*F[0]/distance
+    F = np.loadtxt(os.path.join(path, file_name)) # gives voltages in V and amplitudes in N
+    Ea = trek*Vpp_to_Vamp*F[0]/distance # V/m
 
-    alpha0 = np.ones(len(Ea))*alpha_0(7.5)
-    Ea_order, force_W_order, force_2W_order = order(Ea, F[1], F[2])
+    alpha0 = np.ones(len(Ea))*alpha_0(7.5) # Nm^3/V^2
+    Ea_order, force_W_order, force_2W_order = order(Ea, F[1], F[2]) # V/m, N, N
     popt_2W, pcov_2W = curve_fit(F2w, (Ea_order, alpha0), force_2W_order)
-    g_from_fit = np.ones(len(Ea))*popt_2W[0]
+    g_from_fit = np.ones(len(Ea))*popt_2W[0] # m^-1
     popt_W, pcov_W = curve_fit(Fw, (Ea_order, g_from_fit), force_W_order)
 
-    # alpha0 = alpha_0(7.5)
-    # g = popt_2W[0]
-    # error g = np.sqrt(pcov_2W[0][0])
-    # p0 = popt_W[0]
+    # alpha0 = alpha_0(7.5) # Nm^3/V^2
+    # g = popt_2W[0] # m^-1
+    # error g = np.sqrt(pcov_2W[0][0]) # m^-1
+    # p0 = popt_W[0] # Nm^2/V
     # background = popt_W[1] # N
 
     Efield = Ea_order # V/m
@@ -67,6 +71,23 @@ def get_param(path, useDC = False):
     fit_2f = F2w((np.array(Ea_order),np.array(alpha0)), *popt_2W) # N
 
     return Efield, data_f, data_2f, fit_f, fit_2f
+
+def plot_amplitude_data_raw(path, Efield, data_f, data_2f, fit_f, fit_2f):
+    plt.figure()
+    plt.plot(Efield, data_f, ".")
+    plt.plot(Efield, data_2f, ".")
+    plt.plot(Efield, fit_f)
+    plt.plot(Efield, fit_2f)
+
+    plt.ylabel("Force (N)")
+    plt.xlabel("AC field amplitude (N/e)")
+    plt.title(path[path.rfind('\\'):])
+    plt.show(block = False)
+
+def plot_amplitude_data(path, useDC = False):
+    Efield, data_f, data_2f, fit_f, fit_2f = get_param(path, useDC)
+    plot_amplitude_data_raw(path, Efield, data_f, data_2f, fit_f, fit_2f)
+
 
 
 
