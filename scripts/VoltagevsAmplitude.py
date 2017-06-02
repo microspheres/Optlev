@@ -70,6 +70,7 @@ def getACAmplitudeGraphs(file_list, make_plots = False, zeroDC = True):
             adx[ACvoltage] = numpy.array(a[2])
     freqs = a[0]
     binF = freqs[2] - freqs[1]
+    # print 'binF is ' + str(binF) # gave 0.0762939453125
     ACvoltages = sorted(ax.keys())
     N1 = len(ACvoltages)
     keyPicked = np.amax(ACvoltages)

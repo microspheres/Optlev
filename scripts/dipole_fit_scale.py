@@ -57,12 +57,19 @@ def get_param(path, useDC = False):
     popt_2W, pcov_2W = curve_fit(F2w, (Ea_order, alpha0), force_2W_order)
     g_from_fit = np.ones(len(Ea))*popt_2W[0] # m^-1
     popt_W, pcov_W = curve_fit(Fw, (Ea_order, g_from_fit), force_W_order)
+    err_p0 = np.sqrt(np.diag(pcov_W))[0]
+    err_back_W = np.sqrt(np.diag(pcov_W))[1]
+    err_g = np.sqrt(np.diag(pcov_2W))[0]
+    err_back_2W = np.sqrt(np.diag(pcov_2W))[1]
 
     # alpha0 = alpha_0(7.5) # Nm^3/V^2
-    # g = popt_2W[0] # m^-1
+    g = popt_2W[0] # m^-1
     # error g = np.sqrt(pcov_2W[0][0]) # m^-1
-    # p0 = popt_W[0] # Nm^2/V
+    p0 = popt_W[0] # Nm^2/V
     # background = popt_W[1] # N
+
+    err_f = np.sqrt((p0*Ea*g*np.sqrt((err_p0/p0)**2 + (err_g/g)**2))**2 + err_back_W**2) # p0*Eac*g + back
+    err_2f = np.sqrt((alpha0*(Ea**2)*err_g)**2 + err_back_2W**2)
 
     Efield = Ea_order # V/m
     data_f = force_W_order # N
@@ -70,14 +77,14 @@ def get_param(path, useDC = False):
     fit_f = Fw((np.array(Ea_order),np.array(g_from_fit)), *popt_W) # N
     fit_2f = F2w((np.array(Ea_order),np.array(alpha0)), *popt_2W) # N
 
-    return Efield, data_f, data_2f, fit_f, fit_2f
+    return Efield, data_f, data_2f, fit_f, fit_2f, err_f, err_2f
 
-def plot_amplitude_data_raw(path, Efield, data_f, data_2f, fit_f, fit_2f):
+def plot_amplitude_data_raw(path, Efield, data_f, data_2f, fit_f, fit_2f, err_f, err_2f):
     plt.figure()
     plt.plot(Efield, data_f, ".")
     plt.plot(Efield, data_2f, ".")
-    plt.plot(Efield, fit_f)
-    plt.plot(Efield, fit_2f)
+    plt.errorbar(Efield, fit_f, yerr = err_f)
+    plt.errorbar(Efield, fit_2f, yerr = err_2f)
 
     plt.ylabel("Force (N)")
     plt.xlabel("AC field amplitude (N/e)")
@@ -85,8 +92,8 @@ def plot_amplitude_data_raw(path, Efield, data_f, data_2f, fit_f, fit_2f):
     plt.show(block = False)
 
 def plot_amplitude_data(path, useDC = False):
-    Efield, data_f, data_2f, fit_f, fit_2f = get_param(path, useDC)
-    plot_amplitude_data_raw(path, Efield, data_f, data_2f, fit_f, fit_2f)
+    Efield, data_f, data_2f, fit_f, fit_2f, err_f, err_2f = get_param(path, useDC)
+    plot_amplitude_data_raw(path, Efield, data_f, data_2f, fit_f, fit_2f, err_f, err_2f)
 
 
 

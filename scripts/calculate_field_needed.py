@@ -12,10 +12,17 @@ background = 2e-17 # N
 #max_limit = f(E) # N; we want the amplitude of the force at the drive frequency to be below this number
 #desired_ratio = background/max_limit # we want to be able to see the peak at 2f so we know what the amplitude of the peak at f is
 
-Efield, data_f, data_2f, fit_f, fit_2f = get_param(path)
+Efield, data_f, data_2f, fit_f, fit_2f, err_f, err_2f = get_param(path)
 
 data_ratio = np.divide(data_2f, data_f) # unitless
 fit_ratio = np.divide(fit_2f, fit_f) # unitless
+
+# here I'm estimating the error bars
+binF = 0.0762939453125 # got this from VoltagevsAmplitude.py
+conversion = 3.7139625927e-13
+data_error = 5e-5*conversion/binF # got 5e-5 by estimating by eye from plot_data_quick.py
+data_ratio_err = np.multiply(np.sqrt(np.power(np.divide(data_error,data_f),2) + np.power(np.divide(data_error,data_2f),2)), data_ratio)
+fit_ratio_err = np.multiply(np.sqrt(np.power(np.divide(err_f,fit_f),2) + np.power(np.divide(err_2f,fit_2f),2)), fit_ratio)
 
 """ this gives the ratios as a function of the electric field
     so now let's extrapolate that data to get the desired ratio
@@ -47,19 +54,18 @@ two_a = 2
 b_data = data_b
 b_fit = fit_b
 # req_E = (b_quad +/- np.sqrt(b_quad**2 + four_a_c))/two_a
+# but the negative solutions don't actually make sense so we'll ignore them.
 
-req_E_data_pos = (b_data + np.sqrt(b_data**2 + four_a_c_data))/two_a
-req_E_data_neg = (b_data - np.sqrt(b_data**2 + four_a_c_data))/two_a
-req_E_fit_pos = (b_fit + np.sqrt(b_fit**2 + four_a_c_fit))/two_a
-req_E_fit_neg = (b_fit - np.sqrt(b_fit**2 + four_a_c_fit))/two_a # V/m
+req_E_data = (b_data + np.sqrt(b_data**2 + four_a_c_data))/two_a
+req_E_fit = (b_fit + np.sqrt(b_fit**2 + four_a_c_fit))/two_a # V/m
 
-print 'The following is in units of V/m'
-print 'data: ' + str(req_E_data_pos) + ' or ' + str(req_E_data_neg)
-print 'fit:  ' + str(req_E_fit_pos) + ' or ' + str(req_E_fit_neg)
 print ' '
-print 'The following is in units of kV/mm'
-print 'data: ' + str(req_E_data_pos/1e6) + ' or ' + str(req_E_data_neg/1e6)
-print 'fit:  ' + str(req_E_fit_pos/1e6) + ' or ' + str(req_E_fit_neg/1e6)
+print 'required electric field from data: ' + str(req_E_data) + ' +/- ' + str(data_err) + ' V/m'
+print 'required electric field from fit:  ' + str(req_E_fit) + ' +/- ' + str(fit_err) + ' V/m'
+print ' ===== OR ===== '
+print 'required electric field from data: ' + str(req_E_data/1e6) + ' +/- ' + str(data_err/1e6) + ' kV/mm'
+print 'required electric field from fit:  ' + str(req_E_fit/1e6) + ' +/- ' + str(fit_err/1e6) + ' kV/mm'
+print ' '
 
 
 # Make the plots requested here
@@ -67,11 +73,11 @@ print 'fit:  ' + str(req_E_fit_pos/1e6) + ' or ' + str(req_E_fit_neg/1e6)
 file_list = glob.glob(path+"/*.h5")
 getACAmplitudeGraphs(file_list, make_plots = True, zeroDC = True) # plot PSDs on top of each other
 
-plot_amplitude_data_raw(path, Efield, data_f, data_2f, fit_f, fit_2f) # plot the line and parabola
+plot_amplitude_data_raw(path, Efield, data_f, data_2f, fit_f, fit_2f, err_f, err_2f) # plot the line and parabola
 
 plt.figure()
-plt.errorbar(Efield, data_ratio, yerr = data_err, label = "data")
-plt.errorbar(Efield, fit_ratio, yerr = fit_err, label = "fit")
+plt.errorbar(Efield, data_ratio, yerr = data_ratio_err, label = "data")
+plt.errorbar(Efield, fit_ratio, yerr = fit_ratio_err, label = "fit")
 plt.legend()
 plt.xlabel('Electric field [V/m]')
 plt.ylabel('Ratio of force at 2f to force at f')
