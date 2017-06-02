@@ -8,7 +8,8 @@ import bead_util as bu
 
 #refname = r""
 #fname0 = r""
-path = r"C:\data\201705010_noise_electric"
+#path = r"C:\data\201705010_noise_electric"
+path = '/data/20170511/bead2_15um_QWP/new_sensor_feedback/charge43_whole_points/60.0_74.9_75.4'
 
 make_plot_vs_time = True
 frequency_list = [41.,43.,47.,49.,53.,57.,67.,71.,73.,79.,83.,89.]
