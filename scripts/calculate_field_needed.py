@@ -59,12 +59,22 @@ b_fit = fit_b
 req_E_data = (b_data + np.sqrt(b_data**2 + four_a_c_data))/two_a
 req_E_fit = (b_fit + np.sqrt(b_fit**2 + four_a_c_fit))/two_a # V/m
 
+max_limit_data = expected_measured_charge * req_E_data # N
+desired_ratio_data = background / max_limit_data # unitless
+max_limit_fit = expected_measured_charge * req_E_fit # N
+desired_ratio_fit = background / max_limit_fit # unitless
+
 print ' '
 print 'required electric field from data: ' + str(req_E_data) + ' +/- ' + str(data_err) + ' V/m'
 print 'required electric field from fit:  ' + str(req_E_fit) + ' +/- ' + str(fit_err) + ' V/m'
 print ' ===== OR ===== '
 print 'required electric field from data: ' + str(req_E_data/1e6) + ' +/- ' + str(data_err/1e6) + ' kV/mm'
 print 'required electric field from fit:  ' + str(req_E_fit/1e6) + ' +/- ' + str(fit_err/1e6) + ' kV/mm'
+print ' '
+print 'limit of amplitude at f from data: ' + str(max_limit_data) + ' N'
+print 'ratio of amplitude at f to amplitude at 2f from data: ' + str(desired_ratio_data)
+print 'limit of amplitude at f from fit: ' + str(max_limit_fit) + ' N'
+print 'ratio of amplitude at f to amplitude at 2f from fit: ' + str(desired_ratio_fit)
 print ' '
 
 
