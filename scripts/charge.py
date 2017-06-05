@@ -11,14 +11,14 @@ import scipy.signal as sp
 import scipy.optimize as opt
 import cPickle as pickle
 
-path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge46"
-ts = 30.
+path = r"C:\data\20170602\bead1_15um_QWP\TEST_DAQ\charge"
+ts = 1.
 
 fdrive = 41.
 make_plot = True
 
-data_columns = [0, bu.xi] ## column to calculate the correlation against
-drive_column = bu.drive ##-1 ## column containing drive signal
+data_columns = [0, bu.xi] # column to calculate the correlation against
+drive_column = bu.drive # column containing drive signal
 
 def getphase(fname):
         print "Getting phase from: ", fname 
@@ -109,7 +109,7 @@ while( True ):
     corr = getdata( cfile, best_phase )
     corr_data.append(corr )
 
-    # np.savetxt( os.path.join(path, "current_corr.txt"), [corr,] )
+    np.savetxt( os.path.join(path, "current_corr.txt"), [corr,] )
 
     if make_plot:
         plt.plot(np.array(corr_data))
