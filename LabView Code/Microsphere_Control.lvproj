@@ -302,7 +302,7 @@
 			<Item Name="create_file_name (SubVI).vi" Type="VI" URL="../DAQ/create_file_name (SubVI).vi"/>
 			<Item Name="create_process_list (SubVI).vi" Type="VI" URL="../DAQ/create_process_list (SubVI).vi"/>
 			<Item Name="create_subarray (SubVI).vi" Type="VI" URL="../DAQ/create_subarray (SubVI).vi"/>
-			<Item Name="Get Full Terminal Name.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/Get Full Terminal Name.vi"/>
+			<Item Name="Get Full Terminal Name.vi" Type="VI" URL="../DAQ/Get Full Terminal Name.vi"/>
 			<Item Name="initialize_instruments (SubVI).vi" Type="VI" URL="../DAQ/initialize_instruments (SubVI).vi"/>
 			<Item Name="make_dc_array (SubVI).vi" Type="VI" URL="../DAQ/make_dc_array (SubVI).vi"/>
 			<Item Name="make_electrode_array (SubVI).vi" Type="VI" URL="../DAQ/make_electrode_array (SubVI).vi"/>

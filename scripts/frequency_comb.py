@@ -2,13 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # frequency_list = [41.,43.,47.,49.,53.,57.,67.,71.,73.,79.,83.,89.]
-frequency_list = [41.,53.]
+frequency_list = [41]
 
 lenght = 2**16
 
 sampling_freq = 10000.
 
-close_to_zero = 0.01
+close_to_zero = 0.5
 close_to_zero_mean = 0.1
 
 def random_function(f,sf):
@@ -25,7 +25,7 @@ def random_function(f,sf):
 
 f,t = random_function(frequency_list,sampling_freq)
 
-np.savetxt("waveform_zero_edge_2freq.txt", f)
+np.savetxt("waveform_zero_edge_100Hz.txt", f)
 
 print f[0]
 print f[lenght -1]
