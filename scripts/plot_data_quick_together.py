@@ -9,7 +9,7 @@ import bead_util as bu
 #refname = r""
 #fname0 = r""
 #path = r"C:\data\201705010_noise_electric"
-path = '/data/20170511/bead2_15um_QWP/new_sensor_feedback/charge43_whole_points/60.0_74.9_75.4'
+path = r'C:\data\20170606\Noise_PSD_plates_close2'
 
 make_plot_vs_time = True
 frequency_list = [41.,43.,47.,49.,53.,57.,67.,71.,73.,79.,83.,89.]
@@ -70,9 +70,9 @@ driveX = np.zeros(NFFT/2 + 1)
 
 for file in list_file_time_order(path)[:]:
     a = getdata(file)
-    F = a[0]
-    X += a[1]
-    driveX += a[2]
+    F = np.array(a[0])
+    X += np.array(a[1])
+    driveX += np.array(a[2])
 
 
 plt.loglog(F,X/len( list_file_time_order(path)[:]))
