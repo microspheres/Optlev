@@ -14,6 +14,7 @@ distance = 0.002  # m
 Vpp_to_Vamp = 0.5
 trek = 200.0  # gain of the trek
 epsilon0 = 8.85418782e-12 #m-3 kg-1 s4 A2
+
 # Ed =  trek*Vpp_to_Vamp*0.1/distance
 # g = dE/E
 
@@ -46,7 +47,6 @@ def alpha_0(r):  # r in um
 
 def order(A, B, C):
     return zip(*sorted(zip(A, B, C)))
-
 
 def get_color_map(n):
     """returns a color map of length n"""

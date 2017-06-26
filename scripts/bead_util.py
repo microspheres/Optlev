@@ -21,9 +21,9 @@ yi = 1
 zi = 2
 xl = 3
 yl = 4
-zl = 5
-drive = 6
-xi_old = 7
+#zl = 5
+#drive = 6
+#xi_old = 7
 
 ## default columns for data files FOR FILES CREATED BEFORE 5/23/2017
 # xi = 0
@@ -31,8 +31,8 @@ xi_old = 7
 # zi = 2
 # xl = 3
 # yl = 4
-# drive = 5
-# xi_old = 6
+drive = 5
+xi_old = 6
 
 ## get the shape of the chameleon force vs. distance from Maxime's calculation
 #cforce = np.loadtxt(r"c:\GitHub\opt_lev\scripts\data\chameleon_force.txt", delimiter=",")

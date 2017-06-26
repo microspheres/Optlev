@@ -11,11 +11,15 @@ import bead_util as bu
 ### then find the file_list and save the values from that list
 ### so you don't actually have to do anything other than type in "saveACfile(path)".
 
-path = r"C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge45_whole_points\60.0_74.9_0.0"
-conversion = 4.1e-13
+path = '/data/20170511/bead2_15um_QWP/new_sensor_feedback/charge43_whole_points/60.0_74.9_75.4'
+conversion = 3.7139625927e-13 # N/V
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2 ** 17
+NFFT = 2 ** 17 # number of bins
 #file_list = glob.glob(path+"/*.h5")
+#integrationTime = 20 # seconds
+
+# for now pretend our integration time was 100s because that's what it will eventually be
+integrationTime = 100
 
 def getdata(fname):
     ## guess at file type from extension
@@ -35,9 +39,10 @@ def getdata(fname):
 def getACAmplitudeGraphs(file_list, make_plots = False, zeroDC = True):
     """output AC voltages and corresponding amplitudes at both omega and 2 omega for a DC voltage of 0 or not zero"""
     N = len(file_list)
-    x = {} # input only numpy arrays as values
-    dx = {} # input only numpy arrays as values
+    ax = {} # input only numpy arrays as values; this is the SQUARE of the desired PSD
+    adx = {} # input only numpy arrays as values; SQUARE of the desired drive PSD
     voltageCount = {} # input integers that count how many times an AC voltage value has shown up
+    setDC = 0
     for index in range(N):
         f = file_list[index]
         a = getdata(f)
@@ -45,67 +50,73 @@ def getACAmplitudeGraphs(file_list, make_plots = False, zeroDC = True):
         j = f.rfind("mV")
         k = f.rfind("mV",0,j)
         l = f.rfind("Hz") + 2
-        ACvoltage = float(f[i:k])/1000.
-        DCvoltage = float(f[l:j])/1000.
-        if ACvoltage in x:
+        ACvoltage = float(f[i:k])/1000. # V
+        DCvoltage = float(f[l:j])/1000. # V
+        if ACvoltage in ax:
             if zeroDC:
                 if DCvoltage == 0:
                     voltageCount[ACvoltage] += 1
-                    x[ACvoltage] += numpy.sqrt(a[1])
-                    dx[ACvoltage] += numpy.sqrt(a[2])
+                    ax[ACvoltage] += np.array(a[1])
+                    adx[ACvoltage] += np.array(a[2])
             else:
                 if DCvoltage != 0:
+                    setDC = DCvoltage
                     voltageCount[ACvoltage] += 1
-                    x[ACvoltage] += numpy.sqrt(a[1])
-                    dx[ACvoltage] += numpy.sqrt(a[2])
+                    ax[ACvoltage] += numpy.array(a[1])
+                    adx[ACvoltage] += numpy.array(a[2])
         else:
             voltageCount[ACvoltage] = 1
-            x[ACvoltage] = numpy.sqrt(a[1])
-            dx[ACvoltage] = numpy.sqrt(a[2])
-    ACvoltages = sorted(x.keys())
+            ax[ACvoltage] = numpy.array(a[1])
+            adx[ACvoltage] = numpy.array(a[2])
+    freqs = a[0]
+    binF = freqs[2] - freqs[1]
+    # print 'binF is ' + str(binF) # gave 0.0762939453125
+    ACvoltages = sorted(ax.keys())
     N1 = len(ACvoltages)
     keyPicked = np.amax(ACvoltages)
-    dxPicked = dx[keyPicked]
+    dxPicked = np.sqrt(adx[keyPicked])
     indexPicked = np.argmax(dxPicked)
-    DCvoltages = [0] * N1
-    omegaAmplitudes = range(N1)
-    twoOmegaAmplitudes = range(N1)
+    DCvoltages = [setDC] * N1
+    omegaAmplitudes = np.arange(N1)
+    twoOmegaAmplitudes = np.arange(N1)
     if make_plots:
         psd_plots = range(N1)
         #drive_plots = range(N1)
     """Now insert the amplitude for the requisite frequencies"""
     for index in range(N1):
-        volt = ACvoltages[index]
-        constant = conversion/voltageCount[volt]
-        #i = numpy.argmax(dx[volt])
+        volt = ACvoltages[index] # V
+        constant = conversion # N/V
         i = indexPicked
-        psd = x[volt]
+        psd = np.sqrt(ax[volt]/voltageCount[volt]) # V/sqrtHz
         if make_plots:
-            psd_plots[index] = constant*psd
-            #drive_plots[index] = dx[volt]
-        omegaAmplitudes[index] = constant*psd[i]
-        twoOmegaAmplitudes[index] = constant*psd[2*i]
+            psd_plots[index] = constant*psd/np.sqrt(integrationTime) # so this is in N
+            #drive_plots[index] = np.sqrt(adx[volt])
+        omegaAmplitudes[index] = constant*psd[i]*np.sqrt(binF) # N
+        twoOmegaAmplitudes[index] = constant*psd[2*i+1]*np.sqrt(binF) # N
     if make_plots:
-        plot_psds(psd_plots, a[0], ACvoltages, indexPicked)
+        plot_psds(psd_plots, freqs, ACvoltages, indexPicked)
     return ACvoltages, omegaAmplitudes, twoOmegaAmplitudes, DCvoltages
 
 def plot_psds(psd_plots, frequencies, labels, index):
     colorList = get_color_map(len(psd_plots))
     plt.figure()
     for currLabel, psd, color in zip(labels, psd_plots, colorList):
-        plt.plot(frequencies[index], psd[index], "x", color = color)
-        plt.plot(frequencies[2*index+1], psd[2*index+1], "x", color = color)
-        #plt.plot(frequencies, drive, color = color)
-        plt.plot(frequencies, psd, color = color, label = currLabel)
+        plt.loglog(frequencies[index], psd[index], "x", color = color)
+        plt.loglog(frequencies[2*index+1], psd[2*index+1], "x", color = color)
+        #plt.loglog(frequencies, drive, color = color)
+        plt.loglog(frequencies, psd, color = color, label = currLabel)
+    plt.title("Noise level integrated over "+str(integrationTime)+" seconds")
     plt.xlabel("Frequencies [Hz]")
     plt.xlim([20,100])
-    plt.ylabel("Intensity [N/sqrt(Hz)]")
+    plt.ylabel("Noise Level [N]")
     plt.ylim([0, np.amax(psd_plots[-1][np.argmin(np.abs(frequencies - 20)):np.argmin(np.abs(frequencies - 100))])])
-    plt.title(path[path.rfind('\\'):])
+    #plt.title(path[path.rfind('\\'):])
     plt.legend()
-    plt.show()
+    plt.show(block = False)
 
-# getACAmplitudeGraphs(file_list, make_plots = False, zeroDC = True)
+# Make the plots requested here
+#file_list = glob.glob(path+"/*.h5")
+#getACAmplitudeGraphs(file_list, make_plots = True, zeroDC = True)
 
 def saveACfile(path, make_plots = False):
     file_list = glob.glob(path+"/*.h5")
@@ -120,7 +131,6 @@ def saveACandDCfile(path, make_plots = False):
     return
 
 
-
-saveACfile(path)
-
-saveACandDCfile(path)
+# ONLY USE THESE COMMANDS ON THE WINDOWS COMPUTER WHEN WRITING INTO DATA
+#saveACfile(path)
+#saveACandDCfile(path)
