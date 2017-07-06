@@ -205,13 +205,13 @@ def plot_calibration_data(corr, tcorr, c, last_plot):
     """ plots the calibration data """
     print "plotting calibration data"
     plt.figure()
-    plt.plot(np.array(corr)/c)
+    plt.plot(np.array(corr)/c, 'o')
     plt.ylabel('Correlation [#e]')
     plt.title('Calibration data correlation')
     plt.show(block = False)
     print "plotting calibration data at twice the frequency"
     plt.figure()
-    plt.plot(np.array(tcorr)/c)
+    plt.plot(np.array(tcorr)/c, 'o')
     plt.ylabel('Correlation [#e]')
     plt.title('Calibration correlation at 2f')
     plt.show(block = last_plot)
@@ -262,13 +262,13 @@ def plotCorr(file_list, drive, twice_drive, index = 0, c = 1, last_plot = False,
         tf.append(correlate(x, twice_drive, index, c))
     print "plotting noise data"
     plt.figure()
-    plt.plot(t_arr, of)
+    plt.plot(t_arr, of, 'o')
     plt.ylabel('Correlation [e]')
     plt.title('Correlation of drive and response')
     plt.show(block=False)
     print "plotting noise at twice the frequency"
     plt.figure()
-    plt.plot(t_arr, tf)
+    plt.plot(t_arr, tf, 'o')
     plt.ylabel('Correlation [e]')
     plt.title('Correlation of drive squared and response')
     if fft:
@@ -285,7 +285,7 @@ def plotCorr(file_list, drive, twice_drive, index = 0, c = 1, last_plot = False,
             print "           minimum value of thing_to_plot is ", min(thing_to_plot)
             print "           d = ", (t_arr[1] - t_arr[0])
         #plt.loglog(freq, thing_to_plot)
-        plt.plot(freq, thing_to_plot)
+        plt.plot(freq, thing_to_plot, 'o')
         plt.xscale('log')
         plt.title('fft of correlation')
     if debugging:
@@ -339,14 +339,14 @@ def theta_correlation_plots(path, last_plot = False):
     # now plot
     print "plotting noise data"
     plt.figure()
-    plt.plot(pos, corr)
+    plt.plot(pos, corr, 'o')
     plt.xlabel('Steps in the theta direction')
     plt.ylabel('Correlation [e]')
     plt.title('Correlation of drive and response')
     plt.show(block=False)
     print "plotting noise at twice the frequency"
     plt.figure()
-    plt.plot(pos, tcorr)
+    plt.plot(pos, tcorr, 'o')
     plt.xlabel('Steps in the theta direction')
     plt.ylabel('Correlation [e]')
     plt.title('Correlation of drive squared and response')
