@@ -54,38 +54,56 @@ def sortFileList(file_list):
             print ""
         return new_list
 
-def getData(fname, calib = False):
-    """ assumes fname ends with a '.h5' 
-        returns unitless data from file """
-    # get data from the file name
+def outputThetaPosition(f):
+    i = f.find('stage_tilt_') + 11
+    j = f.rfind('thetaY_')
+    k = j + 7
+    l = f.rfind('thetaZ')
+    y = int(f[i:j])
+    z = int(f[k:l])
+    if debugging:
+        print "           thetaY = ", y
+        print "           thetaZ = ", z
+    if y == 0:
+        return z
+    else:
+        return y
+
+def getGainAndACamp(fname):
     i = fname.rfind('cool_G') + 6
     j = fname.find('_', i)
     k = fname.rfind('synth') + 5
     l = fname.find('mV', k)
+    gain = float(fname[i:j])
+    ACamp = float(fname[k:l])/1000. # Volts
+    return gain, ACamp
+
+def getData(fname, get_drive = False, truncate_x = True):
+    """ assumes fname ends with a '.h5' 
+        returns unitless data from file """
     if debugging:
         print ""
-        debug_file = fname[fname.rfind('_')+1:fname.rfind('.')]
-        print "DEBUGGING: gain of file ", debug_file, " = ", fname[i:j]
-    gain = float(fname[i:j])
+        debug_file = fname[fname.rfind('synth'):fname.rfind('.')]
+        print "DEBUGGING: getting data from ", debug_file
+    gain, ACamp = getGainAndACamp(fname)
     if debugging:
-        print "           AC amplitude of file ", debug_file, " = ", fname[k:l]
-    ACamp = float(fname[k:l])/1000. # Volts
-    # read the file
+        print "           gain of file ", debug_file, " = ", gain
+        print "           AC amplitude of file ", debug_file, " = ", ACamp
     f = h5py.File(fname, 'r')
     dset = f['beads/data/pos_data']
-    Fs = dset.attrs['Fsamp']
-    time = dset.attrs['Time']
-    half_wavelength = int((Fs/fdrive)/2.)
-    if debugging:
-        print '           half_wavelength of ', debug_file, ' is ', half_wavelength
     dat = np.transpose(dset) # all this data is in volts
     dat = dat/(gain*ACamp) # makes this data unitless
-    x0 = dat[:,bu.xi]
-    x = x0[:-half_wavelength]
+    x = dat[:,bu.xi]
+    if truncate_x:
+        Fs = dset.attrs['Fsamp']
+        half_wavelength = int((Fs/fdrive)/2.)
+        if debugging:
+            print '           half_wavelength of ', debug_file, ' is ', half_wavelength
+        x = x[:-half_wavelength]
     x_data = (x - np.average(x))/float(len(x)) # normalize for calibration
     if debugging:
         print "           got the x_data of ", debug_file
-    if calib:
+    if get_drive:
         drive0 = dat[:,bu.drive]
         drive = drive0 - np.average(drive0)
         drive_data = drive/np.std(drive) # normalized, unitless drive
@@ -97,9 +115,27 @@ def getData(fname, calib = False):
             print ""
         return x_data, drive_data, twice_drive_data
     else:
+        time = dset.attrs['Time']
         if debugging:
             print ""
         return x_data, time
+
+def getThetaData(fname):
+    """ assumes fname ends with a '.h5' 
+        returns unitless data from file """
+    if debugging:
+        print ""
+        debug_file = fname[fname.find('synth'):fname.rfind('.')]
+        print "DEBUGGING: getThetaData on ", debug_file
+    # get data from the file name
+    position = outputThetaPosition(fname)
+    if debugging:
+        print "           theta position of file ", debug_file, " = ", position
+    # read the file
+    x_data, drive_data, twice_drive_data = getData(fname, get_drive = True, truncate_x = False)
+    if debugging:
+        print ""
+    return x_data, drive_data, twice_drive_data, position
 
 def getCorrArray(x_data, drive_data, c = 1.):
     """ returns the normalized correlation between the drive and the response """
@@ -110,13 +146,12 @@ def getCorrArray(x_data, drive_data, c = 1.):
         print ""
     return corr_array/c # response in terms of #e at the calibration field
 
-def calibrate(calib_list, make_plot = make_calibration_plot, last_plot = False, is_calibration = True):
+def calibrate(calibration_list, make_plot = make_calibration_plot, last_plot = False):
     """ goes through the x and drive data of each file (inputs)
         returns the index of the phase shift (independant of normalization)
                 and the normalization value of one electron
                 (assuming calibration_data is of only one electron)
         assume calibration_data_list is sorted by measurement time"""
-    calibration_list = sortFileList(calib_list)
     if debugging:
         index = min(len(calibration_list), 20)
         calibration_list = calibration_list[:index]
@@ -132,7 +167,7 @@ def calibrate(calib_list, make_plot = make_calibration_plot, last_plot = False, 
     for i in range(N):
         if debugging:
             print "           ", i, "th iteration of for loop"
-        x_data, drive_data, twice_drive_data = getData(calibration_list[i], calib = True)
+        x_data, drive_data, twice_drive_data = getData(calibration_list[i], get_drive= True)
         # here we average the drive "measurements"
         if drive == []:
             drive = drive_data/float(N)
@@ -163,28 +198,22 @@ def calibrate(calib_list, make_plot = make_calibration_plot, last_plot = False, 
         print "           calibrate c is ", c
         print ""
     if make_plot:
-        plot_calibration_data(corr, tcorr, c, last_plot, is_calibration)
+        plot_calibration_data(corr, tcorr, c, last_plot)
     return index, c, drive, twice_drive
 
-def plot_calibration_data(corr, tcorr, c, last_plot, is_calibration):
+def plot_calibration_data(corr, tcorr, c, last_plot):
     """ plots the calibration data """
     print "plotting calibration data"
     plt.figure()
     plt.plot(np.array(corr)/c)
     plt.ylabel('Correlation [#e]')
-    if is_calibration:
-        plt.title('Calibration data correlation')
-    else:
-        plt.title('Correlation at drive frequency')
+    plt.title('Calibration data correlation')
     plt.show(block = False)
     print "plotting calibration data at twice the frequency"
     plt.figure()
     plt.plot(np.array(tcorr)/c)
     plt.ylabel('Correlation [#e]')
-    if is_calibration:
-        plt.title('Calibration correlation at 2f')
-    else:
-        plt.title('Correlation at twice the drive frequency')
+    plt.title('Calibration correlation at 2f')
     plt.show(block = last_plot)
 
 def correlate(x_data, drive_data, index, coeff):
@@ -228,7 +257,7 @@ def plotCorr(file_list, drive, twice_drive, index = 0, c = 1, last_plot = False,
         print "DEBUGGING: got response array in plotCorr()"
     for x in x_arr:
         if debugging:
-            print "           iteration in plotCorr number ", len(y)
+            print "           iteration in plotCorr number ", len(of)
         of.append(correlate(x, drive, index, c))
         tf.append(correlate(x, twice_drive, index, c))
     print "plotting noise data"
@@ -236,6 +265,7 @@ def plotCorr(file_list, drive, twice_drive, index = 0, c = 1, last_plot = False,
     plt.plot(t_arr, of)
     plt.ylabel('Correlation [e]')
     plt.title('Correlation of drive and response')
+    plt.show(block=False)
     print "plotting noise at twice the frequency"
     plt.figure()
     plt.plot(t_arr, tf)
@@ -244,11 +274,11 @@ def plotCorr(file_list, drive, twice_drive, index = 0, c = 1, last_plot = False,
     if fft:
         plt.show(block = False) # for previous plot
         plt.figure()
-        fourier = np.fft.rfft(y - np.average(y))
-        freq = np.fft.rfftfreq(len(y), d = (t_arr[1] - t_arr[0]))
+        fourier = np.fft.rfft(of - np.average(of))
+        freq = np.fft.rfftfreq(len(of), d = (t_arr[1] - t_arr[0]))
         thing_to_plot = np.square(np.absolute(fourier))
         if debugging:
-            print "           length of correlation vector is ", len(y)
+            print "           length of correlation vector is ", len(of)
             print "           length of fft of correlation is ", len(fourier)
             print "           length of timestream is ", len(t_arr)
             print "           minimum value of fft is ", min(fourier)
@@ -270,8 +300,10 @@ def full_correlation_plots(calib_list, file_list, last_plot = False):
     if debugging:
         print ""
         print "DEBUGGING: full_correlation_plots"
+    # sort calib_list
+    calibration_list = sortFileList(calib_list)
     # calibrate and maybe plot the step plot
-    i, c, drive, twice_drive = calibrate(calib_list)
+    i, c, drive, twice_drive = calibrate(calibration_list)
     if debugging:
         print "           calibrated in full_correlation_plots"
     # plot the correlation at the drive frequency
@@ -280,25 +312,52 @@ def full_correlation_plots(calib_list, file_list, last_plot = False):
         print "           plotted f and 2f in full_correlation_plots"
         print ""
 
-def uncalibrated_full_correlation_plots(path, last_plot = False):
+def theta_correlation_plots(path, last_plot = False):
     """ does everything: calibrates and makes correlation plots at 
         the drive frequency and at twice the drive frequency 
-        in total produces 2-4 plots depending on calibration and fft """
+        in total produces 2-4 plots depending on calibration and fft
+        goes through the x and drive data of each file (inputs)"""
     if debugging:
         print ""
-        print "DEBUGGING: uncalibrated_full_correlation_plots on ", path
+        print "DEBUGGING: theta_full_correlation_plots on ", path
     file_list = glob.glob(os.path.join(path, "*.h5"))
-    calibrate(file_list, make_plot = True, last_plot = last_plot, is_calibration = False)
     if debugging:
-        print "           plotted f and 2f in uncalibrated_full_correlation_plots"
-        print ""
+        index = min(len(file_list), 20)
+        file_list = file_list[:index]
+    pos = []
+    corr = []
+    tcorr = []
+    print "finding phase shift"
+    for f in file_list:
+        x_data, drive_data, twice_drive_data, position = getThetaData(f)
+        pos.append(position)
+        # now measure the correlation
+        corr_array = getCorrArray(x_data, drive_data)
+        corr.append(corr_array[0]) # array of all the correlation arrays
+        t_corr_array = getCorrArray(x_data, twice_drive_data)
+        tcorr.append(t_corr_array[0]) # array of the correlation arrays at 2f
+    # now plot
+    print "plotting noise data"
+    plt.figure()
+    plt.plot(pos, corr)
+    plt.xlabel('Steps in the theta direction')
+    plt.ylabel('Correlation [e]')
+    plt.title('Correlation of drive and response')
+    plt.show(block=False)
+    print "plotting noise at twice the frequency"
+    plt.figure()
+    plt.plot(pos, tcorr)
+    plt.xlabel('Steps in the theta direction')
+    plt.ylabel('Correlation [e]')
+    plt.title('Correlation of drive squared and response')
+    plt.show(block=last_plot)
 
 """ Now we plot """
 
 #full_correlation_plots(calib_list1, file_list1, last_plot = True)
 
 w_path = "/data/20170622/bead4_15um_QWP/dipole27_Y" # this has the W
-uncalibrated_full_correlation_plots(w_path, last_plot = True)
+theta_correlation_plots(w_path, last_plot = True)
 
 """
 FIRST
@@ -308,7 +367,6 @@ Take the calibration data files.
 3. np.correlate(drive, truncated_x_array)
 4. take the argmax of that - make a vector and find the average of that index
 5. plot this stuff to make sure you can see the steps
-
 NEXT
 Go to the noise files.
 1. use the index as before as the phase shift, and do np.correlate again
