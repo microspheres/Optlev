@@ -3,134 +3,302 @@ import matplotlib.pyplot as plt
 import os, glob, h5py
 import bead_util as bu
 
-# this is how many of the calibration files will be used to scale the correlation values
-num_first_files = 20
-
+""""""""""""""""""""" Inputs """""""""""""""""""""
 ### calibration files
-path = "/data/20170622/bead4_15um_QWP/charge9"
-file_list = glob.glob(os.path.join(path, "*.h5"))
+calib1 = "/data/20170622/bead4_15um_QWP/charge9"
+calib2 = "/data/20170622/bead4_15um_QWP/arb_charge"
 
 ### this is where the noise files are pulled out
-path1 = "/data/20170622/bead4_15um_QWP/reality_test"
-file_list1 = glob.glob(os.path.join(path1,"*.h5"))
-path2 = "/data/20170622/bead4_15um_QWP/reality_test2"
-file_list2 = glob.glob(os.path.join(path2,"*.h5"))
+path1 = "/data/20170622/bead4_15um_QWP/reality_test2"
+path2 = "/data/20170622/bead4_15um_QWP/reality_test3"
 
 fdrive = 41. # Hz
 #wavelength = Fs/fdrive because Fs = samples/second
 
+make_calibration_plot = True # do we want to see the step plot?
+plot_fft = True # do we want to see the fft of the correlation plots?
+
+debugging = False # are we in debugging mode?
+# in terminal, type 'python -m pdb correlation.py'
+
+""""""""""""""""""""" Code """""""""""""""""""""""
+### List of files
+calib_list1 = glob.glob(os.path.join(calib1, "*.h5"))
+#calib_list2 = glob.glob(os.path.join(calib2, "*.h5"))
+file_list1 = glob.glob(os.path.join(path1,"*.h5"))
+#file_list2 = glob.glob(os.path.join(path2,"*.h5"))
+if debugging:
+    print "debugging turned on: prepare for spam"
+    print ""
+
 def sortFileList(file_list):
     N = len(file_list)
-    new_list = ['']*N
-    for i in range(N):
-        f = file_list[i]
-        j = f.rfind('_') + 1
-        k = f.rfind('.')
-        n = int(f[j:k])
-        new_list[n] = f
-    return new_list
+    if debugging:
+        print ""
+        print "DEBUGGING: sortFileList N = ", N
+    if N == 1:
+        if debugging:
+            print ""
+        return file_list
+    else:
+        new_list = ['']*N
+        for i in range(N):
+            f = file_list[i]
+            j = f.rfind('_') + 1
+            k = f.rfind('.')
+            if debugging:
+                print "           sortFileList n = ", f[j:k]
+            n = int(f[j:k])
+            new_list[n] = f
+        if debugging:
+            print ""
+        return new_list
 
-def getData(fname):
-    """ assuming fname ends with a '.h5' 
-        returns an array of a truncated x array and the drive array """
-    f = h5py.File(fname, 'r') # read the file
+def getData(fname, calib = False):
+    """ assumes fname ends with a '.h5' 
+        returns unitless data from file """
+    # get data from the file name
+    i = fname.rfind('cool_G') + 6
+    j = fname.find('_', i)
+    k = fname.rfind('synth') + 5
+    l = fname.find('mV', k)
+    if debugging:
+        print ""
+        debug_file = fname[fname.rfind('_')+1:fname.rfind('.')]
+        print "DEBUGGING: gain of file ", debug_file, " = ", fname[i:j]
+    gain = float(fname[i:j])
+    if debugging:
+        print "           AC amplitude of file ", debug_file, " = ", fname[k:l]
+    ACamp = float(fname[k:l])/1000. # Volts
+    # read the file
+    f = h5py.File(fname, 'r')
     dset = f['beads/data/pos_data']
-    Fs = float(dset.attrs['Fsamp'])
+    Fs = dset.attrs['Fsamp']
+    time = dset.attrs['Time']
     half_wavelength = int((Fs/fdrive)/2.)
-    dat = np.transpose(dset)
-    dat = dat * 10. / (2. ** 15. - 1.)
-    x = dat[:,bu.xi]
-    x_data = x[:-half_wavelength]
-    drive_data = dat[:,bu.drive]
-    return [x_data, drive_data]
+    if debugging:
+        print '           half_wavelength of ', debug_file, ' is ', half_wavelength
+    dat = np.transpose(dset) # all this data is in volts
+    dat = dat/(gain*ACamp) # makes this data unitless
+    x0 = dat[:,bu.xi]
+    x = x0[:-half_wavelength]
+    x_data = (x - np.average(x))/float(len(x)) # normalize for calibration
+    if debugging:
+        print "           got the x_data of ", debug_file
+    if calib:
+        drive0 = dat[:,bu.drive]
+        drive = drive0 - np.average(drive0)
+        drive_data = drive/np.std(drive) # normalized, unitless drive
+        twice_drive0 = drive0*drive0
+        twice_drive = twice_drive0 - np.average(twice_drive0)
+        twice_drive_data = twice_drive/np.std(twice_drive)
+        if debugging:
+            print "           got the drive_data of ", debug_file
+            print ""
+        return x_data, drive_data, twice_drive_data
+    else:
+        if debugging:
+            print ""
+        return x_data, time
 
-def getCorrArray(fdat, c = 1):
-        # we have to divide out the drive voltage but that needs to be calculated from the drive data
-        # as we don't have that right now, we will temporarily be assuming a sine wave
-        # so we take the standard deviation of the drive and multiply by sqrt(2)
-    x_data = fdat[0] - np.average(fdat[0]) # Volts of response
-    drive = fdat[1] - np.average(fdat[1]) # Volts of drive
-    damp = np.std(drive)*np.sqrt(2.) # Volts of drive
-    #print 'drive amplitude is ',damp
-    raw_corr_array = np.correlate(x_data, drive)/len(x_data) # V^2
-    return raw_corr_array/(damp*c) # response in terms of e at the calibration field
+def getCorrArray(x_data, drive_data, c = 1.):
+    """ returns the normalized correlation between the drive and the response """
+    corr_array = np.correlate(x_data, drive_data)
+    if debugging:
+        print ""
+        print "DEBUGGING: getCorrArray() worked!"
+        print ""
+    return corr_array/c # response in terms of #e at the calibration field
 
-def calibrate(calibration_data_list):
+def calibrate(calib_list, make_plot = make_calibration_plot, last_plot = False, is_calibration = True):
     """ goes through the x and drive data of each file (inputs)
         returns the index of the phase shift (independant of normalization)
                 and the normalization value of one electron
                 (assuming calibration_data is of only one electron)
-        using only the first num_first_files files
-        assume calibration_data_list is sorted"""
-    calib_data = calibration_data_list[:num_first_files]
+        assume calibration_data_list is sorted by measurement time"""
+    calibration_list = sortFileList(calib_list)
+    if debugging:
+        index = min(len(calibration_list), 20)
+        calibration_list = calibration_list[:index]
+        print ""
+        print "DEBUGGING calibrate()"
+    N = len(calibration_list)
+    drive = []
+    twice_drive = []
     phase_array = []
     dat_arrays = []
-    for fdat in calib_data:
-        corr_array = getCorrArray(fdat)
-        dat_arrays.append(corr_array)
-        phase_array.append(np.argmax(corr_array))
+    t_dat_arrays = []
+    print "finding phase shift"
+    for i in range(N):
+        if debugging:
+            print "           ", i, "th iteration of for loop"
+        x_data, drive_data, twice_drive_data = getData(calibration_list[i], calib = True)
+        # here we average the drive "measurements"
+        if drive == []:
+            drive = drive_data/float(N)
+        else:
+            drive += drive_data/float(N)
+        if twice_drive == []:
+            twice_drive = twice_drive_data/float(N)
+        else:
+            twice_drive += twice_drive_data/float(N)
+        # now measure the correlation for normalization purposes
+        corr_array = getCorrArray(x_data, drive_data)
+        dat_arrays.append(corr_array) # array of all the correlation arrays
+        t_corr_array = getCorrArray(x_data, twice_drive_data)
+        t_dat_arrays.append(t_corr_array) # array of the correlation arrays at 2f
+        # only work with the first few files to get the phase and c
+        if i < 20:
+            phase_array.append(np.argmax(corr_array)) # index of largest correlation coefficient
     index = int(np.average(phase_array))
-    c_approx = []
+    print "phase shift is ", index
+    corr = []
     for dat_arr in dat_arrays:
-        c_approx.append(dat_arr[index])
-    c = np.average(c_approx)
-    return index, c
+        corr.append(dat_arr[index])
+    tcorr = []
+    for t_arr in t_dat_arrays:
+        tcorr.append(t_arr[index])
+    c = np.average(corr[:20])
+    if debugging:
+        print "           calibrate c is ", c
+        print ""
+    if make_plot:
+        plot_calibration_data(corr, tcorr, c, last_plot, is_calibration)
+    return index, c, drive, twice_drive
 
-def correlate(fdat, index, c):
-    arr = getCorrArray(fdat, c = c)
+def plot_calibration_data(corr, tcorr, c, last_plot, is_calibration):
+    """ plots the calibration data """
+    print "plotting calibration data"
+    plt.figure()
+    plt.plot(np.array(corr)/c)
+    plt.ylabel('Correlation [#e]')
+    if is_calibration:
+        plt.title('Calibration data correlation')
+    else:
+        plt.title('Correlation at drive frequency')
+    plt.show(block = False)
+    print "plotting calibration data at twice the frequency"
+    plt.figure()
+    plt.plot(np.array(tcorr)/c)
+    plt.ylabel('Correlation [#e]')
+    if is_calibration:
+        plt.title('Calibration correlation at 2f')
+    else:
+        plt.title('Correlation at twice the drive frequency')
+    plt.show(block = last_plot)
+
+def correlate(x_data, drive_data, index, coeff):
+    arr = getCorrArray(x_data, drive_data, c = coeff)
+    if debugging:
+        print ""
+        print "DEBUGGING: correlate() worked!"
+        print ""
     return arr[index]
 
-def getDataArray(file_list):
-    data_arr = []
+def getResponseArray(file_list):
+    """ assumes file_list is in order """
+    x_arr = []
+    t_arr = []
     for fname in file_list:
-        data_arr.append(getData(fname))
-    return data_arr
+        x, time = getData(fname)
+        x_arr.append(x)
+        t_arr.append(time)
+    t_arr = np.array(t_arr)
+    t_arr = t_arr - t_arr[0]
+    if debugging:
+        print ""
+        print "DEBUGGING: the first element in t_arr is ", t_arr[0]
+        print "           getResponceArray() worked!"
+        print ""
+    return x_arr, t_arr
 
-def plotCorr(data_arr, index, c, calibration = False):
+def plotCorr(file_list, drive, twice_drive, index = 0, c = 1, last_plot = False, fft = plot_fft):
     """ takes in a measurement's data array and the phase shift
         returns a plot of the correlation """
-    y = []
-    for data in data_arr:
-        y.append(correlate(data, index, c))
+    sorted_file_list = sortFileList(file_list)
+    print "fetching noise data"
+    if debugging:
+        index = min(len(sorted_file_list), 20)
+        sorted_file_list = sorted_file_list[:index]
+    x_arr, t_arr = getResponseArray(sorted_file_list)
+    of = []
+    tf = []
+    if debugging:
+        print ""
+        print "DEBUGGING: got response array in plotCorr()"
+    for x in x_arr:
+        if debugging:
+            print "           iteration in plotCorr number ", len(y)
+        of.append(correlate(x, drive, index, c))
+        tf.append(correlate(x, twice_drive, index, c))
+    print "plotting noise data"
     plt.figure()
-    plt.plot(y)
-    if calibration:
-        plt.title('Calibration data correlation')
-        b = True
-    else:
-        plt.title('Measurement correlation')
-        b = False
-    plt.show(block = b)
+    plt.plot(t_arr, of)
+    plt.ylabel('Correlation [e]')
+    plt.title('Correlation of drive and response')
+    print "plotting noise at twice the frequency"
+    plt.figure()
+    plt.plot(t_arr, tf)
+    plt.ylabel('Correlation [e]')
+    plt.title('Correlation of drive squared and response')
+    if fft:
+        plt.show(block = False) # for previous plot
+        plt.figure()
+        fourier = np.fft.rfft(y - np.average(y))
+        freq = np.fft.rfftfreq(len(y), d = (t_arr[1] - t_arr[0]))
+        thing_to_plot = np.square(np.absolute(fourier))
+        if debugging:
+            print "           length of correlation vector is ", len(y)
+            print "           length of fft of correlation is ", len(fourier)
+            print "           length of timestream is ", len(t_arr)
+            print "           minimum value of fft is ", min(fourier)
+            print "           minimum value of thing_to_plot is ", min(thing_to_plot)
+            print "           d = ", (t_arr[1] - t_arr[0])
+        #plt.loglog(freq, thing_to_plot)
+        plt.plot(freq, thing_to_plot)
+        plt.xscale('log')
+        plt.title('fft of correlation')
+    if debugging:
+        print ""
+    print "average correlation is ", np.average(of)
+    plt.show(block = last_plot)
 
+def full_correlation_plots(calib_list, file_list, last_plot = False):
+    """ does everything: calibrates and makes correlation plots at 
+        the drive frequency and at twice the drive frequency 
+        in total produces 2-4 plots depending on calibration and fft """
+    if debugging:
+        print ""
+        print "DEBUGGING: full_correlation_plots"
+    # calibrate and maybe plot the step plot
+    i, c, drive, twice_drive = calibrate(calib_list)
+    if debugging:
+        print "           calibrated in full_correlation_plots"
+    # plot the correlation at the drive frequency
+    plotCorr(file_list, drive, twice_drive, i, c, last_plot = last_plot)
+    if debugging:
+        print "           plotted f and 2f in full_correlation_plots"
+        print ""
+
+def uncalibrated_full_correlation_plots(path, last_plot = False):
+    """ does everything: calibrates and makes correlation plots at 
+        the drive frequency and at twice the drive frequency 
+        in total produces 2-4 plots depending on calibration and fft """
+    if debugging:
+        print ""
+        print "DEBUGGING: uncalibrated_full_correlation_plots on ", path
+    file_list = glob.glob(os.path.join(path, "*.h5"))
+    calibrate(file_list, make_plot = True, last_plot = last_plot, is_calibration = False)
+    if debugging:
+        print "           plotted f and 2f in uncalibrated_full_correlation_plots"
+        print ""
 
 """ Now we plot """
-# first sort the file lists
-calib_list = sortFileList(file_list)
-#print calib_list
-flist1 = sortFileList(file_list1)
-flist2 = sortFileList(file_list2)
 
-# get the data
-print 'fetching calibration data'
-calibDat = getDataArray(calib_list)
-print 'fetching noise data'
-n = len(flist1)/10
-dat1 = getDataArray(flist1[:n])
-dat2 = getDataArray(flist2[:n])
+#full_correlation_plots(calib_list1, file_list1, last_plot = True)
 
-# find the phase shift
-print 'finding phase shift'
-index, c = calibrate(calibDat)
-print 'phase shift: ', index
-
-# plot the two measured noise data
-print 'plotting noise data'
-plotCorr(dat1, index, c)
-plotCorr(dat2, index, c)
-
-# plot the calibration data
-print 'plotting calibration data'
-plotCorr(calibDat, index, c, calibration = True)
+w_path = "/data/20170622/bead4_15um_QWP/dipole27_Y" # this has the W
+uncalibrated_full_correlation_plots(w_path, last_plot = True)
 
 """
 FIRST
