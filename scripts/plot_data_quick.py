@@ -5,9 +5,9 @@ import scipy.signal as sp
 import numpy as np
 import bead_util as bu
 
-refname = r"Noise_G100_synth10000mV41Hz0mVdc_0.h5"
+refname = r"1mbar_zcool_G5_att.h5"
 fname0 = r""
-path = r"C:\data\20170606\Noise_PSD_plates_close"
+path = r"C:\data\20170706\bead3_15um_QWP"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"

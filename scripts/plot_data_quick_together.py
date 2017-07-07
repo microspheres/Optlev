@@ -9,14 +9,13 @@ import bead_util as bu
 #refname = r""
 #fname0 = r""
 #path = r"C:\data\201705010_noise_electric"
-path = r'C:\data\20170606\Noise_PSD_plates_close2'
+path = r'C:\data\20170622\bead4_15um_QWP\reality_test2'
 
 make_plot_vs_time = True
-frequency_list = [41.,43.,47.,49.,53.,57.,67.,71.,73.,79.,83.,89.]
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**17
+NFFT = 2**19
 
 def getdata(fname):
         print "Opening file: ", fname
@@ -78,7 +77,7 @@ for file in list_file_time_order(path)[:]:
 plt.loglog(F,X/len( list_file_time_order(path)[:]))
 plt.loglog(F,driveX/len( list_file_time_order(path)[:]))
 yvalues = plt.ylim()
-clist = bu.get_color_map( len(frequency_list) )
+# clist = bu.get_color_map( len(frequency_list) )
 # for i,f in enumerate(frequency_list):
 #         plt.plot([f,f],yvalues,color = clist[i])
 #         plt.plot([2*f,2*f],yvalues,color = clist[i])

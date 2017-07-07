@@ -40,6 +40,16 @@ def alpha_0(r):
 def order(A,B,C):
     return zip(*sorted(zip(A,B,C)))
 
+def get_g0(ACvoltageValues, twoOmegaAmplitudes):
+    """ takes in AC voltage vs force at 2f
+        outputs g0 in m^-1 """
+    Ea = trek*Vpp_to_Vamp*ACvoltageValues/distance # V/m
+    alpha0 = np.ones(len(Ea))*alpha_0(7.5) # Nm^3/V^2
+    Ea_order, force_2W_order = zip(*sorted(zip(Ea, twoOmegaAmplitudes))) # V/m, N
+    popt_2W, pcov_2W = curve_fit(F2w, (Ea_order, alpha0), force_2W_order)
+    g = popt_2W[0] # m^-1
+    return g
+
 def get_param(path, useDC = False):
     """takes in AC voltage vs force at the drive frequency (f) and twice the drive frequency (2f)
        outputs the electric field, the measured forces at f and 2f, and the fitted forces at f and 2f"""
@@ -94,18 +104,3 @@ def plot_amplitude_data_raw(path, Efield, data_f, data_2f, fit_f, fit_2f, err_f,
 def plot_amplitude_data(path, useDC = False):
     Efield, data_f, data_2f, fit_f, fit_2f, err_f, err_2f = get_param(path, useDC)
     plot_amplitude_data_raw(path, Efield, data_f, data_2f, fit_f, fit_2f, err_f, err_2f)
-
-
-
-
-"""ratio between F2w and Fw is alpha*E/p0 and alpha/p0 is constant so can calculate that line
-   want precision to make background larger than F2w
-   then increase amount of time it takes to do the measurement so that the background decreases
-       (so multiply the time by (alpha*E/p0)^2 for each value of E
-   then do this same measurement all over again
-
-   So this code should plot all the PSDs of one run on top of each other
-   then look at the drive frequency for this run and integrate around the peak to get the corresponding force at f
-   and then integrate around twice that frequency to get the corresponding force at 2f
-   and finally plot the two against the AC voltage of the respective PSD to see the linear and quadratic behavior
-   and get the values of p0, alpha, g, and the background."""

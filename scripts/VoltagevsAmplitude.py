@@ -34,7 +34,10 @@ def getdata(fname):
         dat = numpy.loadtxt(fname, skiprows=5, usecols=[2, 3, 4, 5, 6])
     xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi] - numpy.mean(dat[:, bu.xi]), Fs=Fs, NFFT=NFFT)
     drive, freqs = matplotlib.mlab.psd(dat[:, bu.drive] - numpy.mean(dat[:, bu.drive]), Fs=Fs, NFFT=NFFT)
-    return [freqs, xpsd, drive]
+    freqs = np.array(freqs)
+    xpsd = np.array(xpsd)
+    drive = np.array(drive)
+    return freqs, xpsd, drive
 
 def getACAmplitudeGraphs(file_list, make_plots = False, zeroDC = True):
     """output AC voltages and corresponding amplitudes at both omega and 2 omega for a DC voltage of 0 or not zero"""
@@ -45,7 +48,7 @@ def getACAmplitudeGraphs(file_list, make_plots = False, zeroDC = True):
     setDC = 0
     for index in range(N):
         f = file_list[index]
-        a = getdata(f)
+        freqs, xpsd, drive = getdata(f)
         i = f.rfind("synth")+5
         j = f.rfind("mV")
         k = f.rfind("mV",0,j)
@@ -56,19 +59,18 @@ def getACAmplitudeGraphs(file_list, make_plots = False, zeroDC = True):
             if zeroDC:
                 if DCvoltage == 0:
                     voltageCount[ACvoltage] += 1
-                    ax[ACvoltage] += np.array(a[1])
-                    adx[ACvoltage] += np.array(a[2])
+                    ax[ACvoltage] += xpsd
+                    adx[ACvoltage] += drive
             else:
                 if DCvoltage != 0:
                     setDC = DCvoltage
                     voltageCount[ACvoltage] += 1
-                    ax[ACvoltage] += numpy.array(a[1])
-                    adx[ACvoltage] += numpy.array(a[2])
+                    ax[ACvoltage] += xpsd
+                    adx[ACvoltage] += drive
         else:
             voltageCount[ACvoltage] = 1
-            ax[ACvoltage] = numpy.array(a[1])
-            adx[ACvoltage] = numpy.array(a[2])
-    freqs = a[0]
+            ax[ACvoltage] = xpsd
+            adx[ACvoltage] = drive
     binF = freqs[2] - freqs[1]
     # print 'binF is ' + str(binF) # gave 0.0762939453125
     ACvoltages = sorted(ax.keys())
