@@ -22,8 +22,8 @@ zi = 2
 xl = 3
 yl = 4
 zl = 5
-xi_old = 6
 drive = 7
+xi_old = 6
 
 ## default columns for data files FOR FILES CREATED BEFORE 5/23/2017
 # xi = 0

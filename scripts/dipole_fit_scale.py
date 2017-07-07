@@ -47,16 +47,14 @@ def order2(A,B):
 
 def pull_param(path, useDC = False):
     """pulls out the AC voltage, force at f, and force at 2f from the given path if a file is already in it"""
-    
     if useDC:
         file_name = 'ACandDCamplitudes.txt'
     else:
         file_name = 'ACamplitudes.txt'
 
     F = np.loadtxt(os.path.join(path, file_name)) # gives voltages in V and amplitudes in N
-    
+
     return F[0], F[1], F[2]
-    
 
 def get_param(ACvoltages, omegaAmplitudes, twoOmegaAmplitudes):
     """takes in AC voltage vs force at the drive frequency (f) and twice the drive frequency (2f)
@@ -146,7 +144,7 @@ def plot_highest_point(f, data_err, useDC = False):
        plots the x/y/z position of the piezo vs the highest force"""
 
     folders = next(os.walk(f))[1]
-    
+
     if useDC:
         file_name = 'ACandDCamplitudes.txt'
     else:
@@ -159,7 +157,7 @@ def plot_highest_point(f, data_err, useDC = False):
     for folder in folders:
         x_index = folder.find('_')
         x_pos.append(float(folder[0:x_index]))
-            
+
         F = np.loadtxt(os.path.join(f, folder, file_name)) # gives voltages in V and amplitudes in N
         #Efield = trek*Vpp_to_Vamp*F[0]/distance # V/m
         #force_f = F[1]
@@ -175,7 +173,7 @@ def plot_highest_point(f, data_err, useDC = False):
     force_fit = para(x_pos, a, b, c)
     err_b = np.sqrt(np.diag(pcov))[1]
     err_c = np.sqrt(np.diag(pcov))[2]
-    
+
     plt.figure()
     #plt.errorbar(x_pos, force, yerr = 2.*data_err, fmt = 'o')
     plt.plot(x_pos, force, 'o')
@@ -196,7 +194,7 @@ def plot_highest_point_z(f, data_err, useDC = False):
        plots the z position of the piezo vs the highest force"""
 
     folders = next(os.walk(f))[1]
-    
+
     if useDC:
         file_name = 'ACandDCamplitudes.txt'
     else:
@@ -211,7 +209,7 @@ def plot_highest_point_z(f, data_err, useDC = False):
         y_index = folder.find('_', x_index+1)
         z_index = folder.find('_', y_index+1)
         z_pos.append(float(folder[y_index+1:z_index]))
-            
+
         F = np.loadtxt(os.path.join(f, folder, file_name)) # gives voltages in V and amplitudes in N
         #Efield = trek*Vpp_to_Vamp*F[0]/distance # V/m
         #force_f = F[1]
@@ -222,7 +220,7 @@ def plot_highest_point_z(f, data_err, useDC = False):
     m, b, r, p, err = linregress(z_pos, force)
 
     force_fit = m*np.array(z_pos) + b
-    
+
     plt.figure()
     #plt.errorbar(z_pos, force, yerr = data_err, fmt = 'o')
     plt.plot(z_pos, force, 'o')
