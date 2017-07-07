@@ -1,92 +1,103 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jun 23 13:28:01 2017
-
-"""
-
-import numpy, h5py, matplotlib
+import h5py, matplotlib, os, re, glob
 import matplotlib.pyplot as plt
-import os
-import scipy.signal as sp
-import numpy as np
-import os, re, time, glob
-from scipy.signal import butter, lfilter, filtfilt
-from scipy import signal
-import glob
 import bead_util as bu
-import time
+import numpy as np
 
-Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**16
-
+NFFT = 2 ** 16
 sleep = 5.
-
-p = bu.drive
-
 make_psd_plot = True
 
-# fname0 = r"auto_xyzcool_G100_att_synth4500mV41Hz0mVdc_stage_tilt_-597thetaY_0thetaZ.h5"
+path = "/data/20170622/bead4_15um_QWP/dipole27_Y"
 
-path = r"C:\data\20170622\bead4_15um_QWP\dipole27_Y"
-file_list = glob.glob(path+"\*.h5")
+def getdata(fname):
+    f = h5py.File(fname, 'r')
+    dset = f['beads/data/pos_data']
+    dat = np.transpose(dset)
+    Fs = dset.attrs['Fsamp']
+    dat = dat * 10. / (2 ** 15 - 1)
+    x = dat[:, bu.x] - np.mean(dat[:, bu.x])
+    xpsd, freqs = matplotlib.mlab.psd(x, Fs=Fs, NFFT=NFFT)
+    drive = dat[:, bu.drive] - np.mean(dat[:, bu.drive])
+    normalized_drive = drive / np.max(drive)
+    drivepsd, freqs = matplotlib.mlab.psd(normalized_drive, Fs=Fs, NFFT=NFFT)
+    return freqs, xpsd, drivepsd
 
-def getdata1(fname):
-	_, fext = os.path.splitext( fname )
-	if( fext == ".h5"):
-		f = h5py.File(fname,'r')
-		dset = f['beads/data/pos_data']
-		dat = numpy.transpose(dset)
-		Fs = dset.attrs['Fsamp']
-		dat = dat * 10./(2**15 - 1)
-	else:
-		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
-        
-	x = dat[:, 0]-numpy.mean(dat[:, 0])
-	xpsd, freqs = matplotlib.mlab.psd(x, Fs = Fs, NFFT = NFFT)
-	drive = ((dat[:, p] - numpy.mean(dat[:, p])))/np.max((dat[:, p] - numpy.mean(dat[:, p])))
-	drivepsd, freqs = matplotlib.mlab.psd(drive, Fs = Fs, NFFT = NFFT)
-
-	return [freqs, xpsd, drivepsd]
-
-def time_order(file_list):
-    file_list.sort(key = os.path.getmtime)
+def time_ordered_file_list(path):
+    file_list = glob.glob(path + "\*.h5")
+    file_list.sort(key=os.path.getmtime)
     return file_list
 
-def get_position(dpsd):
-    b = np.argmax(dpsd)
-    return 2*b - 1
+def get_positions(xpsd, dpsd):
+    """ returns position of drive frequency and twice the drive frequency """
+    tolerance = 3 # bins
+    a = np.argmax(dpsd)
+    b = 2*a
+    c = np.argmax(xpsd[b-tolerance:b+tolerance])
+    d = (b - tolerance) + c
+    return a, d
 
-def plot_peaks2F(file_list):
-    file_list = time_order(file_list)
+def get_peak_amplitudes(xpsd, dpsd):
+    a, d = get_positions(xpsd, dpsd)
+    peaksD = dpsd[a]
+    peaks2F = xpsd[d] + xpsd[d - 1] + xpsd[d + 1]  # all peak
+    return peaksD, peaks2F, d
+
+def plot_peaks2F(path, plot_peaks = True):
+    file_list = time_ordered_file_list(path)
     peaks2F = np.zeros(len(file_list))
     peaksD = np.zeros(len(file_list))
     thetaY = np.zeros(len(file_list))
     thetaZ = np.zeros(len(file_list))
     if make_psd_plot: plt.figure()
     for i in range(len(file_list)):
-        freqs, xpsd, dpsd = getdata1(file_list[i])
-        b = get_position(dpsd)
-        peaks2F[i] = xpsd[b] + xpsd[b-1] + xpsd[b+1] # all peak
-        peaksD[i] = dpsd[(b)/2]
         f = file_list[i]
-        thetaY[i] = float(re.findall("-?\d+thetaY",f)[0][:-6])
-        thetaZ[i] = float(re.findall("-?\d+thetaZ",f)[0][:-6])
-        # m = f.rfind("stage_tilt_") + 11
-        # n = f.rfind("thetaZ")
-        # thetaY[i] = float(f[m:n])
+        freqs, xpsd, dpsd = getdata(f)
+        dp, fp, b = get_peak_amplitudes(xpsd, dpsd)
+        peaksD[i] = dp
+        peaks2F[i] = fp
+        thetaY[i] = float(re.findall("-?\d+thetaY", f)[0][:-6])
+        thetaZ[i] = float(re.findall("-?\d+thetaZ", f)[0][:-6])
         print thetaY[i], thetaZ[i]
         if make_psd_plot:
-                plt.loglog(freqs, xpsd)
-                plt.plot(freqs[b], xpsd[b], "x")
-    return [thetaY, thetaZ, np.sqrt(peaks2F), np.sqrt(peaksD)]
+            plt.loglog(freqs, xpsd)
+            plt.plot(freqs[b], xpsd[b], "x")
+    peak2W = np.sqrt(peaks2F)
+    peakD = np.sqrt(peaksD)
+    if plot_peaks:
+        plt.figure()
+        plt.plot(thetaY, peak2W / peakD, 'o')
+        plt.grid()
+        plt.show(block = False)
+    return thetaY, thetaZ, peak2W, peakD
 
-thetaY, thetaZ, peak2W, peakD = plot_peaks2F(file_list)
-# thetaY, peak2W, peakD, peakW = plot_peaks2F_placebo(file_list)
+# this is Fernando's plot
+thetaY, thetaZ, peak2W, peakD = plot_peaks2F(path)
 
-plt.figure()
-# plt.plot(thetaY ,peak2W)
-plt.plot(thetaY ,peak2W/peakD, 'o')
-# plt.plot(thetaY ,peakW/peakD, 'o')
-plt.grid()
-plt.show()
+# this is Sumita's plot
+def plot_PSD_peaks(path):
+    file_list = time_ordered_file_list(path)
+    freq = []
+    freq2 = []
+    x = []
+    x2 = []
+    for f in file_list:
+        freqs, xpsd, drivepsd = getdata(f)
+        freq_pos, twice_freq_pos = get_positions(xpsd, drivepsd)
+        freq.append(freqs[freq_pos])
+        x.append(freqs[freq_pos])
+        freq2.append(freqs[twice_freq_pos])
+        x2.append(freqs[twice_freq_pos])
+    plt.figure()
+    plt.plot(freq, x, 'o')
+    plt.xlabel('Frequency [Hz]')
+    plt.ylabel('Amplitude [V/sqrtHz]')
+    plt.title('PSD peaks at drive frequency')
+    plt.show(block = False)
+    plt.figure()
+    plt.plot(freq2, x2, 'o')
+    plt.xlabel('Frequency [Hz]')
+    plt.ylabel('Amplitude [V/sqrtHz]')
+    plt.title('PSD peaks at twice the drive frequency')
+    plt.show()
+
+plot_PSD_peaks(path)
