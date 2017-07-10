@@ -54,20 +54,37 @@ def sortFileList(file_list):
             print ""
         return new_list
 
-def outputThetaPosition(f):
-    i = f.find('stage_tilt_') + 11
-    j = f.rfind('thetaY_')
-    k = j + 7
-    l = f.rfind('thetaZ')
-    y = int(f[i:j])
-    z = int(f[k:l])
-    if debugging:
-        print "           thetaY = ", y
-        print "           thetaZ = ", z
-    if y == 0:
-        return z
-    else:
-        return y
+def outputThetaPosition(f, y_or_z):
+    if y_or_z == "":
+        i = f.find('stage_tilt_') + 11
+        j = f.rfind('thetaY_')
+        k = j + 7
+        l = f.rfind('thetaZ')
+        y = int(f[i:j])
+        z = int(f[k:l])
+        if debugging:
+            print "           thetaY = ", y
+            print "           thetaZ = ", z
+        if y == 0 and z == 0:
+            return 0, ""
+        elif y == 0 and z != 0:
+            return z, "z"
+        else:
+            return y, "y"
+    elif y_or_z == "y":
+        i = f.find('stage_tilt_') + 11
+        j = f.rfind('thetaY_')
+        y = int(f[i:j])
+        if debugging:
+            print "           thetaY = ", y
+        return y, "y"
+    elif y_or_z == "z":
+        k = f.rfind('thetaY_') + 7
+        l = f.rfind('thetaZ')
+        z = int(f[k:l])
+        if debugging:
+            print "           thetaZ = ", z
+        return z, "z"
 
 def getGainAndACamp(fname):
     i = fname.rfind('cool_G') + 6
@@ -120,7 +137,7 @@ def getData(fname, get_drive = False, truncate_x = True):
             print ""
         return x_data, time
 
-def getThetaData(fname):
+def getThetaData(fname, y_or_z):
     """ assumes fname ends with a '.h5' 
         returns unitless data from file """
     if debugging:
@@ -128,14 +145,14 @@ def getThetaData(fname):
         debug_file = fname[fname.find('synth'):fname.rfind('.')]
         print "DEBUGGING: getThetaData on ", debug_file
     # get data from the file name
-    position = outputThetaPosition(fname)
+    position, new_y_or_z = outputThetaPosition(fname, y_or_z)
     if debugging:
         print "           theta position of file ", debug_file, " = ", position
     # read the file
     x_data, drive_data, twice_drive_data = getData(fname, get_drive = True, truncate_x = False)
     if debugging:
         print ""
-    return x_data, drive_data, twice_drive_data, position
+    return x_data, drive_data, twice_drive_data, position, new_y_or_z
 
 def getCorrArray(x_data, drive_data, c = 1.):
     """ returns the normalized correlation between the drive and the response """
@@ -193,7 +210,8 @@ def calibrate(calibration_list, make_plot = make_calibration_plot, last_plot = F
     tcorr = []
     for t_arr in t_dat_arrays:
         tcorr.append(t_arr[index])
-    c = np.average(corr[:20])
+    i = min(len(corr), 20)
+    c = np.average(corr[:i]) # V^2/electron
     if debugging:
         print "           calibrate c is ", c
         print ""
@@ -328,8 +346,9 @@ def theta_correlation_plots(path, last_plot = False):
     corr = []
     tcorr = []
     print "finding phase shift"
+    y_or_z = ""
     for f in file_list:
-        x_data, drive_data, twice_drive_data, position = getThetaData(f)
+        x_data, drive_data, twice_drive_data, position, y_or_z = getThetaData(f, y_or_z)
         pos.append(position)
         # now measure the correlation
         corr_array = getCorrArray(x_data, drive_data)
@@ -356,8 +375,8 @@ def theta_correlation_plots(path, last_plot = False):
 
 #full_correlation_plots(calib_list1, file_list1, last_plot = True)
 
-w_path = "/data/20170622/bead4_15um_QWP/dipole27_Y" # this has the W
-theta_correlation_plots(w_path, last_plot = True)
+#w_path = "/data/20170622/bead4_15um_QWP/dipole27_Y" # this has the W
+#theta_correlation_plots(w_path, last_plot = True)
 
 """
 FIRST

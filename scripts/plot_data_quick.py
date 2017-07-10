@@ -7,7 +7,7 @@ import bead_util as bu
 
 refname = r"1mbar_zcool_G5_att.h5"
 fname0 = r""
-path = r"C:\data\20170706\bead3_15um_QWP"
+path = "/data/20170706/bead3_15um_QWP"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
@@ -19,15 +19,13 @@ if fname0 == "":
 	mtime = 0
 	mrf = ""
 	for fin in filelist:
-		f = os.path.join(path, fin) 
+		f = os.path.join(path, fin)
 		if os.path.getmtime(f)>mtime:
 			mrf = f
-			mtime = os.path.getmtime(f) 
- 
-	fname0 = mrf		
+			mtime = os.path.getmtime(f)
 
+	fname0 = mrf		 
 
-		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
 NFFT = 2**13
@@ -64,12 +62,6 @@ def getdata(fname):
 	return [freqs, xpsd, ypsd, dat, zpsd, xpsd_old]
 
 data0 = getdata(os.path.join(path, fname0))
-
-def rotate(vec1, vec2, theta):
-    vecn1 = numpy.cos(theta)*vec1 + numpy.sin(theta)*vec2
-    vecn2 = numpy.sin(theta)*vec1 + numpy.cos(theta)*vec2
-    return [vec1, vec2]
-
 
 if refname:
 	data1 = getdata(os.path.join(path, refname))
@@ -118,7 +110,3 @@ if refname:
         plt.loglog(data1[0], np.sqrt(data1[5]))
 plt.xlabel("Frequency[Hz]")
 plt.show()
-
-# fig = plt.figure
-# plt.loglog(data1[0], np.sqrt(data1[6]))
-# plt.show()
