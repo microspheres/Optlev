@@ -18,7 +18,7 @@ if debugging:
     print "num_electrons_in_sphere = ", num_electrons_in_sphere # 1E15
 # in terminal, type 'python -m pdb plot_PSD_peaks.py'
 
-def getdata(fname):
+def getdata(fname, give_squares = False):
     f = h5py.File(fname, 'r')
     dset = f['beads/data/pos_data']
     dat = np.transpose(dset)
@@ -29,7 +29,8 @@ def getdata(fname):
     drive_data = dat[:, drive] - np.mean(dat[:, drive])
     normalized_drive = drive_data / np.max(drive_data)
     drivepsd, freqs = matplotlib.mlab.psd(normalized_drive, Fs=Fs, NFFT=NFFT)
-    return freqs, np.sqrt(xpsd), np.sqrt(drivepsd) # Hz, V/sqrtHz, 1/sqrtHz
+    if give_squares: return freqs, xpsd, drivepsd # Hz, V^2/Hz, s
+    else: return freqs, np.sqrt(xpsd), np.sqrt(drivepsd) # Hz, V/sqrtHz, 1/sqrtHz
 
 def time_ordered_file_list(path):
     file_list = glob.glob(path + "/*.h5")
@@ -56,14 +57,14 @@ def get_positions(xpsd, dpsd):
         print ""
     return a, d
 
-def get_peak_amplitudes(xpsd, dpsd):
+def get_peak_amplitudes_Fernando(xpsd, dpsd):
     """ This is Fernando's weird way of averaging the peak amplitudes """
     a, d = get_positions(xpsd, dpsd)
     peaksD = dpsd[a] # amplitude of drive
     peaks2F = xpsd[d] + xpsd[d - 1] + xpsd[d + 1]  # all 2F peak bins
     return peaks2F/peaksD, d
 
-def plot_peaks2F(path, plot_peaks = True):
+def plot_peaks2Fernando(path, plot_peaks = True):
     file_list = time_ordered_file_list(path)
     amplitudes = []
     theta = []
@@ -71,7 +72,7 @@ def plot_peaks2F(path, plot_peaks = True):
     if make_psd_plot: plt.figure()
     for f in file_list:
         freqs, xpsd, dpsd = getdata(f)
-        amp, i = get_peak_amplitudes(xpsd, dpsd)
+        amp, i = get_peak_amplitudes_Fernando(xpsd, dpsd)
         amplitudes.append(amp)
         tpos, y_or_z = outputThetaPosition(f, y_or_z)
         theta.append(tpos)
@@ -85,9 +86,9 @@ def plot_peaks2F(path, plot_peaks = True):
         plt.show(block = False)
     return
 
-"""               # this is Fernando's plot             """
-#plot_peaks2F(path)
-""""""""""""""""""""""" THINGS HERE """""""""""""""""""""""
+#"""               # this is Fernando's plot             """
+#plot_peaks2Fernando(path)
+#""""""""""""""""""""""" THINGS HERE """""""""""""""""""""""
 
 # this is Sumita's plot
 def get_PSD_peak_parameters(file_list, use_theta = True):
@@ -136,11 +137,9 @@ def plot_PSD_peaks(path, calib_path, last_plot = False):
 # now on to doing the area calibration thing
 # integrating over basically the main peak
 def get_area(f):
-    w, x, d = getdata(f) # Hz, V/sqrtHz, 1/sqrtHz
+    w, x, d = getdata(f, give_squares=True) # Hz, V^2/Hz, 1/Hz
     binF = w[1] - w[0] # Hz
-    #x = x*conversion*sqrt(binF) # N
     gain, ACamp = getGainAndACamp(f) # unitless, V
-    #constant = binF/(gain*ACamp) # Hz/V
     if debugging:
         fname = f[f.rfind('_')+1:f.rfind('.')]
         print ""
@@ -150,10 +149,11 @@ def get_area(f):
     if debugging:
         print "           i = ", i
         print ""
-    return binF*sum(x[i-2:i+3])/(gain*ACamp) # sqrtHz
+    x_in_Newtons = conversion*x*binF/(gain*ACamp)
+    return sum(x_in_Newtons[i-2:i+3]) # Newtons
 
 def peak_areas(path, c = 1, use_theta = False):
-    a = [] # in units of measurement V/ V at 1 electron
+    a = [] # in units of Newtons
     x = []
     y_or_z = ""
     if debugging:
