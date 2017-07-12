@@ -26,6 +26,8 @@ trek = 200.0 # gain of the trek
 # for now pretend our integration time was 100s because that's what it will eventually be
 integrationTime = 20
 
+debugging = False
+
 def getdata(fname):
     ## guess at file type from extension
     _, fext = os.path.splitext(fname)
@@ -93,22 +95,21 @@ def getACAmplitudeGraphs(file_list, make_plots = False, zeroDC = True):
     """Now insert the amplitude for the requisite frequencies"""
     for index in range(N1):
         volt = ACvoltages[index] # V
-        constant = conversion # N/V
         i = indexPicked
         psd = np.sqrt(ax[volt]/voltageCount[volt]) # V/sqrtHz
         if make_plots:
             labels[index] = str(volt*trek*Vpp_to_Vamp/(distance*1e6)) + ' kV/mm'
-            psd_plots[index] = constant*psd/np.sqrt(integrationTime) # so this is in N
+            psd_plots[index] = conversion*psd/np.sqrt(integrationTime) # so this is in N
             #drive_plots[index] = np.sqrt(adx[volt])
-        omegaAmplitudes[index] = constant*psd[i]*np.sqrt(binF) # N
-        twoOmegaAmplitudes[index] = constant*psd[2*i+1]*np.sqrt(binF) # N
-        #print 'binF = '+str(binF)
-        #print 'constant = '+str(constant)
-        #print 'psd[i] at index '+str(index)+'= '+str(psd[i])
-        #w = '%.2E' % omegaAmplitudes[index]
-        #w_2 = '%.2E' % twoOmegaAmplitudes[index]
-        #print 'omegaAmplitudes['+str(index)+'] = '+w
-        #print 'twoOmegaAmplitudes['+str(index)+'] = '+w_2
+        omegaAmplitudes[index] = conversion*psd[i]*np.sqrt(binF) # N
+        twoOmegaAmplitudes[index] = conversion*psd[2*i+1]*np.sqrt(binF) # N
+        if debugging:
+            print 'binF = '+str(binF)
+            print 'psd[i] at index '+str(index)+'= '+str(psd[i])
+            w = '%.2E' % omegaAmplitudes[index]
+            w_2 = '%.2E' % twoOmegaAmplitudes[index]
+            print 'omegaAmplitudes['+str(index)+'] = '+w
+            print 'twoOmegaAmplitudes['+str(index)+'] = '+w_2
     if make_plots:
         plot_psds(psd_plots, freqs, labels, indexPicked)
     return ACvoltages, omegaAmplitudes, twoOmegaAmplitudes, DCvoltages

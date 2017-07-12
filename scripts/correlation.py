@@ -15,11 +15,22 @@ path2 = "/data/20170622/bead4_15um_QWP/reality_test3"
 fdrive = 41. # Hz
 #wavelength = Fs/fdrive because Fs = samples/second
 
-make_calibration_plot = True # do we want to see the step plot?
-plot_fft = True # do we want to see the fft of the correlation plots?
+make_calibration_plot = False # do we want to see the step plot?
+plot_fft = False # do we want to see the fft of the correlation plots?
 
 debugging = False # are we in debugging mode?
 # in terminal, type 'python -m pdb correlation.py'
+
+# Calculate # electrons
+sphere_diameter = 15 # micron
+sphere_radius = sphere_diameter/2000000. # meters
+sphere_volume = (4./3.)*np.pi*sphere_radius**3 # m^3
+density = 2196. # kg/m^3
+sphere_mass = sphere_volume*density # kg
+molecular_mass = 9.9772E-26 # kg/molecule
+num_electrons = 30 # electrons/molecule
+num_electrons_in_sphere = num_electrons*sphere_mass/molecular_mass # electrons
+#                       = ~1E-15
 
 """"""""""""""""""""" Code """""""""""""""""""""""
 ### List of files
@@ -212,8 +223,8 @@ def calibrate(calibration_list, make_plot = make_calibration_plot, last_plot = F
         tcorr.append(t_arr[index])
     i = min(len(corr), 20)
     c = np.average(corr[:i]) # V^2/electron
+    print "calibrating constant c = ", c
     if debugging:
-        print "           calibrate c is ", c
         print ""
     if make_plot:
         plot_calibration_data(corr, tcorr, c, last_plot)
@@ -373,7 +384,7 @@ def theta_correlation_plots(path, last_plot = False):
 
 """ Now we plot """
 
-#full_correlation_plots(calib_list1, file_list1, last_plot = True)
+full_correlation_plots(calib_list1, file_list1, last_plot = True)
 
 #w_path = "/data/20170622/bead4_15um_QWP/dipole27_Y" # this has the W
 #theta_correlation_plots(w_path, last_plot = True)

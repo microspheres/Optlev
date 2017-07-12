@@ -1,7 +1,7 @@
 import glob
 import numpy as np
 import matplotlib.pyplot as plt
-from VoltagevsAmplitude import getACAmplitudeGraphs
+from VoltagevsAmplitude import getACAmplitudeGraphs, conversion
 from dipole_fit_scale import get_param, plot_amplitude_data_raw, plot_highest_point, plot_highest_point_z
 from scipy.stats import linregress
 from scipy.optimize import curve_fit
@@ -28,7 +28,6 @@ data_ratio = np.divide(data_2f, data_f) # unitless
 
 # here I'm estimating the error bars
 binF = 0.0762939453125 # got this from VoltagevsAmplitude.py
-conversion = 3.7139625927e-13
 data_error = 4e-4*conversion/np.sqrt(20) # got 5e-5 by estimating by eye from plot_data_quick.py
 data_ratio_err = data_error
 #data_ratio_err = np.multiply(np.sqrt(np.power(np.divide(data_error,data_f),2) + np.power(np.divide(data_error,data_2f),2)), data_ratio)
