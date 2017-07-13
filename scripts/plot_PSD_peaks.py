@@ -327,9 +327,6 @@ if use_as_script:
     ans1 = find_floor(path1, calib1)
     print ans1
 
-    plot_areas(path2, calib2, last_plot = True)
-
-
     #calib = "/data/20170711/bead7_15um_QWP/calibration"
     #path = "/data/20170711/bead7_15um_QWP/reality_test3"
     #find_floor(path, calib, data_has_drive = False, last_plot = True)

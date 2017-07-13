@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os, glob, h5py
 import bead_util as bu
+from plot_PSD_peaks import time_ordered_file_list
 
 """"""""""""""""""""" Inputs """""""""""""""""""""
 use_as_script = False # run this file
@@ -157,12 +158,13 @@ def getCorrArray(x_data, drive_data, c = 1.):
     if debugging: print "\nDEBUGGING: getCorrArray() worked! \n"
     return corr_array/c # response in terms of #e at the calibration field
 
-def calibrate(calibration_list, need_drive = True, make_plot = make_calibration_plot, last_plot = False):
+def calibrate(calibration_path, need_drive = True, make_plot = make_calibration_plot, last_plot = False):
     """ goes through the x and drive data of each file (inputs)
         returns the index of the phase shift (independant of normalization)
                 and the normalization value of one electron
                 (assuming calibration_data is of only one electron)
         assume calibration_data_list is sorted by measurement time"""
+    calibration_list = time_ordered_file_list(calibration_path)
     if debugging:
         index = min(len(calibration_list), 20)
         calibration_list = calibration_list[:index]
@@ -227,12 +229,13 @@ def getResponseArray(file_list):
         print "           getResponseArray() worked!\n"
     return x_arr, t_arr
 
-def corrWithDrive(file_list, calib_list, use_theta = False, last_plot = False, fft = plot_fft):
+def corrWithDrive(data_path, calib_path, use_theta = False, last_plot = False, fft = plot_fft):
     x, of, tf = ([] for i in range(3))
-    i, c = calibrate(sortFileList(calib_list), need_drive=False)
+    i, c = calibrate(calib_path, need_drive=False)
     if use_theta:
         y_or_z = ""
         i = 0
+    file_list = time_ordered_file_list(data_path)
     if debugging:
         index = min(len(file_list), 20)
         file_list = file_list[:index]
@@ -253,15 +256,15 @@ def corrWithDrive(file_list, calib_list, use_theta = False, last_plot = False, f
         if fft: fft_plot(x, of, last_plot=last_plot)
     if debugging: print ""
 
-def corrWithoutDrive(file_list, drive, twice_drive, index = 0, c = 1., last_plot = False, fft = plot_fft):
+def corrWithoutDrive(data_path, drive, twice_drive, index = 0, c = 1., last_plot = False, fft = plot_fft):
     """ takes in a measurement's data array and the phase shift
         returns a plot of the correlation """
-    sorted_file_list = sortFileList(file_list)
+    file_list = time_ordered_file_list(data_path)
     if debugging:
-        index = min(len(sorted_file_list), 20)
-        sorted_file_list = sorted_file_list[:index]
+        index = min(len(file_list), 20)
+        file_list = file_list[:index]
     print "fetching noise data"
-    x_arr, t_arr = getResponseArray(sorted_file_list)
+    x_arr, t_arr = getResponseArray(file_list)
     of, tf = ([] for i in range(2))
     if debugging: print "\nDEBUGGING: got response array in plotCorr()"
     for x in x_arr:
@@ -282,13 +285,11 @@ def full_correlation_plots(calib_path, data_path, drive_on = False, use_theta = 
     print "\ncalibration from ", calib_path
     print "data from ", data_path
     if debugging: print "\nDEBUGGING: full_correlation_plots"
-    calib_list = glob.glob(os.path.join(calib_path, "*.h5"))
-    file_list = glob.glob(os.path.join(data_path, "*.h5"))
     if drive_on:
-        corrWithDrive(file_list, calib_list, use_theta=use_theta, last_plot=last_plot, fft=fft)
+        corrWithDrive(data_path, calib_path, use_theta=use_theta, last_plot=last_plot, fft=fft)
     else:
-        i, c, drive, twice_drive = calibrate(calib_list)
-        corrWithoutDrive(file_list, drive, twice_drive, i, c, last_plot=last_plot, fft=fft)
+        i, c, drive, twice_drive = calibrate(calib_path)
+        corrWithoutDrive(data_path, drive, twice_drive, i, c, last_plot=last_plot, fft=fft)
     if debugging: print "           plotted f and 2f in full_correlation_plots\n"
 
 """ Now we plot """
