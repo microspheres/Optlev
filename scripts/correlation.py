@@ -1,8 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import os, glob, h5py
+import h5py
 import bead_util as bu
-from plot_PSD_peaks import time_ordered_file_list
 
 """"""""""""""""""""" Inputs """""""""""""""""""""
 use_as_script = False # run this file
@@ -164,7 +163,7 @@ def calibrate(calibration_path, need_drive = True, make_plot = make_calibration_
                 and the normalization value of one electron
                 (assuming calibration_data is of only one electron)
         assume calibration_data_list is sorted by measurement time"""
-    calibration_list = time_ordered_file_list(calibration_path)
+    calibration_list = bu.time_ordered_file_list(calibration_path)
     if debugging:
         index = min(len(calibration_list), 20)
         calibration_list = calibration_list[:index]
@@ -235,7 +234,7 @@ def corrWithDrive(data_path, calib_path, use_theta = False, last_plot = False, f
     if use_theta:
         y_or_z = ""
         i = 0
-    file_list = time_ordered_file_list(data_path)
+    file_list = bu.time_ordered_file_list(data_path)
     if debugging:
         index = min(len(file_list), 20)
         file_list = file_list[:index]
@@ -259,7 +258,7 @@ def corrWithDrive(data_path, calib_path, use_theta = False, last_plot = False, f
 def corrWithoutDrive(data_path, drive, twice_drive, index = 0, c = 1., last_plot = False, fft = plot_fft):
     """ takes in a measurement's data array and the phase shift
         returns a plot of the correlation """
-    file_list = time_ordered_file_list(data_path)
+    file_list = bu.time_ordered_file_list(data_path)
     if debugging:
         index = min(len(file_list), 20)
         file_list = file_list[:index]

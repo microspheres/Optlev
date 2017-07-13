@@ -2,7 +2,7 @@ from correlation import outputThetaPosition, getGainAndACamp, num_electrons_in_s
 from VoltagevsAmplitude import conversion # gives N/V
 import h5py, matplotlib, os, re, glob
 import matplotlib.pyplot as plt
-from bead_util import xi, drive
+from bead_util import xi, drive, time_ordered_file_list
 import numpy as np
 
 # Inputs
@@ -33,11 +33,6 @@ def getdata(fname, give_squares = False):
     drivepsd, freqs = matplotlib.mlab.psd(normalized_drive, Fs=Fs, NFFT=NFFT)
     if give_squares: return freqs, xpsd, drivepsd # Hz, V^2/Hz, s
     else: return freqs, np.sqrt(xpsd), np.sqrt(drivepsd) # Hz, V/sqrtHz, 1/sqrtHz
-
-def time_ordered_file_list(path):
-    file_list = glob.glob(path + "/*.h5")
-    file_list.sort(key=os.path.getmtime)
-    return file_list
 
 def get_positions(xpsd, dpsd):
     """ returns position of drive frequency and twice the drive frequency """
