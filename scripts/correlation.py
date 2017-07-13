@@ -2,14 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os, glob, h5py
 import bead_util as bu
-from plot_PSD_peaks import time_ordered_file_list#(path)
 
 """"""""""""""""""""" Inputs """""""""""""""""""""
 use_as_script = False # run this file
-plotting = False # do we want plots at all?
-if plotting:
-    make_calibration_plot = False # do we want to see the step plot?
-    plot_fft = False # do we want to see the fft of the correlation plots?
+plotting = False # do we want to see plots at all?
+make_calibration_plot = False # do we want to see the step plot?
+plot_fft = False # do we want to see the fft of the correlation plots?
 # in terminal, type 'python -m pdb correlation.py'
 debugging = False # are we in debugging mode?
 
@@ -248,9 +246,13 @@ def corrWithDrive(file_list, calib_list, use_theta = False, last_plot = False, f
             x.append(time)
         of.append(correlate(x_data, drive_data, i, c))
         tf.append(correlate(x_data, twice_drive_data, i, c))
-    basic_plot(x, of, tf, use_theta=use_theta, last_plot = ((not fft) and last_plot))
-    if fft: fft_plot(x, of, last_plot=last_plot)
-    
+    print "average correlation at drive frequency: ", np.average(of)
+    print "average correlation at twice drive frequency: ", np.average(tf)
+    if plotting:
+        basic_plot(x, of, tf, use_theta=use_theta, last_plot = ((not fft) and last_plot))
+        if fft: fft_plot(x, of, last_plot=last_plot)
+    if debugging: print ""
+
 def corrWithoutDrive(file_list, drive, twice_drive, index = 0, c = 1., last_plot = False, fft = plot_fft):
     """ takes in a measurement's data array and the phase shift
         returns a plot of the correlation """
@@ -266,15 +268,19 @@ def corrWithoutDrive(file_list, drive, twice_drive, index = 0, c = 1., last_plot
         if debugging: print "           iteration in plotCorr number ", len(of)
         of.append(correlate(x, drive, index, c))
         tf.append(correlate(x, twice_drive, index, c))
-    basic_plot(t_arr, of, tf, last_plot = ((not fft) and last_plot))
-    if fft: fft_plot(t_arr, of, last_plot=last_plot)
+    print "average correlation at drive frequency: ", np.average(of)
+    print "average correlation at twice drive frequency: ", np.average(tf)
+    if plotting:
+        basic_plot(t_arr, of, tf, last_plot = ((not fft) and last_plot))
+        if fft: fft_plot(t_arr, of, last_plot=last_plot)
     if debugging: print ""
-    print "average correlation is ", np.average(of)
 
 def full_correlation_plots(calib_path, data_path, drive_on = False, use_theta = False, last_plot = False, fft = plot_fft):
     """ does everything: calibrates and makes correlation plots at 
         the drive frequency and at twice the drive frequency 
         in total produces 2-4 plots depending on calibration and fft """
+    print "\ncalibration from ", calib_path
+    print "data from ", data_path
     if debugging: print "\nDEBUGGING: full_correlation_plots"
     calib_list = glob.glob(os.path.join(calib_path, "*.h5"))
     file_list = glob.glob(os.path.join(data_path, "*.h5"))

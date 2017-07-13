@@ -9,9 +9,11 @@ import numpy as np
 NFFT = 2 ** 17
 make_psd_plot = False
 debugging = False
+use_as_script = False
 
-calib = "/data/20170622/bead4_15um_QWP/charge9"
-path = "/data/20170622/bead4_15um_QWP/dipole27_Y"
+if use_as_script:
+    calib = "/data/20170622/bead4_15um_QWP/charge9"
+    path = "/data/20170622/bead4_15um_QWP/dipole27_Y"
 
 if debugging:
     print "debugging on in plot_PSD_peaks.py: prepare for spam"
@@ -216,15 +218,118 @@ def plot_areas(path, calib_path, use_theta = False, last_plot = False):
     plt.show(block = last_plot)
     return
 
+# BLARG try again
 
-#plot_areas(path, calib, use_theta = True)
-""""""""""""""""""""" Inputs """""""""""""""""""""
-### calibration files
-calib1 = "/data/20170622/bead4_15um_QWP/charge9"
-calib2 = "/data/20170622/bead4_15um_QWP/arb_charge"
+def getdata_areas(fname, need_drive = True):
+    f = h5py.File(fname, 'r')
+    dset = f['beads/data/pos_data']
+    dat = np.transpose(dset) * 10. / float(2 ** 15 - 1) # V
+    Fs = dset.attrs['Fsamp']
+    gain, ACamp = getGainAndACamp(fname) # unitless, V
+    if debugging:
+        print "           gain = ", gain, " and ACamp = ", ACamp
+    x = (dat[:, 0] - np.mean(dat[:, 0]))/(gain*ACamp)
+    xpsd, freqs = matplotlib.mlab.psd(x, Fs=Fs, NFFT=NFFT)
+    if need_drive:
+        drive_data = dat[:, 7] - np.mean(dat[:, 7])
+        normalized_drive = drive_data / np.max(np.abs(drive_data))
+        drivepsd, freqs = matplotlib.mlab.psd(normalized_drive, Fs=Fs, NFFT=NFFT)
+        return freqs, xpsd, drivepsd # Hz, V^2/Hz, s
+    else:
+        return freqs, xpsd # Hz, V^2/Hz
 
-### this is where the noise files are pulled out
-path1 = "/data/20170622/bead4_15um_QWP/reality_test2"
-path2 = "/data/20170622/bead4_15um_QWP/reality_test3"
-plot_areas(path1, calib1)
-plot_areas(path2, calib2, last_plot = True)
+def get_tot_psd(path, get_dpsd = True, last_plot = False):
+    if debugging:
+        print "\nDEBUGGING: get_tot_psd(path)"
+    file_list = glob.glob(path + "/*.h5")
+    n = len(file_list)
+    xpsd = []
+    if get_dpsd: dpsd = []
+    for f in file_list:
+        if debugging:
+            print "           looking at file ", f[len(path):-3]
+        if get_dpsd:
+            w, x, d = getdata_areas(f)
+        else:
+            w, x = getdata_areas(f, need_drive = False)
+        binF = w[2] - w[1]
+        if xpsd == []:
+            xpsd = x*binF/n
+            if get_dpsd: dpsd = d*binF/n
+        else:
+            xpsd += x*binF/n
+            if get_dpsd: dpsd += d*binF/n
+    if debugging:
+        plt.figure()
+        plt.loglog(w, xpsd, label = 'xpsd')
+        if get_dpsd: plt.loglog(w, dpsd, label = 'dpsd')
+        plt.legend()
+        plt.show(block = last_plot)
+    if get_dpsd: return xpsd, dpsd
+    else: return xpsd
+
+def get_averaged_area(path, get_drive = False, dpsd = [], side = False, last_plot = False):
+    if debugging:
+        print "\nDEBUGGING: get_averaged_area(path)"
+    if dpsd == []:
+        xpsd, dpsd = get_tot_psd(path, last_plot = last_plot)
+    else:
+        xpsd = get_tot_psd(path, get_dpsd = False, last_plot = last_plot)
+    i = np.argmax(dpsd)
+    j = i + 10
+    area = float(sum(xpsd[i-2:i+3]))
+    if side:
+        side_area = float(sum(xpsd[j-2:j+3]))
+    if debugging:
+        print "           i = ", i
+        print "           area = ", area
+        if side:
+            print "           side_area = ", side_area, "\n"
+    if side:
+        return np.sqrt(area), np.sqrt(side_area)
+    elif get_drive:
+        return np.sqrt(area), dpsd
+    else:
+        return np.sqrt(area)
+
+def find_floor(data_path, calib_path, data_has_drive = True, last_plot = False):
+    print "\nfind_floor"
+    
+    print "calibrating with ", calib_path
+    if data_has_drive:
+        c = get_averaged_area(calib_path, last_plot = False)
+    else:
+        c, dpsd = get_averaged_area(calib_path, get_drive = True, last_plot = False)
+    print "average calibration peak area is ", c
+    
+    print "measuring from ", data_path
+    if data_has_drive:
+        x, sx = get_averaged_area(data_path, side = True, last_plot = last_plot)
+    else:
+        x, sx = get_averaged_area(data_path, dpsd = dpsd, side = True, last_plot = last_plot)    
+    print "average data peak area is ", x, "\n"
+    
+    floor = x/(c*num_electrons_in_sphere)
+    side_floor = sx/(c*num_electrons_in_sphere)
+    print "peak is at ", floor, "fractions of an electron charge"
+    print "floor is at ", side_floor, "fractions of an electron charge\n"
+    
+    return floor, side_floor
+
+if use_as_script:
+    #plot_areas(path, calib, use_theta = True)
+    """"""""""""""""""""" Inputs """""""""""""""""""""
+    ### calibration files
+    calib1 = "/data/20170622/bead4_15um_QWP/charge11"
+
+    ### this is where the noise files are pulled out
+    path1 = "/data/20170622/bead4_15um_QWP/reality_test2"
+    ans1 = find_floor(path1, calib1)
+    print ans1
+
+    plot_areas(path2, calib2, last_plot = True)
+
+
+    #calib = "/data/20170711/bead7_15um_QWP/calibration"
+    #path = "/data/20170711/bead7_15um_QWP/reality_test3"
+    #find_floor(path, calib, data_has_drive = False, last_plot = True)
