@@ -5,7 +5,7 @@ import scipy.signal as sp
 import numpy as np
 import bead_util as bu
 
-refname = r"1mbar_zcool_G5_att.h5"
+refname = r"auto_xyzcool_G100_att_test3_synth2mV47Hz4000mVdc_0.h5"
 fname0 = r""
 path = "/data/20170706/bead3_15um_QWP"
 # refname = r"C:\data\20170403\bead6_15um"
@@ -28,7 +28,7 @@ if fname0 == "":
 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**13
+NFFT = 2**17
 
 def getdata(fname):
 	print "Opening file: ", fname
