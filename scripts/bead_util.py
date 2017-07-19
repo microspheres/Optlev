@@ -6,7 +6,6 @@ import datetime as dt
 import matplotlib.pyplot as plt
 import scipy.optimize as opt
 import scipy.signal as sp
-import scipy.interpolate as interp
 import matplotlib.cm as cmx
 import matplotlib.colors as colors
 
@@ -15,15 +14,25 @@ bead_rho = 2.0e3 ## kg/m^3
 kb = 1.3806488e-23 #J/K
 bead_mass = 4./3*np.pi*bead_radius**3 * bead_rho
 
-## default columns for data files FOR FILES CREATED AFTER 5/23/2017
+## default columns for data files FOR FILES CREATED AFTER 6/22/2017
 xi = 0
 yi = 1
 zi = 2
 xl = 3
 yl = 4
 zl = 5
-drive = 7
 xi_old = 6
+drive = 7
+
+## default columns for data files FOR FILES CREATED BETWEEN 5/23/2017 AND 6/22/2017
+# xi = 0
+# yi = 1
+# zi = 2
+# xl = 3
+# yl = 4
+# zl = 5
+# drive = 6
+# xi_old = 7
 
 ## default columns for data files FOR FILES CREATED BEFORE 5/23/2017
 # xi = 0
@@ -40,7 +49,7 @@ xi_old = 6
 #cham_spl = interp.UnivariateSpline( cforce[::5,0], cforce[::5,1], s=0 )
 
 def time_ordered_file_list(path):
-    file_list = glob.glob(path + "\*.h5")
+    file_list = glob.glob(path + "/*.h5")
     file_list.sort(key=os.path.getmtime)
     return file_list
 

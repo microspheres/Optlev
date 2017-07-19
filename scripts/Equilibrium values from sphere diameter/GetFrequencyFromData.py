@@ -52,7 +52,7 @@ def getdata(fname):
     ypsd, freqs = matplotlib.mlab.psd(dat[:, 1] - numpy.mean(dat[:, 1]), Fs=Fs, NFFT=NFFT)
     zpsd, freqs = matplotlib.mlab.psd(dat[:, 2] - numpy.mean(dat[:, 2]), Fs=Fs, NFFT=NFFT)
 
-    norm = numpy.median(dat[:, 2])
+    #norm = numpy.median(dat[:, 2])
     # for h in [xpsd, ypsd, zpsd]:
     #        h /= numpy.median(dat[:,2])**2
     return [freqs, xpsd, ypsd, dat, zpsd]

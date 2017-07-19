@@ -6,6 +6,7 @@ import numpy as np
 import numpy, h5py, matplotlib, os, glob
 from bead_util import get_color_map
 import bead_util as bu
+from decimal import Decimal
 
 ### The functions "saveACfile" and "saveACandDCfile" take in a path string (as below)
 ### then find the file_list and save the values from that list
@@ -18,8 +19,14 @@ NFFT = 2 ** 17 # number of bins
 #file_list = glob.glob(path+"/*.h5")
 #integrationTime = 20 # seconds
 
+distance = 0.002 #m
+Vpp_to_Vamp = 0.5 # files are saved in Vpp
+trek = 200.0 # gain of the trek
+
 # for now pretend our integration time was 100s because that's what it will eventually be
-integrationTime = 100
+integrationTime = 20
+
+debugging = False
 
 def getdata(fname):
     ## guess at file type from extension
@@ -79,24 +86,32 @@ def getACAmplitudeGraphs(file_list, make_plots = False, zeroDC = True):
     dxPicked = np.sqrt(adx[keyPicked])
     indexPicked = np.argmax(dxPicked)
     DCvoltages = [setDC] * N1
-    omegaAmplitudes = np.arange(N1)
-    twoOmegaAmplitudes = np.arange(N1)
+    omegaAmplitudes = range(N1)
+    twoOmegaAmplitudes = range(N1)
     if make_plots:
+        labels = range(N1)
         psd_plots = range(N1)
         #drive_plots = range(N1)
     """Now insert the amplitude for the requisite frequencies"""
     for index in range(N1):
         volt = ACvoltages[index] # V
-        constant = conversion # N/V
         i = indexPicked
         psd = np.sqrt(ax[volt]/voltageCount[volt]) # V/sqrtHz
         if make_plots:
-            psd_plots[index] = constant*psd/np.sqrt(integrationTime) # so this is in N
+            labels[index] = str(volt*trek*Vpp_to_Vamp/(distance*1e6)) + ' kV/mm'
+            psd_plots[index] = conversion*psd/np.sqrt(integrationTime) # so this is in N
             #drive_plots[index] = np.sqrt(adx[volt])
-        omegaAmplitudes[index] = constant*psd[i]*np.sqrt(binF) # N
-        twoOmegaAmplitudes[index] = constant*psd[2*i+1]*np.sqrt(binF) # N
+        omegaAmplitudes[index] = conversion*psd[i]*np.sqrt(binF) # N
+        twoOmegaAmplitudes[index] = conversion*psd[2*i+1]*np.sqrt(binF) # N
+        if debugging:
+            print 'binF = '+str(binF)
+            print 'psd[i] at index '+str(index)+'= '+str(psd[i])
+            w = '%.2E' % omegaAmplitudes[index]
+            w_2 = '%.2E' % twoOmegaAmplitudes[index]
+            print 'omegaAmplitudes['+str(index)+'] = '+w
+            print 'twoOmegaAmplitudes['+str(index)+'] = '+w_2
     if make_plots:
-        plot_psds(psd_plots, freqs, ACvoltages, indexPicked)
+        plot_psds(psd_plots, freqs, labels, indexPicked)
     return ACvoltages, omegaAmplitudes, twoOmegaAmplitudes, DCvoltages
 
 def plot_psds(psd_plots, frequencies, labels, index):
@@ -113,7 +128,33 @@ def plot_psds(psd_plots, frequencies, labels, index):
     plt.ylabel("Noise Level [N]")
     plt.ylim([0, np.amax(psd_plots[-1][np.argmin(np.abs(frequencies - 20)):np.argmin(np.abs(frequencies - 100))])])
     #plt.title(path[path.rfind('\\'):])
-    plt.legend()
+    plt.legend(loc = 3)
+    plt.show(block = False)
+
+    plt.figure()
+    for currLabel, psd, color in zip(labels, psd_plots, colorList):
+        plt.plot(frequencies[index], psd[index], "x", color = color)
+        plt.plot(frequencies[2*index+1], psd[2*index+1], "x", color = color)
+        plt.plot(frequencies, psd, color = color, label = currLabel)
+    plt.title("Force at the drive frequency")
+    plt.xlabel("Frequencies [Hz]")
+    plt.xlim([40.3,41.3])
+    plt.ylabel("Noise Level [N]")
+    plt.ylim([0, 1.2e-15])
+    plt.legend(loc = 2)
+    plt.show(block = False)
+
+    plt.figure()
+    for currLabel, psd, color in zip(labels, psd_plots, colorList):
+        plt.plot(frequencies[index], psd[index], "x", color = color)
+        plt.plot(frequencies[2*index+1], psd[2*index+1], "x", color = color)
+        plt.plot(frequencies, psd, color = color, label = currLabel)
+    plt.title("Force at twice the drive frequency")
+    plt.xlabel("Frequencies [Hz]")
+    plt.xlim([81.3,82.3])
+    plt.ylabel("Noise Level [N]")
+    plt.ylim([0, 9e-15])
+    plt.legend(loc = 2)
     plt.show(block = False)
 
 # Make the plots requested here
