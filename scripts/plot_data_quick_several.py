@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import bead_util as bu
 
-path = 'data/20170717/bead15_15um_QWP/reality_test_ACDC_trig'
+path = '/data/20170717/bead15_15um_QWP/reality_test_trig_good'
 NFFT = 2 ** 19
 
 
@@ -23,7 +23,6 @@ def find_nearest(array, value):
 
 
 def get_data_together(file_list):
-    N = NFFT / 2 + 1
     X = 0
     n = len(file_list)
     for fname in file_list:
@@ -39,14 +38,10 @@ def get_data_together(file_list):
 
 def get_averaged_data(path):
     file_list = bu.time_ordered_file_list(path)
-    n = len(file_list)
-    mod10 = n - 10 * n / 10
-    extra = (mod10 != 0)
-    num_iterations = n / 10 + extra
-    X = np.zeros(num_iterations)
-    for i in range(len(file_list) / 10):
-        X[i] = get_data_together(file_list[i:i + 10])
-    if extra: X[-1] = get_data_together(file_list[n / 10:])
+    X = []
+    for i in range(0, len(file_list), 10):
+        index = 10*i
+        X.append(get_data_together(file_list[index:index + 10]))
     return X
 
 

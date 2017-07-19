@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b5a0b9c6-3529-447c-8442-233d9f3aa8d0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_Z.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_fns.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/__init__.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/EquilibriumValuesFromSphereDiameter.py" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_Y.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/GetFrequencyFromData.py" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/GetFrequencyFromData.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/GetFrequencyFromDataFns.py" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/GetFrequencyFromDataFns.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/PlotPowerSpectrum.py" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/PlotPowerSpectrum.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/PowerToOffsetTable.py" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/PowerToOffsetTable.py" />
+    <list default="true" id="b5a0b9c6-3529-447c-8442-233d9f3aa8d0" name="Default" comment="fix">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Implementing codes.ipynb" afterPath="$PROJECT_DIR$/Implementing codes.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/charge.py" afterPath="$PROJECT_DIR$/charge.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_data_quick_several.py" afterPath="$PROJECT_DIR$/plot_data_quick_several.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_data_quick_together.py" afterPath="$PROJECT_DIR$/plot_data_quick_together.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -41,10 +30,22 @@
       <file leaf-file-name="plot_data_quick_several.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/plot_data_quick_several.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+            <state relative-caret-position="207">
+              <caret line="40" column="10" lean-forward="true" selection-start-line="40" selection-start-column="10" selection-end-line="40" selection-end-column="10" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="plot_corr_peaks.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/plot_corr_peaks.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="23" column="12" lean-forward="true" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
+              <folding>
+                <element signature="e#47#91#1" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -360,7 +361,14 @@
       <option name="project" value="LOCAL" />
       <updated>1499977253711</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Create partitioned plot_data_quick_together.py in plot_data_quick_several.py">
+      <created>1500473474667</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1500473474667</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -377,7 +385,7 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21177803" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3204983" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10872027" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -430,7 +438,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update numbers in bead_util" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update numbers in bead_util" />
+    <MESSAGE value="Create partitioned plot_data_quick_together.py in plot_data_quick_several.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create partitioned plot_data_quick_together.py in plot_data_quick_several.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -444,7 +453,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
             <element signature="e#13345#13858#1" expanded="false" />
           </folding>
         </state>
@@ -480,7 +489,7 @@
         <state relative-caret-position="448">
           <caret line="300" column="6" lean-forward="false" selection-start-line="300" selection-start-column="6" selection-end-line="300" selection-end-column="6" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
             <element signature="e#13345#13858#1" expanded="false" />
           </folding>
         </state>
@@ -499,7 +508,7 @@
         <state relative-caret-position="51">
           <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -610,16 +619,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bead_util.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="50" column="33" lean-forward="true" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
-          <folding>
-            <element signature="e#60#97#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/charge.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-675">
@@ -640,10 +639,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/bead_util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="50" column="33" lean-forward="true" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
+          <folding>
+            <element signature="e#60#97#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plot_corr_peaks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="23" column="12" lean-forward="true" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
+          <folding>
+            <element signature="e#47#91#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/plot_data_quick_several.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+        <state relative-caret-position="207">
+          <caret line="40" column="10" lean-forward="true" selection-start-line="40" selection-start-column="10" selection-end-line="40" selection-end-column="10" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
