@@ -1,81 +1,59 @@
-
-## load all files in a directory and plot the correlation of the resonse
+## load all files in a directory and plot the correlation of the response
 ## with the drive signal versus time
 
 import numpy as np
-import matplotlib, calendar
 import matplotlib.pyplot as plt
-import os, re, time, glob
+import os, time, glob
 import bead_util as bu
-import scipy.signal as sp
-import scipy.optimize as opt
-import cPickle as pickle
 
 path = r"C:\data\20170706\bead3_15um_QWP\charge1"
 ts = 1.
 
 fdrive = 31.
 make_plot = True
+debugging = False
 
-data_columns = [0, bu.xi] # column to calculate the correlation against
-drive_column = bu.drive # column containing drive signal
 
 def getphase(fname):
-        print "Getting phase from: ", fname 
-        dat, attribs, cf = bu.getdata(os.path.join(path, fname))
-        fsamp = attribs["Fsamp"]
-        xdat = dat[:,data_columns[1]]
+    print "Getting phase from: ", fname
+    dat, attribs, cf = bu.getdata(os.path.join(path, fname))
+    fsamp = attribs["Fsamp"]
+    xdat = dat[:, bu.xi]
 
-        xdat = np.append(xdat, np.zeros( int(fsamp/fdrive) ))
-        corr2 = np.correlate(xdat,dat[:,drive_column])
-        maxv = np.argmax(corr2) 
+    xdat = np.append(xdat, np.zeros(int(fsamp / fdrive)))
+    corr2 = np.correlate(xdat, dat[:, bu.drive])
+    maxv = np.argmax(corr2)
 
-        cf.close()
+    cf.close()
 
-        print maxv
-        return maxv
+    print maxv
+    return maxv
 
 
 def getdata(fname, maxv):
+    print "Processing ", fname
+    dat, attribs, cf = bu.getdata(os.path.join(path, fname))
 
-	print "Processing ", fname
-        dat, attribs, cf = bu.getdata(os.path.join(path, fname))
+    fsamp = attribs["Fsamp"]
 
-        if( len(attribs) > 0 ):
-            fsamp = attribs["Fsamp"]
+    xdat = dat[:, bu.xi]
 
-        xdat = dat[:,data_columns[1]]
+    ## zero pad one cycle
+    MinusDC = dat[:, bu.drive]
+    corr_full = bu.corr_func(MinusDC - np.median(MinusDC), xdat, fsamp, fdrive)
 
-        lentrace = len(xdat)
-        ## zero pad one cycle
-        MinusDC = dat[:,drive_column]
-        corr_full = bu.corr_func(MinusDC - np.median(MinusDC), xdat, fsamp, fdrive)
+    if debugging:
+        plt.figure()
+        plt.plot( xdat)
+        plt.plot(MinusDC)
+        plt.show()
 
-        #plt.figure()
-        #plt.plot( xdat)
-        #plt.plot(dat[:,drive_column])
-        #plt.show()
-        
+    return corr_full[0], np.max(corr_full)
 
-        return corr_full[0], np.max(corr_full) 
 
 def get_most_recent_file(p):
-
-    ## only consider single frequency files, not chirps
-    filelist = glob.glob(os.path.join(p,"*.h5"))  ##os.listdir(p)
-    #filelist = [filelist[0]]
-    mtime = 0
-    mrf = ""
-    for fin in filelist:
-        if( fin[-3:] != ".h5" ):
-            continue
-        f = os.path.join(path, fin) 
-        if os.path.getmtime(f)>mtime:
-            mrf = f
-            mtime = os.path.getmtime(f)
-
-    fnum = re.findall('\d+.h5', mrf)[0][:-3]
-    return mrf#.replace(fnum, str(int(fnum)-1))
+    filelist = bu.time_ordered_file_list(p)
+    return filelist[-1]
 
 
 best_phase = None
@@ -86,30 +64,30 @@ if make_plot:
     plt.hold(False)
 
 last_file = ""
-while( True ):
+while (True):
     ## get the most recent file in the directory and calculate the correlation
 
-    cfile = get_most_recent_file( path )
-    
+    cfile = get_most_recent_file(path)
+
     ## wait a sufficient amount of time to ensure the file is closed
     print cfile
     time.sleep(ts)
 
-    if( cfile == last_file ): 
+    if (cfile == last_file):
         continue
     else:
         last_file = cfile
 
     ## this ensures that the file is closed before we try to read it
-    time.sleep( 1 )
+    time.sleep(1)
 
-    if( not best_phase ):
-        best_phase = getphase( cfile )
+    if (not best_phase):
+        best_phase = getphase(cfile)
 
-    corr = getdata( cfile, best_phase )
-    corr_data.append(corr )
+    corr = getdata(cfile, best_phase)
+    corr_data.append(corr)
 
-    np.savetxt( os.path.join(path, "current_corr.txt"), [corr,] )
+    np.savetxt(os.path.join(path, "current_corr.txt"), [corr, ])
 
     if make_plot:
         plt.plot(np.array(corr_data))

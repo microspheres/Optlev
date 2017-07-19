@@ -2,8 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5a0b9c6-3529-447c-8442-233d9f3aa8d0" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_Z.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_fns.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/__init__.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/EquilibriumValuesFromSphereDiameter.py" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_Y.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/GetFrequencyFromData.py" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/GetFrequencyFromData.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/GetFrequencyFromDataFns.py" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/GetFrequencyFromDataFns.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/PlotPowerSpectrum.py" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/PlotPowerSpectrum.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/PowerToOffsetTable.py" afterPath="$PROJECT_DIR$/Equilibrium values from sphere diameter/PowerToOffsetTable.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bead_util.py" afterPath="$PROJECT_DIR$/bead_util.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Implementing codes.ipynb" afterPath="$PROJECT_DIR$/Implementing codes.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/charge.py" afterPath="$PROJECT_DIR$/charge.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_data_quick_several.py" afterPath="$PROJECT_DIR$/plot_data_quick_several.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_data_quick_together.py" afterPath="$PROJECT_DIR$/plot_data_quick_together.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,35 +25,48 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="correlation.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/correlation.py">
+    <leaf>
+      <file leaf-file-name="plot_data_quick_together.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/plot_data_quick_together.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="448">
-              <caret line="300" column="6" lean-forward="false" selection-start-line="300" selection-start-column="6" selection-end-line="300" selection-end-column="6" />
+            <state relative-caret-position="165">
+              <caret line="5" column="55" lean-forward="false" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
-                <element signature="e#13345#13858#1" expanded="false" />
+                <element signature="e#0#30#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plot_PSD_peaks.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/plot_PSD_peaks.py">
+      <file leaf-file-name="plot_data_quick_several.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/plot_data_quick_several.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="4" column="55" lean-forward="false" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="55" />
-              <folding />
+            <state relative-caret-position="165">
+              <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bead_util.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="charge.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/charge.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-675">
+              <caret line="53" column="28" lean-forward="false" selection-start-line="53" selection-start-column="28" selection-end-line="53" selection-end-column="28" />
+              <folding>
+                <element signature="n#!!doc" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bead_util.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bead_util.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="17" column="6" lean-forward="true" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+            <state relative-caret-position="198">
+              <caret line="50" column="33" lean-forward="true" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
               <folding>
                 <element signature="e#60#97#0" expanded="true" />
               </folding>
@@ -52,12 +76,24 @@
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>time</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Sumita" />
+      </list>
+    </option>
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -69,6 +105,14 @@
         <option value="$PROJECT_DIR$/plot_PSD_peaks.py" />
         <option value="$PROJECT_DIR$/correlation.py" />
         <option value="$PROJECT_DIR$/bead_util.py" />
+        <option value="$PROJECT_DIR$/GetFrequencyFromData.py" />
+        <option value="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter.py" />
+        <option value="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_Y.py" />
+        <option value="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_Z.py" />
+        <option value="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_fns.py" />
+        <option value="$PROJECT_DIR$/plot_data_quick_together.py" />
+        <option value="$PROJECT_DIR$/charge.py" />
+        <option value="$PROJECT_DIR$/plot_data_quick_several.py" />
       </list>
     </option>
   </component>
@@ -100,7 +144,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -116,12 +159,22 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="C:/Program Files/Git/bin/git.exe" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="last.edited.regexp" value="Sample Text" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Sumita\Documents\GitHub\Optlev\scripts\Equilibrium values from sphere diameter" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Sumita\Documents\GitHub\Optlev\scripts\Equilibrium values from sphere diameter" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -300,6 +353,14 @@
       <option name="presentableId" value="Default" />
       <updated>1499889078019</updated>
     </task>
+    <task id="LOCAL-00001" summary="Update numbers in bead_util">
+      <created>1499977253711</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1499977253711</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView">
@@ -316,17 +377,17 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21177803" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3204983" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3204983" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25349087" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25617614" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -366,6 +427,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Update numbers in bead_util" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update numbers in bead_util" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -410,14 +475,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/plot_PSD_peaks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="4" column="55" lean-forward="false" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/correlation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="448">
@@ -429,12 +486,166 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Equilibrium values from sphere diameter/PlotPowerSpectrum.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1358">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Capacitance_vs_distance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Equilibrium values from sphere diameter/GetFrequencyFromData.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="99">
+          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Equilibrium values from sphere diameter/PowerToOffsetTable.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Implementing codes.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_Y.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="43" column="0" lean-forward="true" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="false" />
+            <element signature="e#340#724#0" expanded="false" />
+            <element signature="e#758#1220#0" expanded="false" />
+            <element signature="e#1265#1368#0" expanded="false" />
+            <element signature="e#1413#1511#0" expanded="false" />
+            <element signature="e#1537#1620#0" expanded="false" />
+            <element signature="e#1646#1729#0" expanded="false" />
+            <element signature="e#1763#1909#0" expanded="false" />
+            <element signature="e#1973#2766#0" expanded="false" />
+            <element signature="e#2825#3020#0" expanded="false" />
+            <element signature="e#3091#4132#0" expanded="false" />
+            <element signature="e#4220#4592#0" expanded="false" />
+            <element signature="e#4660#5243#0" expanded="false" />
+            <element signature="e#5306#5698#0" expanded="false" />
+            <element signature="e#5777#6796#0" expanded="false" />
+            <element signature="e#6872#7404#0" expanded="false" />
+            <element signature="e#7503#9383#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_Z.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1287">
+          <caret line="199" column="19" lean-forward="false" selection-start-line="199" selection-start-column="19" selection-end-line="199" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#18#0" expanded="false" />
+            <element signature="e#340#724#0" expanded="false" />
+            <element signature="e#758#1220#0" expanded="false" />
+            <element signature="e#1265#1368#0" expanded="false" />
+            <element signature="e#1413#1511#0" expanded="false" />
+            <element signature="e#1537#1620#0" expanded="false" />
+            <element signature="e#1646#1729#0" expanded="false" />
+            <element signature="e#1763#1909#0" expanded="false" />
+            <element signature="e#1973#2766#0" expanded="false" />
+            <element signature="e#2825#3020#0" expanded="false" />
+            <element signature="e#3091#4132#0" expanded="false" />
+            <element signature="e#4220#4592#0" expanded="false" />
+            <element signature="e#4660#5243#0" expanded="false" />
+            <element signature="e#5306#5698#0" expanded="false" />
+            <element signature="e#5777#6796#0" expanded="false" />
+            <element signature="e#6872#7404#0" expanded="false" />
+            <element signature="e#7503#9383#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_fns.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="693">
+          <caret line="67" column="62" lean-forward="false" selection-start-line="67" selection-start-column="62" selection-end-line="67" selection-end-column="62" />
+          <folding>
+            <element signature="e#340#724#0" expanded="false" />
+            <element signature="e#758#1220#0" expanded="false" />
+            <element signature="e#1265#1368#0" expanded="false" />
+            <element signature="e#1413#1511#0" expanded="false" />
+            <element signature="e#1537#1620#0" expanded="false" />
+            <element signature="e#1646#1729#0" expanded="false" />
+            <element signature="e#1763#1938#0" expanded="false" />
+            <element signature="e#3119#4160#0" expanded="false" />
+            <element signature="e#4248#4620#0" expanded="false" />
+            <element signature="e#4688#5271#0" expanded="false" />
+            <element signature="e#5334#5726#0" expanded="false" />
+            <element signature="e#5805#6824#0" expanded="false" />
+            <element signature="e#6900#7432#0" expanded="false" />
+            <element signature="e#7531#9411#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plot_PSD_peaks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="4" column="55" lean-forward="false" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/bead_util.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="17" column="6" lean-forward="true" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+        <state relative-caret-position="198">
+          <caret line="50" column="33" lean-forward="true" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
           <folding>
             <element signature="e#60#97#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/charge.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-675">
+          <caret line="53" column="28" lean-forward="false" selection-start-line="53" selection-start-column="28" selection-end-line="53" selection-end-column="28" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plot_data_quick_together.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="5" column="55" lean-forward="false" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plot_data_quick_several.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
