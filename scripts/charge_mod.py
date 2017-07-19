@@ -13,7 +13,7 @@ import cPickle as pickle
 
 from scipy.optimize import curve_fit
 
-path = r"C:\data\20170622\bead4_15um_QWP\distance_signal"
+path = r"C:\data\20170622\bead4_15um_QWP\charge11"
 ts = 1.
 
 fdrive = 41.

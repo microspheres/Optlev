@@ -7,13 +7,13 @@ import numpy as np
 
 # Inputs
 NFFT = 2 ** 17
-make_psd_plot = False
+make_psd_plot = True
 debugging = False
-use_as_script = False
+use_as_script = True
 
 if use_as_script:
-    calib = "/data/20170622/bead4_15um_QWP/charge9"
-    path = "/data/20170622/bead4_15um_QWP/dipole27_Y"
+    calib = "/data/20170717/bead15_15um_QWP/calibration"
+    path = "/data/20170717/bead15_15um_QWP/dipole4_Z"
 
 if debugging:
     print "debugging on in plot_PSD_peaks.py: prepare for spam"
@@ -84,7 +84,7 @@ def plot_peaks2Fernando(path, plot_peaks = True):
     return
 
 #"""               # this is Fernando's plot             """
-#plot_peaks2Fernando(path)
+plot_peaks2Fernando(path)
 #""""""""""""""""""""""" THINGS HERE """""""""""""""""""""""
 
 # this is Sumita's plot
@@ -129,7 +129,7 @@ def plot_PSD_peaks(path, calib_path, last_plot = False):
     plt.show(block = last_plot)
     return
 
-#plot_PSD_peaks(path, calib)
+plot_PSD_peaks(path, calib, last_plot = True)
 
 # now on to doing the area calibration thing
 # integrating over basically the main peak
@@ -311,16 +311,16 @@ def find_floor(data_path, calib_path, data_has_drive = True, last_plot = False):
     
     return floor, side_floor
 
-if use_as_script:
+#if use_as_script:
     #plot_areas(path, calib, use_theta = True)
     """"""""""""""""""""" Inputs """""""""""""""""""""
     ### calibration files
-    calib1 = "/data/20170622/bead4_15um_QWP/charge11"
+    #calib1 = "/data/20170622/bead4_15um_QWP/charge11"
 
     ### this is where the noise files are pulled out
-    path1 = "/data/20170622/bead4_15um_QWP/reality_test2"
-    ans1 = find_floor(path1, calib1)
-    print ans1
+    #path1 = "/data/20170622/bead4_15um_QWP/reality_test2"
+    #ans1 = find_floor(path1, calib1)
+    #print ans1
 
     #calib = "/data/20170711/bead7_15um_QWP/calibration"
     #path = "/data/20170711/bead7_15um_QWP/reality_test3"
