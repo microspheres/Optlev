@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import bead_util as bu
 
-path = 'data/20170717/bead15_15um_QWP/reality_test_ACDC_trig'
+path = '/data/20170717/bead15_15um_QWP/reality_test_trig_good'
 NFFT = 2 ** 19
 
 
