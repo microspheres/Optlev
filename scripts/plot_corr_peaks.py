@@ -21,15 +21,15 @@ Fs = 10e3  ## this is ignored with HDF5 files
 
 p = bu.drive
 
-fdrive = 39.
+fdrive = 47.
 
 Fs = 10000
 
-li = 30.
+li = 45.
 
-ls = 200.
+ls = 49.
 
-butterp = 1
+butterp = 3
 
 boundi = 1500
 
@@ -39,7 +39,7 @@ p = bu.drive
 
 make_psd_plot = True
 
-path = r"C:\data\20170706\bead1_15um_QWP\dipole3_Y"
+path = r"C:\data\20170717\bead15_15um_QWP\dipole18_Y"
 
 file_list = glob.glob(path+"\*.h5")
 
@@ -81,7 +81,7 @@ def getdata_x_d(fname):
     
 	drive2W = (driveNf*driveNf - np.mean(driveNf*driveNf))/np.max(driveNf*driveNf - np.mean(driveNf*driveNf))
 	
-	return [x, driveN, drive2W]
+	return [x, driveNf, drive2W]
 
 
 def corr_aux(drive2WN, driveN, x, Jnoise, maxv):
@@ -160,11 +160,12 @@ def plot_peaks2F(file_list, Jx):
         # n = f.rfind("thetaZ")
         # thetaY[i] = float(f[m:n])
         print thetaY[i], thetaZ[i]
+        corrF[i] = np.correlate(x,d)
     return [thetaY, thetaZ, corrF, corr2F]
 
 thetaY, thetaZ, corrW, corr2W = plot_peaks2F(file_list, Jx)
 
 plt.figure()
-plt.plot(thetaY, corr2W, 'o')
+plt.plot(thetaY, corrW, 'o')
 plt.grid()
 plt.show()

@@ -1,6 +1,6 @@
 ## set of utility functions useful for analyzing bead data
 
-import h5py, os, matplotlib, re
+import h5py, os, matplotlib, re, glob
 import numpy as np
 import datetime as dt
 import matplotlib.pyplot as plt
@@ -38,6 +38,11 @@ xi_old = 6
 #cforce = np.loadtxt(r"c:\GitHub\opt_lev\scripts\data\chameleon_force.txt", delimiter=",")
 ## fit a spline to the data
 #cham_spl = interp.UnivariateSpline( cforce[::5,0], cforce[::5,1], s=0 )
+
+def time_ordered_file_list(path):
+    file_list = glob.glob(path + "\*.h5")
+    file_list.sort(key=os.path.getmtime)
+    return file_list
 
 def gain_fac( val ):
     ### Return the gain factor corresponding to a given voltage divider

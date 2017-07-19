@@ -9,13 +9,13 @@ import bead_util as bu
 #refname = r""
 #fname0 = r""
 #path = r"C:\data\201705010_noise_electric"
-path = r'C:\data\20170622\bead4_15um_QWP\reality_test2'
+path = r'C:\data\20170717\bead15_15um_QWP\reality_test_trig_good'
 
 make_plot_vs_time = True
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**19
+NFFT = 2**20
 
 def getdata(fname):
         print "Opening file: ", fname
@@ -67,15 +67,15 @@ F = np.zeros(NFFT/2 + 1)
 X = np.zeros(NFFT/2 + 1)
 driveX = np.zeros(NFFT/2 + 1)
 
-for file in list_file_time_order(path)[:]:
+for file in list_file_time_order(path)[50:]:
     a = getdata(file)
     F = np.array(a[0])
     X += np.array(a[1])
     driveX += np.array(a[2])
 
 
-plt.loglog(F,X/len( list_file_time_order(path)[:]))
-plt.loglog(F,driveX/len( list_file_time_order(path)[:]))
+plt.loglog(F,np.sqrt(X/len( list_file_time_order(path)[50:])))
+plt.loglog(F,driveX/len( list_file_time_order(path)[50:]))
 yvalues = plt.ylim()
 # clist = bu.get_color_map( len(frequency_list) )
 # for i,f in enumerate(frequency_list):

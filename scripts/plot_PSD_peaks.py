@@ -18,7 +18,7 @@ import bead_util as bu
 import time
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**16
+NFFT = 2**19
 
 sleep = 5.
 
@@ -28,7 +28,7 @@ make_psd_plot = True
 
 # fname0 = r"auto_xyzcool_G100_att_synth4500mV41Hz0mVdc_stage_tilt_-597thetaY_0thetaZ.h5"
 
-path = r"C:\data\20170622\bead4_15um_QWP\dipole27_Y"
+path = r"C:\data\20170717\bead15_15um_QWP\dipole18_Y"
 file_list = glob.glob(path+"\*.h5")
 
 def getdata1(fname):
@@ -55,7 +55,7 @@ def time_order(file_list):
 
 def get_position(dpsd):
     b = np.argmax(dpsd)
-    return 2*b - 1
+    return b
 
 def plot_peaks2F(file_list):
     file_list = time_order(file_list)
@@ -68,7 +68,7 @@ def plot_peaks2F(file_list):
         freqs, xpsd, dpsd = getdata1(file_list[i])
         b = get_position(dpsd)
         peaks2F[i] = xpsd[b] + xpsd[b-1] + xpsd[b+1] # all peak
-        peaksD[i] = dpsd[(b)/2]
+        peaksD[i] = dpsd[b]
         f = file_list[i]
         thetaY[i] = float(re.findall("-?\d+thetaY",f)[0][:-6])
         thetaZ[i] = float(re.findall("-?\d+thetaZ",f)[0][:-6])
