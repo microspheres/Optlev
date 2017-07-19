@@ -16,21 +16,21 @@ electron = 1.60E-19
 
 d = 0.0008
 
-Vpp = 200.0
+Vpp = 160.0
 
-conversion41 = -0.0832261222
+conversion41 = 0.10209863
 
-conversion82 = 5.18258511759e-05
+conversion82 = -6.74639623327e-05
 
-Vmeasurement_pp = 2000.0
+Vmeasurement_pp = 1980.0
 
 Nucleons = 1.1E15
 
-path_charge = r"C:\data\20170622\bead4_15um_QWP\charge11"
+path_charge = r"C:\data\20170717\bead15_15um_QWP\calibration"
 
-path_signal = r"C:\data\20170622\bead4_15um_QWP\reality_test2"
+path_signal = r"C:\data\20170717\bead15_15um_QWP\reality_test_ACDC_trig"
 
-path_noise = r"C:\data\20170622\bead4_15um_QWP\charge11"
+path_noise = r"C:\data\20170717\bead15_15um_QWP\calibration"
 
 p = bu.drive
 
@@ -148,6 +148,9 @@ def corr_aux(drive2WN, driveN, x, Jnoise, maxv):
     boundi = 1500
     bounds = 7500
 
+    # boundi = np.argmax(fftd) - 10
+    # bounds = np.argmax(fftd) + 10
+
 
     corr = np.sum(np.conjugate(fftd[boundi:bounds])*fftx[boundi:bounds]/jx[boundi:bounds])/np.sum(np.conjugate(fftd[boundi:bounds])*fftd[boundi:bounds]/jx[boundi:bounds])
     corr = corr
@@ -203,8 +206,10 @@ def do_corr_trigger(file_list_signal, maxv, Jnoise, d, d2):
 
 Jx = Jnoise(file_list_noise, 0)
 
-corr, corr2 = do_corr(file_list_signal, 0, Jx)
-### corr, corr2 = do_corr_trigger(file_list_signal, 0, Jx, drive_t, drive2_t)
+drive_t, drive2_t = get_drive(file_list_charge)
+
+# corr, corr2 = do_corr(file_list_signal, 0, Jx)
+corr, corr2 = do_corr_trigger(file_list_signal, 0, Jx, drive_t, drive2_t)
 
 print np.mean(corr)
 print np.mean(corr2)

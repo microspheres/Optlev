@@ -3,14 +3,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 import bead_util as bu
 
-path = r'C:\data\20170622\bead4_15um_QWP\reality_test2'
+#refname = r""
+#fname0 = r""
+#path = r"C:\data\201705010_noise_electric"
+path = r'C:\data\20170717\bead15_15um_QWP\reality_test_trig_good'
 
 make_plot_vs_time = True
 use_as_script = True
 
-Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2 ** 19
-
+NFFT = 2**20
 
 def getdata(fname):
     print "Opening file: ", fname
