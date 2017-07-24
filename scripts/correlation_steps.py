@@ -13,11 +13,6 @@ if use_as_script:
     measurement_path = directory + "measurement_2/"
 
 
-def gauss(x, x0, y0, sigma):
-    p = [x0, y0, sigma]
-    return p[1] * np.exp(-((x - p[0]) / p[2]) ** 2)
-
-
 def getBackgroundDC(fname):
     i = fname.rfind('mVdc_') + 5
     j = fname.rfind('VDCbg')
@@ -132,35 +127,20 @@ def plotCorr(corr, dc, t):
     plt.show()
 
 
-# def plotGaussFit(corr):
-#     corr = np.array(corr)
-#     d = Counter(int(corr * 1e22))
-#
-#     >> > z = ['blue', 'red', 'blue', 'yellow', 'blue', 'red']
-#     >> > Counter(z)
-#     Counter({'blue': 3, 'red': 2, 'yellow': 1})
-#
-#     lists = sorted(d.items())  # sorted by key, return a list of tuples
-#
-#     x, y = zip(*lists)  # unpack a list of pairs into two tuples
-#
-#     plt.plot(x, y)
-#     plt.show()
-#
-#     # Initialization parameters
-#     p0 = [1., 1., 1.]
-#     # Fit the data with the function
-#     fit, tmp = curve_fit(gauss, x, y, p0=p0)
-#
-#     # Plot the results
-#     plt.title('Fit parameters:\n x0=%.2e y0=%.2e sigma=%.2e' % (fit[0], fit[1], fit[2]))
-#     # Data
-#     plt.plot(x, y, 'r--')
-#     # Fitted function
-#     x_fine = np.linspace(xe[0], xe[-1], 100)
-#     plt.plot(x_fine, gauss(x_fine, fit[0], fit[1], fit[2]), 'b-')
-#     plt.savefig('Gaussian_fit.png')
-#     plt.show()
+def gauss(x, A=1., u=0., var=1.):
+    return A * np.exp(-((x - u) / var) ** 2)
+
+
+def plotGaussFit(corr):
+    corr = sorted(corr)
+    x = np.array(range(len(corr)))
+    u = sum(corr)/len(corr)
+    var = np.var(corr)
+    plt.figure()
+    plt.plot(corr)
+    plt.plot(gauss(x, u=u, var=var))
+    plt.title('gaussian fit of correlation between drive and response')
+    plt.show()
 
 
 if use_as_script:

@@ -44,7 +44,7 @@ def getdata(fname, maxv):
 
     if debugging:
         plt.figure()
-        plt.plot( xdat)
+        plt.plot(xdat)
         plt.plot(MinusDC)
         plt.show()
 

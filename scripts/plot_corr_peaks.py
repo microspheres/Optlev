@@ -5,25 +5,19 @@ Created on Fri Jun 23 13:28:01 2017
 
 """
 
-import numpy, h5py, matplotlib
+import numpy, h5py
 import matplotlib.pyplot as plt
-import os
-import scipy.signal as sp
 import numpy as np
-import os, re, time, glob
-from scipy.signal import butter, lfilter, filtfilt
-from scipy import signal
+import os, re
 import glob
 import bead_util as bu
-from scipy.signal import butter, lfilter, filtfilt
+from scipy.signal import butter, filtfilt
 
 Fs = 10e3  ## this is ignored with HDF5 files
 
 p = bu.drive
 
 fdrive = 47.
-
-Fs = 10000
 
 li = 45.
 
@@ -35,14 +29,11 @@ boundi = 1500
 
 bounds = 7500
 
-p = bu.drive
-
 make_psd_plot = True
 
 path = r"C:\data\20170717\bead15_15um_QWP\dipole18_Y"
 
-file_list = glob.glob(path+"\*.h5")
-
+file_list = glob.glob(path + "\*.h5")
 
 
 def butter_bandpass(lowcut, highcut, fs, order=5):
@@ -58,30 +49,33 @@ def butter_bandpass_filter(data, lowcut, highcut, fs, order):
     y = filtfilt(b, a, data)
     return y
 
+
 def time_order(file_list):
-    file_list.sort(key = os.path.getmtime)
+    file_list.sort(key=os.path.getmtime)
     return file_list
 
-def getdata_x_d(fname):
-	_, fext = os.path.splitext( fname )
-	if( fext == ".h5"):
-		f = h5py.File(fname,'r')
-		dset = f['beads/data/pos_data']
-		dat = numpy.transpose(dset)
-		Fs = dset.attrs['Fsamp']
-		dat = dat * 10./(2**15 - 1)
-	else:
-		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
-        
-	x = dat[:, 0]-numpy.mean(dat[:, 0])
-        x =  butter_bandpass_filter(x, li, ls, Fs, butterp)
-	driveN = ((dat[:, p] - numpy.mean(dat[:, p])))/np.max((dat[:, p] - numpy.mean(dat[:, p])))
 
-	driveNf = butter_bandpass_filter(driveN, li, ls, Fs, butterp)/np.max(butter_bandpass_filter(driveN, li, ls, Fs, butterp))
-    
-	drive2W = (driveNf*driveNf - np.mean(driveNf*driveNf))/np.max(driveNf*driveNf - np.mean(driveNf*driveNf))
-	
-	return [x, driveNf, drive2W]
+def getdata_x_d(fname):
+    _, fext = os.path.splitext(fname)
+    if (fext == ".h5"):
+        f = h5py.File(fname, 'r')
+        dset = f['beads/data/pos_data']
+        dat = numpy.transpose(dset)
+        Fs = dset.attrs['Fsamp']
+        dat = dat * 10. / (2 ** 15 - 1)
+    else:
+        dat = numpy.loadtxt(fname, skiprows=5, usecols=[2, 3, 4, 5, 6])
+
+    x = dat[:, 0] - numpy.mean(dat[:, 0])
+    x = butter_bandpass_filter(x, li, ls, Fs, butterp)
+    driveN = ((dat[:, p] - numpy.mean(dat[:, p]))) / np.max((dat[:, p] - numpy.mean(dat[:, p])))
+
+    driveNf = butter_bandpass_filter(driveN, li, ls, Fs, butterp) / np.max(
+        butter_bandpass_filter(driveN, li, ls, Fs, butterp))
+
+    drive2W = (driveNf * driveNf - np.mean(driveNf * driveNf)) / np.max(driveNf * driveNf - np.mean(driveNf * driveNf))
+
+    return [x, driveNf, drive2W]
 
 
 def corr_aux(drive2WN, driveN, x, Jnoise, maxv):
@@ -93,54 +87,51 @@ def corr_aux(drive2WN, driveN, x, Jnoise, maxv):
     fftx = np.fft.rfft(shift_x)
     fftd = np.fft.rfft(shift_d)
     fftd2W = np.fft.rfft(shift_d2W)
-    
+
     Fi = np.argmax(fftd2W) - 3
     Fs = np.argmax(fftd2W) + 3
     jx = Jnoise
 
-    corr = np.sum(np.conjugate(fftd[boundi:bounds])*fftx[boundi:bounds]/jx[boundi:bounds])/np.sum(np.conjugate(fftd[boundi:bounds])*fftd[boundi:bounds]/jx[boundi:bounds])
+    corr = np.sum(np.conjugate(fftd[boundi:bounds]) * fftx[boundi:bounds] / jx[boundi:bounds]) / np.sum(
+        np.conjugate(fftd[boundi:bounds]) * fftd[boundi:bounds] / jx[boundi:bounds])
     corr = corr
 
-    corr2W = np.sum(np.conjugate(fftd2W[Fi:Fs])*fftx[Fi:Fs])
+    corr2W = np.sum(np.conjugate(fftd2W[Fi:Fs]) * fftx[Fi:Fs])
     corr2W = corr2W
 
     return [corr, corr2W]
 
 
 def getdata_noise(fname):
-	_, fext = os.path.splitext( fname )
-	if( fext == ".h5"):
-		f = h5py.File(fname,'r')
-		dset = f['beads/data/pos_data']
-		dat = numpy.transpose(dset)
-		Fs = dset.attrs['Fsamp']
-		dat = dat * 10./(2**15 - 1)
-	else:
-		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
-        
-	x = dat[:, 0]-numpy.mean(dat[:, 0])
-
-	return [x]
-
+    _, fext = os.path.splitext(fname)
+    if (fext == ".h5"):
+        f = h5py.File(fname, 'r')
+        dset = f['beads/data/pos_data']
+        dat = numpy.transpose(dset)
+        dat = dat * 10. / (2 ** 15 - 1)
+    else:
+        dat = numpy.loadtxt(fname, skiprows=5, usecols=[2, 3, 4, 5, 6])
+    x = dat[:, 0] - numpy.mean(dat[:, 0])
+    return [x]
 
 
 def Jnoise(noise_file, maxv):
     J = []
     zero = np.zeros(maxv)
-    noise_aux = []
-    fftnoise = []
     a = 0
     for i in noise_file:
         noise_aux = getdata_noise(i)
         shift_N = np.append(noise_aux, zero)
         fftnoise = np.fft.rfft(shift_N)
-        j = np.abs(np.conjugate(fftnoise)*fftnoise)
+        j = np.abs(np.conjugate(fftnoise) * fftnoise)
         J = j if J == [] else J + np.array(j)
         a += 1.
-        print "PSDnoise", a/len(noise_file)
-    return (J/len(noise_file))**0
+        print "PSDnoise", a / len(noise_file)
+    return (J / len(noise_file)) ** 0
+
 
 Jx = Jnoise(file_list, 0)
+
 
 def plot_peaks2F(file_list, Jx):
     file_list = time_order(file_list)
@@ -154,14 +145,12 @@ def plot_peaks2F(file_list, Jx):
         corrF[i] = corra
         corr2F[i] = corr2a
         f = file_list[i]
-        thetaY[i] = float(re.findall("-?\d+thetaY",f)[0][:-6])
-        thetaZ[i] = float(re.findall("-?\d+thetaZ",f)[0][:-6])
-        # m = f.rfind("stage_tilt_") + 11
-        # n = f.rfind("thetaZ")
-        # thetaY[i] = float(f[m:n])
+        thetaY[i] = float(re.findall("-?\d+thetaY", f)[0][:-6])
+        thetaZ[i] = float(re.findall("-?\d+thetaZ", f)[0][:-6])
         print thetaY[i], thetaZ[i]
-        corrF[i] = np.correlate(x,d)
+        corrF[i] = np.correlate(x, d)
     return [thetaY, thetaZ, corrF, corr2F]
+
 
 thetaY, thetaZ, corrW, corr2W = plot_peaks2F(file_list, Jx)
 

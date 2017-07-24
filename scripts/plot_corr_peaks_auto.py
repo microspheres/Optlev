@@ -1,9 +1,14 @@
 from plot_PSD_peaks import plot_peaks2Fernando
+from charge import get_most_recent_file
 from scipy.signal import butter, filtfilt
 import matplotlib.pyplot as plt
 import bead_util as bu
 import os, re, h5py
 import numpy as np
+import matplotlib.pyplot as plt
+import bead_util as bu
+import numpy as np
+import os, time
 
 fdrive = 47.
 Fs = 10000
@@ -102,3 +107,33 @@ plt.figure()
 plt.plot(thetaY, corrW, 'o')
 plt.grid()
 plt.show()
+
+last_file = ""
+while (True):
+    ## get the most recent file in the directory and calculate the correlation
+
+    cfile = get_most_recent_file(path)
+
+    ## wait a sufficient amount of time to ensure the file is closed
+    print cfile
+    time.sleep(ts)
+
+    if (cfile == last_file):
+        continue
+    else:
+        last_file = cfile
+
+    ## this ensures that the file is closed before we try to read it
+    time.sleep(1)
+
+    if (not best_phase):
+        best_phase = getphase(cfile)
+
+    corr = getdata(cfile, best_phase)
+    corr_data.append(corr)
+
+    if make_plot:
+        plt.plot(np.array(corr_data))
+        plt.draw()
+        plt.pause(0.001)
+        plt.grid()
