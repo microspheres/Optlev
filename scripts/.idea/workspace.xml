@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b5a0b9c6-3529-447c-8442-233d9f3aa8d0" name="Default" comment="fix">
+    <list default="true" id="b5a0b9c6-3529-447c-8442-233d9f3aa8d0" name="Default" comment="Merge branch 'Sumita' of https://github.com/microspheres/Optlev into Sumita&#10;&#10;# Conflicts:&#10;#&#9;scripts/plot_data_quick_several.py">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/correlation_steps.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/plot_corr_peaks_auto.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_data_quick_several.py" afterPath="$PROJECT_DIR$/plot_data_quick_several.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/charge.py" afterPath="$PROJECT_DIR$/charge.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/correlation.py" afterPath="$PROJECT_DIR$/correlation.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_PSD_peaks.py" afterPath="$PROJECT_DIR$/plot_PSD_peaks.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,49 +19,46 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="plot_data_quick_together.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/plot_data_quick_together.py">
+      <file leaf-file-name="correlation.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/correlation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="5" column="55" lean-forward="false" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
+            <state relative-caret-position="662">
+              <caret line="200" column="44" lean-forward="false" selection-start-line="200" selection-start-column="44" selection-end-line="200" selection-end-column="44" />
               <folding>
-                <element signature="e#0#30#0" expanded="true" />
+                <element signature="e#1158#1743#0" expanded="false" />
+                <element signature="e#1816#2644#0" expanded="false" />
+                <element signature="e#2686#3451#0" expanded="false" />
+                <element signature="e#3485#3698#0" expanded="false" />
+                <element signature="e#3726#3795#0" expanded="false" />
+                <element signature="e#3926#5809#0" expanded="false" />
+                <element signature="e#5861#6128#0" expanded="false" />
+                <element signature="e#6240#8752#0" expanded="false" />
+                <element signature="e#8803#8931#0" expanded="false" />
+                <element signature="e#8970#9368#0" expanded="false" />
+                <element signature="e#9470#10578#0" expanded="false" />
+                <element signature="e#10691#11654#0" expanded="false" />
+                <element signature="e#11783#12475#0" expanded="false" />
+                <element signature="e#12519#12967#0" expanded="false" />
+                <element signature="e#12969#13482#1" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plot_data_quick_several.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/plot_data_quick_several.py">
+      <file leaf-file-name="correlation_steps.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/correlation_steps.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="40" column="10" lean-forward="true" selection-start-line="40" selection-start-column="10" selection-end-line="40" selection-end-column="10" />
+            <state relative-caret-position="-279">
+              <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="plot_corr_peaks.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/plot_corr_peaks.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="23" column="12" lean-forward="true" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
-              <folding>
-                <element signature="e#47#91#1" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="charge.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/charge.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-675">
-              <caret line="53" column="28" lean-forward="false" selection-start-line="53" selection-start-column="28" selection-end-line="53" selection-end-column="28" />
-              <folding>
-                <element signature="n#!!doc" expanded="false" />
+                <element signature="e#251#410#0" expanded="false" />
+                <element signature="e#446#517#0" expanded="false" />
+                <element signature="e#552#713#0" expanded="false" />
+                <element signature="e#753#1570#0" expanded="false" />
+                <element signature="e#1627#2812#0" expanded="false" />
+                <element signature="e#2847#3180#0" expanded="false" />
+                <element signature="e#3214#3590#0" expanded="false" />
+                <element signature="e#3593#3618#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -66,8 +67,8 @@
       <file leaf-file-name="bead_util.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bead_util.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="50" column="33" lean-forward="true" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
+            <state relative-caret-position="231">
+              <caret line="51" column="41" lean-forward="true" selection-start-line="51" selection-start-column="41" selection-end-line="51" selection-end-column="41" />
               <folding>
                 <element signature="e#60#97#0" expanded="true" />
               </folding>
@@ -87,6 +88,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>time</find>
+      <find>numpy</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -101,10 +103,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/correlation.py" />
         <option value="$PROJECT_DIR$/plates.py" />
-        <option value="$PROJECT_DIR$/plot_PSD_peaks.py" />
-        <option value="$PROJECT_DIR$/correlation.py" />
         <option value="$PROJECT_DIR$/bead_util.py" />
         <option value="$PROJECT_DIR$/GetFrequencyFromData.py" />
         <option value="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter.py" />
@@ -112,8 +111,13 @@
         <option value="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_Z.py" />
         <option value="$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_fns.py" />
         <option value="$PROJECT_DIR$/plot_data_quick_together.py" />
-        <option value="$PROJECT_DIR$/charge.py" />
         <option value="$PROJECT_DIR$/plot_data_quick_several.py" />
+        <option value="$PROJECT_DIR$/charge.py" />
+        <option value="$PROJECT_DIR$/plot_corr_peaks_auto.py" />
+        <option value="$PROJECT_DIR$/plot_PSD_peaks.py" />
+        <option value="$PROJECT_DIR$/correlation.py" />
+        <option value="$PROJECT_DIR$/correlation.py" />
+        <option value="$PROJECT_DIR$/correlation_steps.py" />
       </list>
     </option>
   </component>
@@ -171,6 +175,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Sumita\Documents\GitHub\Optlev\scripts" />
       <recent name="C:\Users\Sumita\Documents\GitHub\Optlev\scripts\Equilibrium values from sphere diameter" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -368,7 +373,14 @@
       <option name="project" value="LOCAL" />
       <updated>1500473474667</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fix get_averaged_data() in plot_data_quick_several">
+      <created>1500503768769</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1500503768770</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
@@ -385,7 +397,7 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21177803" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10872027" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.42695355" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -439,11 +451,13 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update numbers in bead_util" />
     <MESSAGE value="Create partitioned plot_data_quick_together.py in plot_data_quick_several.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create partitioned plot_data_quick_together.py in plot_data_quick_several.py" />
+    <MESSAGE value="Fix get_averaged_data() in plot_data_quick_several" />
+    <MESSAGE value="Merge branch 'Sumita' of https://github.com/microspheres/Optlev into Sumita&#10;&#10;# Conflicts:&#10;#&#9;scripts/plot_data_quick_several.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'Sumita' of https://github.com/microspheres/Optlev into Sumita&#10;&#10;# Conflicts:&#10;#&#9;scripts/plot_data_quick_several.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="3" />
+      <option name="time" value="6" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -453,8 +467,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#18#0" expanded="false" />
-            <element signature="e#13345#13858#1" expanded="false" />
+            <element signature="e#12969#13482#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -481,17 +494,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
           <caret line="149" column="0" lean-forward="true" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/correlation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="300" column="6" lean-forward="false" selection-start-line="300" selection-start-column="6" selection-end-line="300" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-            <element signature="e#13345#13858#1" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -611,60 +613,125 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/plot_PSD_peaks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="4" column="55" lean-forward="false" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/charge.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-675">
-          <caret line="53" column="28" lean-forward="false" selection-start-line="53" selection-start-column="28" selection-end-line="53" selection-end-column="28" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/plot_data_quick_together.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
-          <caret line="5" column="55" lean-forward="false" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
+          <caret line="5" column="14" lean-forward="false" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
           <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bead_util.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="50" column="33" lean-forward="true" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
-          <folding>
-            <element signature="e#60#97#0" expanded="true" />
+            <element signature="e#0#30#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/plot_corr_peaks.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="23" column="12" lean-forward="true" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
+        <state relative-caret-position="323">
+          <caret line="23" column="12" lean-forward="false" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
           <folding>
             <element signature="e#47#91#1" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/charge.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="73" column="18" lean-forward="true" selection-start-line="73" selection-start-column="18" selection-end-line="73" selection-end-column="18" />
+          <folding>
+            <element signature="e#112#143#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plot_PSD_peaks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="90" column="57" lean-forward="false" selection-start-line="90" selection-start-column="57" selection-end-line="90" selection-end-column="57" />
+          <folding>
+            <element signature="e#386#492#0" expanded="false" />
+            <element signature="e#512#642#0" expanded="false" />
+            <element signature="e#744#1336#0" expanded="false" />
+            <element signature="e#1373#1970#0" expanded="false" />
+            <element signature="e#2022#2269#0" expanded="false" />
+            <element signature="e#2325#2934#0" expanded="false" />
+            <element signature="e#3023#3083#0" expanded="false" />
+            <element signature="e#3171#3776#0" expanded="false" />
+            <element signature="e#3817#4102#0" expanded="false" />
+            <element signature="e#4170#4680#0" expanded="false" />
+            <element signature="e#4867#5591#0" expanded="false" />
+            <element signature="e#5656#6521#0" expanded="false" />
+            <element signature="e#6619#7306#0" expanded="false" />
+            <element signature="e#7393#8818#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/plot_data_quick_several.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="40" column="10" lean-forward="true" selection-start-line="40" selection-start-column="10" selection-end-line="40" selection-end-column="10" />
+        <state relative-caret-position="66">
+          <caret line="24" column="3" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="24" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plot_corr_peaks_auto.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="33">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#398#528#0" expanded="false" />
+            <element signature="e#597#695#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bead_util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="51" column="41" lean-forward="true" selection-start-line="51" selection-start-column="41" selection-end-line="51" selection-end-column="41" />
+          <folding>
+            <element signature="e#60#97#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/correlation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="662">
+          <caret line="200" column="44" lean-forward="false" selection-start-line="200" selection-start-column="44" selection-end-line="200" selection-end-column="44" />
+          <folding>
+            <element signature="e#1158#1743#0" expanded="false" />
+            <element signature="e#1816#2644#0" expanded="false" />
+            <element signature="e#2686#3451#0" expanded="false" />
+            <element signature="e#3485#3698#0" expanded="false" />
+            <element signature="e#3726#3795#0" expanded="false" />
+            <element signature="e#3926#5809#0" expanded="false" />
+            <element signature="e#5861#6128#0" expanded="false" />
+            <element signature="e#6240#8752#0" expanded="false" />
+            <element signature="e#8803#8931#0" expanded="false" />
+            <element signature="e#8970#9368#0" expanded="false" />
+            <element signature="e#9470#10578#0" expanded="false" />
+            <element signature="e#10691#11654#0" expanded="false" />
+            <element signature="e#11783#12475#0" expanded="false" />
+            <element signature="e#12519#12967#0" expanded="false" />
+            <element signature="e#12969#13482#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/correlation_steps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-279">
+          <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+          <folding>
+            <element signature="e#251#410#0" expanded="false" />
+            <element signature="e#446#517#0" expanded="false" />
+            <element signature="e#552#713#0" expanded="false" />
+            <element signature="e#753#1570#0" expanded="false" />
+            <element signature="e#1627#2812#0" expanded="false" />
+            <element signature="e#2847#3180#0" expanded="false" />
+            <element signature="e#3214#3590#0" expanded="false" />
+            <element signature="e#3593#3618#0" expanded="false" />
           </folding>
         </state>
       </provider>
