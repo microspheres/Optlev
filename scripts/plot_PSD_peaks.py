@@ -1,6 +1,6 @@
 from correlation import outputThetaPosition, getGainAndACamp, num_electrons_in_sphere
 from VoltagevsAmplitude import conversion # gives N/V
-import h5py, matplotlib, os, re, glob
+import h5py, matplotlib, glob
 import matplotlib.pyplot as plt
 from bead_util import xi, drive, time_ordered_file_list
 import numpy as np
@@ -9,7 +9,7 @@ import numpy as np
 NFFT = 2 ** 17
 make_psd_plot = True
 debugging = False
-use_as_script = True
+use_as_script = False
 
 if use_as_script:
     calib = "/data/20170717/bead15_15um_QWP/calibration"
@@ -113,13 +113,13 @@ def getConstant(calibration_path):
     nx2 = get_PSD_peak_parameters(calibration_list[:i], use_theta = False) # for one electron
     return np.average(nx2)# Newtons/electron
 
-def plot_PSD_peaks(path, calib_path, last_plot = False):
+def plot_PSD_peaks(path, calib_path = '', last_plot = False):
     file_list = time_ordered_file_list(path)
-    c = getConstant(calib_path) # Newtons/electron
-    if debugging:
-        print "c = ", c
+    if calib_path != '':
+        c = getConstant(calib_path) # Newtons/electron
+        if debugging: print "c = ", c
     theta, nx2 = get_PSD_peak_parameters(file_list) # steps, Newtons
-    nx2 = nx2/c # electrons
+    if calib_path != '': nx2 = nx2/c # electrons
     plt.figure()
     plt.plot(theta, nx2, 'o')
     plt.xlabel('Steps in theta')
@@ -133,87 +133,6 @@ plot_PSD_peaks(path, calib, last_plot = True)
 
 # now on to doing the area calibration thing
 # integrating over basically the main peak
-def get_area(f):
-    w, x, d = getdata(f, give_squares=True) # Hz, V^2/Hz, 1/Hz
-    binF = w[1] - w[0] # Hz
-    gain, ACamp = getGainAndACamp(f) # unitless, V
-    if debugging:
-        fname = f[f.rfind('_')+1:f.rfind('.')]
-        print ""
-        print "DEBUGGING: get_area of ", fname
-        print "           len(x) = ", len(x)
-    i = np.argmax(d)
-    if debugging:
-        print "           i = ", i
-        print ""
-    x_in_Newtons = conversion*x*binF/(gain*ACamp)
-    return sum(x_in_Newtons[i-2:i+3]) # Newtons
-
-def peak_areas(path, c = 1, use_theta = False):
-    a = [] # in units of Newtons
-    x = []
-    y_or_z = ""
-    if debugging:
-        print ""
-        print "DEBUGGING: peak_areas"
-        if use_theta: print "           using theta"
-    file_list = glob.glob(path + "/*.h5")
-    if debugging:
-        i = min(len(file_list), 20)
-        file_list = file_list[:i]
-    if len(file_list) == 1:
-        return np.array([0]), np.array([get_area(file_list[0])])/c
-    for f in file_list:
-        if debugging:
-            print "           reading file ", f[len(path):], "inside peak_areas"
-        a.append(get_area(f))
-        if use_theta:
-            tpos, y_or_z = outputThetaPosition(f, y_or_z)
-            x.append(tpos)
-        else:
-            x.append(int(f[f.rfind('_')+1:f.rfind('.')]))
-    x, a = zip(*sorted(zip(x, a))) # sort by time
-    if debugging:
-        print "           peak_areas worked!"
-        print ""
-    return np.array(x), np.array(a)/c
-
-def calibration_area(calib_path):
-    x, a = peak_areas(calib_path)
-    i = min(len(a), 20) # take first few files
-    if debugging:
-        print ""
-        print "DEBUGGING: calibration_area"
-        print "           i = ", i
-        print ""
-    one_electron = np.average(a[:i])
-    return one_electron*num_electrons_in_sphere
-
-def get_area_parameters(path, calib_path, use_theta = False):
-    print "calibrating from ", calib_path
-    c = calibration_area(calib_path)
-    print "c = ", c
-    print "finding areas for ", path
-    x, a = peak_areas(path, c = c, use_theta = use_theta)
-    return x, a # noise floor
-
-def plot_areas(path, calib_path, use_theta = False, last_plot = False):
-    x, a = get_area_parameters(path, calib_path, use_theta)
-    print "Noise floor is at ", np.average(a), "fractions of an electron charge"
-    print ""
-    plt.figure()
-    plt.loglog(x, a, 'o')
-    if use_theta:
-        plt.xlabel('Steps in theta')
-    else:
-        plt.xlabel('time [s]')
-    plt.ylabel('peak area [electrons]')
-    plt.title('Areas of PSD peaks at twice the drive frequency')
-    plt.grid()
-    plt.show(block = last_plot)
-    return
-
-# BLARG try again
 
 def getdata_areas(fname, need_drive = True):
     f = h5py.File(fname, 'r')
@@ -263,10 +182,10 @@ def get_tot_psd(path, get_dpsd = True, last_plot = False):
     if get_dpsd: return xpsd, dpsd
     else: return xpsd
 
-def get_averaged_area(path, get_drive = False, dpsd = [], side = False, last_plot = False):
+def get_averaged_area(path, get_drive = False, dpsd = (), side = False, last_plot = False):
     if debugging:
         print "\nDEBUGGING: get_averaged_area(path)"
-    if dpsd == []:
+    if dpsd == ():
         xpsd, dpsd = get_tot_psd(path, last_plot = last_plot)
     else:
         xpsd = get_tot_psd(path, get_dpsd = False, last_plot = last_plot)
@@ -275,11 +194,10 @@ def get_averaged_area(path, get_drive = False, dpsd = [], side = False, last_plo
     area = float(sum(xpsd[i-2:i+3]))
     if side:
         side_area = float(sum(xpsd[j-2:j+3]))
+        if debugging: print "           side_area = ", side_area, "\n"
     if debugging:
         print "           i = ", i
         print "           area = ", area
-        if side:
-            print "           side_area = ", side_area, "\n"
     if side:
         return np.sqrt(area), np.sqrt(side_area)
     elif get_drive:

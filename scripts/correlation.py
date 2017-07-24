@@ -1,7 +1,7 @@
-import numpy as np
 import matplotlib.pyplot as plt
-import h5py
 import bead_util as bu
+import numpy as np
+import h5py
 
 """"""""""""""""""""" Inputs """""""""""""""""""""
 use_as_script = False # run this file
@@ -58,24 +58,6 @@ def fft_plot(time_array, peak_amplitudes_at_f, last_plot = False):
     plt.title('fft of correlation')
     plt.show(block = last_plot)
 
-def sortFileList(file_list):
-    N = len(file_list)
-    if debugging: print "\nDEBUGGING: sortFileList N = ", N
-    if N == 1:
-        if debugging: print ""
-        return file_list
-    else:
-        new_list = ['']*N
-        for i in range(N):
-            f = file_list[i]
-            j = f.rfind('_') + 1
-            k = f.rfind('.')
-            if debugging: print "           sortFileList n = ", f[j:k]
-            n = int(f[j:k])
-            new_list[n] = f
-        if debugging: print ""
-        return new_list
-
 def outputThetaPosition(f, y_or_z):
     if y_or_z == "":
         i = f.find('stage_tilt_') + 11
@@ -110,7 +92,12 @@ def getGainAndACamp(fname):
     ACamp = float(fname[k:l])/1000. # Volts
     return gain, ACamp
 
-def getData(fname, get_drive = False, need_time = False, truncate_x = True, use_theta = False, y_or_z = ""):
+def getFDrive(fname):
+    i = fname.find('mv')+2
+    j = fname.find('Hz')
+    return fname[i:j]
+
+def getData(fname, get_drive = False, need_time = False, truncate_x = True, just_x = False, use_theta = False, y_or_z = ""):
     """ assumes fname ends with a '.h5' 
         returns unitless data from file """
     if debugging:
@@ -146,6 +133,7 @@ def getData(fname, get_drive = False, need_time = False, truncate_x = True, use_
             time = dset.attrs['Time']
             return x_data, drive_data, twice_drive_data, time
         else: return x_data, drive_data, twice_drive_data
+    elif just_x: return x_data
     else:
         time = dset.attrs['Time']
         if debugging: print ""

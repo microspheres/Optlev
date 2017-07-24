@@ -1,10 +1,10 @@
 ## load all files in a directory and plot the correlation of the response
 ## with the drive signal versus time
 
-import numpy as np
 import matplotlib.pyplot as plt
-import os, time, glob
 import bead_util as bu
+import numpy as np
+import os, time
 
 path = r"C:\data\20170717\bead15_15um_QWP\charge6"
 ts = 1.
