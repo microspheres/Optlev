@@ -6,11 +6,11 @@ from scipy.stats import mode
 import bead_util as bu
 import numpy as np
 
-use_as_script = True
+use_as_script = False
 if use_as_script:
     directory = "/data/20170717/bead15_15um_QWP/steps/"
     calibration_path = directory + "calibration_charge/"
-    measurement_path = directory + "corr_test_new"
+    measurement_path = directory + "measurement_2/"
 
 
 def gauss(x, x0, y0, sigma):
@@ -87,21 +87,48 @@ def formData(mpath, cpath):
         corr.append(correlation.correlate(x_data, drive_data, index, c))
         dc.append(bgDC)
         t.append(time)
-    return corr, dc, t
+    return zip*(sorted(zip(t, dc, corr)))
+
+
+def formAveragedData(corr, dc):
+    dcmag = map(abs, dc)
+    dcValues = list(set(dcmag))
+    corrValues = np.zeros(len(dcValues))
+    for c, v in zip(corr, dcmag):
+        i = dcValues.index(v)
+        corrValues[i] += c
+    corrValues = corrValues/float(len(corr))
+    return zip(*sorted(zip(dcValues, corrValues)))
+
+
+def plotAveragedData(corr, dc):
+    d, c = formAveragedData(corr, dc)
+    plt.figure()
+    plt.plot(d, c, 'o')
+    plt.xlabel('DC offset [V]')
+    plt.ylabel('Averaged Correlation between drive and response [e]')
+    plt.title('Averaged Correlation vs DC offset')
+    plt.show(block=False)
 
 
 def plotCorr(corr, dc, t):
     plt.figure()
-    plt.plot(t, corr)
-    plt.xlabel('time [s]')
-    plt.ylabel('Correlation between drive and response [e]')
-    plt.title('Correlation vs. Time')
-    plt.show(block=False)
-    plt.figure()
-    plt.plot(dc, corr)
+    plt.plot(dc, corr, 'o')
     plt.xlabel('DC offset [V]')
     plt.ylabel('Correlation between drive and response [e]')
     plt.title('Correlation vs DC offset')
+    plt.show(block=False)
+    # now plot the correlations over time
+    plt.figure()
+    dc, t, corr = zip(*sorted(zip(dc, t, corr)))
+    i = 0
+    while i < len(corr):
+        j = max(loc for loc, val in enumerate(dc) if val == dc[i]) + 1
+        plt.plot(t[i:j], corr[i:j], 'o')
+        i = j
+    plt.xlabel('time [s]')
+    plt.ylabel('Correlation between drive and response [e]')
+    plt.title('Correlation vs. Time')
     plt.show()
 
 
@@ -137,5 +164,9 @@ def plotCorr(corr, dc, t):
 
 
 if use_as_script:
-    corr, dc, t = formData(measurement_path, calibration_path)
+    t, dc, corr = formData(measurement_path, calibration_path)
+    print "average correlation is ", float(sum(corr))/float(len(corr))
+
+    plotAveragedData(corr, dc)
+    
     plotCorr(corr, dc, t)

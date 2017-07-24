@@ -93,9 +93,10 @@ def getGainAndACamp(fname):
     return gain, ACamp
 
 def getFDrive(fname):
-    i = fname.find('mv')+2
-    j = fname.find('Hz')
-    return fname[i:j]
+    i = fname.find('synth')
+    j = fname.find('mV',i)+2
+    k = fname.find('Hz')
+    return float(fname[j:k])
 
 def getData(fname, get_drive = False, need_time = False, truncate_x = True, just_x = False, use_theta = False, y_or_z = ""):
     """ assumes fname ends with a '.h5' 
