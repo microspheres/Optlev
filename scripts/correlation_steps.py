@@ -18,7 +18,7 @@ def getBackgroundDC(fname):
     j = fname.rfind('VDCbg')
     if 'mVDCbg' in fname:
         j = fname.rfind('mVDCbg')
-        return
+        return float(fname[i:j])/1000.
     return float(fname[i:j])
 
 
@@ -82,7 +82,7 @@ def formData(mpath, cpath):
         corr.append(correlation.correlate(x_data, drive_data, index, c))
         dc.append(bgDC)
         t.append(time)
-    return zip*(sorted(zip(t, dc, corr)))
+    return zip(*sorted(zip(t, dc, corr)))
 
 
 def formAveragedData(corr, dc):
@@ -136,6 +136,7 @@ def plotGaussFit(corr):
     x = np.array(range(len(corr)))
     u = sum(corr)/len(corr)
     var = np.var(corr)
+    print 'u = ', u, ' and var = ', var
     plt.figure()
     plt.plot(corr)
     plt.plot(gauss(x, u=u, var=var))
