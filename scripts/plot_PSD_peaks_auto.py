@@ -1,3 +1,4 @@
+from plot_PSD_peaks import plot_peaks2Fernando
 from charge import get_most_recent_file
 from correlation import outputThetaPosition
 from plot_corr_peaks import getdata_x_d, corr_aux
@@ -5,7 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 
-path = r"C:\data\20170717\bead15_15um_QWP\dipole18_Y"
+path = "/data/20170717/bead15_15um_QWP/dipole4_Z"
+
 ts = 1
 
 theta, corr = ([] for i in range(2))

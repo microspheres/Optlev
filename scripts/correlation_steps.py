@@ -1,16 +1,11 @@
 from scipy.optimize import curve_fit
 import correlation, os, glob, h5py
-from collections import Counter
-import matplotlib.pyplot as plt
 from scipy.stats import mode, norm
+import matplotlib.pyplot as plt
 import bead_util as bu
 import numpy as np
 
 use_as_script = False
-if use_as_script:
-    directory = "/data/20170717/bead15_15um_QWP/steps/"
-    calibration_path = directory + "calibration_charge/"
-    measurement_path = directory + "measurement_2/"
 
 
 def getBackgroundDC(fname):
@@ -18,24 +13,24 @@ def getBackgroundDC(fname):
     j = fname.rfind('VDCbg')
     if 'mVDCbg' in fname:
         j = fname.rfind('mVDCbg')
-        return float(fname[i:j])/1000.
+        return float(fname[i:j]) / 1000.
     return float(fname[i:j])
 
 
 def getData(fname, calib=False):
     """ assumes fname ends with a '.h5' """
-    gain, ACamp = correlation.getGainAndACamp(fname) # unitless, V
-    fdrive = correlation.getFDrive(fname) # Hz
+    gain, ACamp = correlation.getGainAndACamp(fname)  # unitless, V
+    fdrive = correlation.getFDrive(fname)  # Hz
     f = h5py.File(fname, 'r')
     dset = f['beads/data/pos_data']
     dat = np.transpose(dset)  # all this data is in volts
-    x = dat[:, bu.xi] # V
+    x = dat[:, bu.xi]  # V
     Fs = dset.attrs['Fsamp']
-    half_wavelength = int((Fs / fdrive) / 2.) # bins
-    x = x[:-half_wavelength] # V
+    half_wavelength = int((Fs / fdrive) / 2.)  # bins
+    x = x[:-half_wavelength]  # V
     x_data = ((x - np.average(x)) / float(len(x))) / (gain * ACamp)  # unitless
     if calib:
-        drive0 = dat[:, bu.drive] # V
+        drive0 = dat[:, bu.drive]  # V
         drive = drive0 - np.average(drive0)
         drive_data = drive / np.std(drive)  # normalized, unitless drive
         return x_data, drive_data
@@ -85,68 +80,39 @@ def formData(mpath, cpath):
     return zip(*sorted(zip(t, dc, corr)))
 
 
-fixing_stuff = True
-# i.e. I have to write a way to isolate a single voltage
-#      and then do analysis to only that voltage
-#      and then plot it
-if !fixing_stuff:
-    def formAveragedData(corr, dc):
-        dcmag = map(abs, dc)
-        dcValues = list(set(dcmag))
-        corrValues = np.zeros(len(dcValues))
-        for c, v in zip(corr, dcmag):
-            i = dcValues.index(v)
-            corrValues[i] += c
-        corrValues = corrValues/float(len(corr))
-        return zip(*sorted(zip(dcValues, corrValues)))
-
-
-    def plotAveragedData(corr, dc):
-        d, c = formAveragedData(corr, dc)
-        plt.figure()
-        plt.plot(d, c, 'o')
-        plt.xlabel('DC offset [V]')
-        plt.ylabel('Averaged Correlation between drive and response [e]')
-        plt.title('Averaged Correlation vs DC offset')
-        plt.show(block=False)
-
-
-    def plotCorr(corr, dc, t):
-        plt.figure()
-        plt.plot(dc, corr, 'o')
-        plt.xlabel('DC offset [V]')
-        plt.ylabel('Correlation between drive and response [e]')
-        plt.title('Correlation vs DC offset')
-        plt.show(block=False)
-        # now plot the correlations over time
-        plt.figure()
-        dc, t, corr = zip(*sorted(zip(dc, t, corr)))
-        i = 0
-        while i < len(corr):
-            j = max(loc for loc, val in enumerate(dc) if val == dc[i]) + 1
-            plt.plot(t[i:j], corr[i:j], 'o')
-            i = j
-        plt.xlabel('time [s]')
-        plt.ylabel('Correlation between drive and response [e]')
-        plt.title('Correlation vs. Time')
-        plt.show()
+def formAveragedData(corr, dc):
+    """ returns a dictionary with keys=DC offset, values=corr array """
+    dcValues = map(abs, list(set(dc)))
+    dc_corr_dict = {key: [] for key in dcValues}
+    i = 0
+    curr_dc_offset = 0.
+    while i < len(corr):
+        dcoff = dc[i]
+        j = max(loc for loc, val in enumerate(dc) if val == dcoff) + 1
+        curr_ave_corr = np.average(corr[i:j])
+        if dcoff == -1.*curr_dc_offset: dc_corr_dict[abs(dcoff)]+=curr_ave_corr
+        else: dc_corr_dict[dcoff].append(curr_ave_corr)
+        curr_dc_offset = dcoff
+        i = j
+    return dc_corr_dict
 
 
 def gaussian_distribution(x, A, u, sigma):
-    return A*np.exp(-(x-u)**2/(2*sigma**2))
+    return A * np.exp(-(x - u) ** 2 / (2 * sigma ** 2))
 
 
-def plotGaussFit(data):
+def plotGaussFit(data, make_plot=False):
     # get parameters
-    mu, std = norm.fit(data)
     n, bins = np.histogram(data, bins='auto')
-    cfx = (bins[1:]+bins[:-1])/2.
-    roughA = float(max(n)) # this is where I hard-code some rough estimates
-    lbound = [roughA-2., -5.e-18, 0.]
-    ubound = [roughA+2., 5.e-18, 5.e-18]
+    cfx = (bins[1:] + bins[:-1]) / 2.
+    roughA = float(max(n))  # this is where I hard-code some rough estimates
+    lbound = [roughA - 2., -5.e-18, 0.]
+    ubound = [roughA + 2., 5.e-18, 5.e-18]
     popt, pcov = curve_fit(gaussian_distribution, cfx, n, bounds=(lbound, ubound))
+    if not make_plot: return popt[1]
     perr = np.sqrt(np.diag(pcov))
     fitted_data = gaussian_distribution(cfx, *popt)
+    mu, std = norm.fit(data)
     # print parameters
     print 'fitting to gaussian gives:'
     print '    mean = ', popt[1], ' with error ', perr[1]
@@ -158,13 +124,43 @@ def plotGaussFit(data):
     plt.plot(cfx, fitted_data)
     plt.errorbar(cfx, n, yerr=np.sqrt(n), fmt='o')
     plt.show()
-    return
+
+
+def plotGaussMean(dc_corr_dict):
+    x, y = ([] for i in range(2))
+    for v in dc_corr_dict.keys():
+        x.append(v)
+        y.append(plotGaussFit(dc_corr_dict[v]))
+    plt.figure()
+    plt.plot(x,y)
+    plt.xlabel('DC offset voltages [V]')
+    plt.ylabel('Mean correlation values [e]')
+    plt.title('Mean correlation values vs DC offset')
+    plt.show()
+
+
+def fullPlotGaussMean(mpath, cpath):
+    t, dc, corr = formData(mpath, cpath)
+    dc_corr_dict = formAveragedData(corr, dc)
+    plotGaussMean(dc_corr_dict)
 
 
 if use_as_script:
-    t, dc, corr = formData(measurement_path, calibration_path)
-    print "average correlation is ", float(sum(corr))/float(len(corr))
+    directory = "/data/20170717/bead15_15um_QWP/steps/"
+    calibration_path = directory + "calibration_charge/"
+    measurement_path = directory + "measurement_2/"
 
-    plotAveragedData(corr, dc)
-    
-    plotCorr(corr, dc, t)
+    t, dc, corr = formData(measurement_path, calibration_path)
+    print "average correlation is ", float(sum(corr)) / float(len(corr))
+
+    dc_corr_dict = formAveragedData(corr, dc)
+    plotGaussMean(dc_corr_dict)
+
+
+"""
+
+average up step, average down step, add, go to next step
+separate different dc values and find gaussian mean
+plot gaussian mean wrt dc offset
+
+"""

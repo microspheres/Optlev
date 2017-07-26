@@ -13,7 +13,7 @@ debugging = False # are we in debugging mode?
 
 """"""""""""""""""""" Code """""""""""""""""""""""
 # Calculate # electrons
-sphere_diameter = 15 # micron
+sphere_diameter = 18.2 # micron
 sphere_radius = sphere_diameter/2000000. # meters
 sphere_volume = (4./3.)*np.pi*sphere_radius**3 # m^3
 density = 2196. # kg/m^3

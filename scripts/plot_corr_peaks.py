@@ -94,10 +94,8 @@ def corr_aux(drive2WN, driveN, x, Jnoise, maxv):
 
     corr = np.sum(np.conjugate(fftd[boundi:bounds]) * fftx[boundi:bounds] / jx[boundi:bounds]) / np.sum(
         np.conjugate(fftd[boundi:bounds]) * fftd[boundi:bounds] / jx[boundi:bounds])
-    corr = corr
 
     corr2W = np.sum(np.conjugate(fftd2W[Fi:Fs]) * fftx[Fi:Fs])
-    corr2W = corr2W
 
     return [corr, corr2W]
 
