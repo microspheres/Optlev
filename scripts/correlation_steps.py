@@ -2,7 +2,7 @@ from scipy.optimize import curve_fit
 import correlation, os, glob, h5py
 from collections import Counter
 import matplotlib.pyplot as plt
-from scipy.stats import mode
+from scipy.stats import mode, norm
 import bead_util as bu
 import numpy as np
 
@@ -85,78 +85,80 @@ def formData(mpath, cpath):
     return zip(*sorted(zip(t, dc, corr)))
 
 
-def formAveragedData(corr, dc):
-    dcmag = map(abs, dc)
-    dcValues = list(set(dcmag))
-    corrValues = np.zeros(len(dcValues))
-    for c, v in zip(corr, dcmag):
-        i = dcValues.index(v)
-        corrValues[i] += c
-    corrValues = corrValues/float(len(corr))
-    return zip(*sorted(zip(dcValues, corrValues)))
+fixing_stuff = True
+# i.e. I have to write a way to isolate a single voltage
+#      and then do analysis to only that voltage
+#      and then plot it
+if !fixing_stuff:
+    def formAveragedData(corr, dc):
+        dcmag = map(abs, dc)
+        dcValues = list(set(dcmag))
+        corrValues = np.zeros(len(dcValues))
+        for c, v in zip(corr, dcmag):
+            i = dcValues.index(v)
+            corrValues[i] += c
+        corrValues = corrValues/float(len(corr))
+        return zip(*sorted(zip(dcValues, corrValues)))
 
 
-def plotAveragedData(corr, dc):
-    d, c = formAveragedData(corr, dc)
-    plt.figure()
-    plt.plot(d, c, 'o')
-    plt.xlabel('DC offset [V]')
-    plt.ylabel('Averaged Correlation between drive and response [e]')
-    plt.title('Averaged Correlation vs DC offset')
-    plt.show(block=False)
+    def plotAveragedData(corr, dc):
+        d, c = formAveragedData(corr, dc)
+        plt.figure()
+        plt.plot(d, c, 'o')
+        plt.xlabel('DC offset [V]')
+        plt.ylabel('Averaged Correlation between drive and response [e]')
+        plt.title('Averaged Correlation vs DC offset')
+        plt.show(block=False)
 
 
-def plotCorr(corr, dc, t):
-    plt.figure()
-    plt.plot(dc, corr, 'o')
-    plt.xlabel('DC offset [V]')
-    plt.ylabel('Correlation between drive and response [e]')
-    plt.title('Correlation vs DC offset')
-    plt.show(block=False)
-    # now plot the correlations over time
-    plt.figure()
-    dc, t, corr = zip(*sorted(zip(dc, t, corr)))
-    i = 0
-    while i < len(corr):
-        j = max(loc for loc, val in enumerate(dc) if val == dc[i]) + 1
-        plt.plot(t[i:j], corr[i:j], 'o')
-        i = j
-    plt.xlabel('time [s]')
-    plt.ylabel('Correlation between drive and response [e]')
-    plt.title('Correlation vs. Time')
-    plt.show()
+    def plotCorr(corr, dc, t):
+        plt.figure()
+        plt.plot(dc, corr, 'o')
+        plt.xlabel('DC offset [V]')
+        plt.ylabel('Correlation between drive and response [e]')
+        plt.title('Correlation vs DC offset')
+        plt.show(block=False)
+        # now plot the correlations over time
+        plt.figure()
+        dc, t, corr = zip(*sorted(zip(dc, t, corr)))
+        i = 0
+        while i < len(corr):
+            j = max(loc for loc, val in enumerate(dc) if val == dc[i]) + 1
+            plt.plot(t[i:j], corr[i:j], 'o')
+            i = j
+        plt.xlabel('time [s]')
+        plt.ylabel('Correlation between drive and response [e]')
+        plt.title('Correlation vs. Time')
+        plt.show()
 
 
-def gauss(x, A=1., u=0., var=1.):
-    return A * np.exp(-((x - u) / var) ** 2)
+def gaussian_distribution(x, A, u, sigma):
+    return A*np.exp(-(x-u)**2/(2*sigma**2))
 
 
-def plotGaussFit(corr):
-    corr = sorted(corr)
-    x = np.array(range(len(corr)))
-    u = sum(corr)/len(corr)
-    var = np.var(corr)
-    print 'u = ', u, ' and var = ', var
-    plt.figure()
-    plt.plot(corr)
-    plt.plot(gauss(x, u=u, var=var))
-    plt.title('gaussian fit of correlation between drive and response')
-    plt.show()
-
-
-def plotGaussFit2(data):
-    # Fit a normal distribution to the data:
+def plotGaussFit(data):
+    # get parameters
     mu, std = norm.fit(data)
-    # Plot the histogram.
-    plt.hist(data, bins=25, normed=True, alpha=0.6, color='g')
-    # Plot the PDF.
-    xmin, xmax = plt.xlim()
-    x = np.linspace(xmin, xmax, 100)
-    p = norm.pdf(x, mu, std)
-    plt.plot(x, p, 'k', linewidth=2)
-    title = "Fit results: mu = %.2f,  std = %.2f" % (mu, std)
-    plt.title(title)
+    n, bins = np.histogram(data, bins='auto')
+    cfx = (bins[1:]+bins[:-1])/2.
+    roughA = float(max(n)) # this is where I hard-code some rough estimates
+    lbound = [roughA-2., -5.e-18, 0.]
+    ubound = [roughA+2., 5.e-18, 5.e-18]
+    popt, pcov = curve_fit(gaussian_distribution, cfx, n, bounds=(lbound, ubound))
+    perr = np.sqrt(np.diag(pcov))
+    fitted_data = gaussian_distribution(cfx, *popt)
+    # print parameters
+    print 'fitting to gaussian gives:'
+    print '    mean = ', popt[1], ' with error ', perr[1]
+    print '    standard deviation = ', popt[2], ' with error ', perr[2]
+    print 'actual mean = ', mu
+    print 'actual standard deviation = ', std
+    # plot the figure
+    plt.figure()
+    plt.plot(cfx, fitted_data)
+    plt.errorbar(cfx, n, yerr=np.sqrt(n), fmt='o')
     plt.show()
+    return
 
 
 if use_as_script:
