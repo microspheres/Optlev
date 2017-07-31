@@ -39,7 +39,7 @@ p = bu.drive
 
 make_psd_plot = True
 
-path = r"C:\data\20170717\bead15_15um_QWP\dipole18_Y"
+path = r"C:\data\20170726\bead8_15um_QWP\dipoleZ_17"
 
 file_list = glob.glob(path+"\*.h5")
 
@@ -94,8 +94,8 @@ def corr_aux(drive2WN, driveN, x, Jnoise, maxv):
     fftd = np.fft.rfft(shift_d)
     fftd2W = np.fft.rfft(shift_d2W)
     
-    Fi = np.argmax(fftd2W) - 3
-    Fs = np.argmax(fftd2W) + 3
+    Fi = np.argmax(fftd2W) - 5
+    Fs = np.argmax(fftd2W) + 5
     jx = Jnoise
 
     corr = np.sum(np.conjugate(fftd[boundi:bounds])*fftx[boundi:bounds]/jx[boundi:bounds])/np.sum(np.conjugate(fftd[boundi:bounds])*fftd[boundi:bounds]/jx[boundi:bounds])
@@ -159,6 +159,7 @@ def plot_peaks2F(file_list, Jx):
         # m = f.rfind("stage_tilt_") + 11
         # n = f.rfind("thetaZ")
         # thetaY[i] = float(f[m:n])
+        #thetaY[i], thetaZ[i] = 0,0
         print thetaY[i], thetaZ[i]
         corrF[i] = np.correlate(x,d)
     return [thetaY, thetaZ, corrF, corr2F]
@@ -166,6 +167,6 @@ def plot_peaks2F(file_list, Jx):
 thetaY, thetaZ, corrW, corr2W = plot_peaks2F(file_list, Jx)
 
 plt.figure()
-plt.plot(thetaY, corrW, 'o')
+plt.plot(thetaZ, corrW, 'o')
 plt.grid()
 plt.show()

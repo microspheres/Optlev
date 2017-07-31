@@ -4,7 +4,7 @@ import scipy.signal as ss
 import matplotlib.pyplot as plt
 
 out_path = r"C:\Users\UsphereLab\Documents\GitHub\Optlev\scripts"
-frequency = 50.
+frequency = 500.
 
 half_length = 8192
 max_val = 2**12-1
@@ -34,13 +34,13 @@ np.savetxt(out_path + "square_buffer.txt", dtot, delimiter=",",fmt="%d")
 
 ## circle
 t = np.linspace(0,2*np.pi,half_length*2)
-xtot = np.round(half_length*np.sin(frequency*t))
+xtot = np.round(half_length*np.sin(frequency*t) + 0.1*half_length)
 ytot = np.round(half_length*np.cos(frequency*t))
 
 dtot = np.transpose( np.vstack( (xtot, ytot) ) )
 
 dtot = 1.0*max_val*dtot/np.max(dtot)
-np.savetxt(out_path + "circle_buffer.txt", dtot, delimiter=",",fmt="%d")
+np.savetxt(out_path + "circle_buffer_faster.txt", dtot, delimiter=",",fmt="%d")
 
 ## lissajous
 t = np.linspace(0,2*np.pi,half_length*2)

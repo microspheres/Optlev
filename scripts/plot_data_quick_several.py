@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import bead_util as bu
 
-path = r'C:\data\20170717\bead15_15um_QWP\reality_test_trig_good'
+path = r'C:\data\20170717\bead15_15um_QWP\reality_test_Wed_night_step'
 NFFT = 2 ** 19
 
 
@@ -40,13 +40,9 @@ def get_data_together(file_list):
 def get_averaged_data(path):
     file_list = bu.time_ordered_file_list(path)
     n = len(file_list)
-    mod10 = n - 10 * n / 10
-    extra = (mod10 != 0)
-    num_iterations = n / 10 + extra
-    X = np.zeros(num_iterations)
-    for i in range(len(file_list) / 10):
-        X[i] = get_data_together(file_list[10*i:10*i + 10])
-    if extra: X[-1] = get_data_together(file_list[n / 10:])
+    X = np.zeros(n)
+    for i in range(n):
+        X[i] = get_data_together(file_list[i:i+1])
     return X
 
 

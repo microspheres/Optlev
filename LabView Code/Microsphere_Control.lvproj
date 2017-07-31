@@ -21,18 +21,28 @@
 		<Item Name="Agilent 33XXX Series.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Agilent 33XXX Series/Agilent 33XXX Series.lvlib"/>
 		<Item Name="bead_dropper.vi" Type="VI" URL="../bead_dropper.vi"/>
 		<Item Name="boolean_run_tilt_stage.vi" Type="VI" URL="../DAQ/boolean_run_tilt_stage.vi"/>
+		<Item Name="change_voltages_in_process_list.vi" Type="VI" URL="../DAQ/change_voltages_in_process_list.vi"/>
 		<Item Name="DAQ.vi" Type="VI" URL="../DAQ/DAQ.vi"/>
-		<Item Name="DeviceOpen.vi" Type="VI" URL="../Tilt Stage/Device VIs/DeviceOpen.vi"/>
+		<Item Name="DeviceOpen.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/DeviceOpen.vi"/>
+		<Item Name="dipole_voltage_control(Sub VI).vi" Type="VI" URL="../DAQ/dipole_voltage_control(Sub VI).vi"/>
+		<Item Name="dipole_voltage_control_logic(SubVI).vi" Type="VI" URL="../DAQ/dipole_voltage_control_logic(SubVI).vi"/>
 		<Item Name="load_arbitrary_waveform.vi" Type="VI" URL="../load_arbitrary_waveform.vi"/>
 		<Item Name="Move Stage.vi" Type="VI" URL="../Move Stage.vi"/>
 		<Item Name="Move Tilt Stage Axis.vi" Type="VI" URL="../Move Tilt Stage Axis.vi"/>
 		<Item Name="Move Tilt Stage.vi" Type="VI" URL="../Move Tilt Stage.vi"/>
+		<Item Name="name_dipole_voltage.vi" Type="VI" URL="../DAQ/name_dipole_voltage.vi"/>
 		<Item Name="plates.vi" Type="VI" URL="../plates.vi"/>
+		<Item Name="set_dipole_voltage.vi" Type="VI" URL="../DAQ/set_dipole_voltage.vi"/>
+		<Item Name="set_instruments (SubVI).vi" Type="VI" URL="../DAQ/set_instruments (SubVI).vi"/>
 		<Item Name="set_tilt_stage (SubVI).vi" Type="VI" URL="../DAQ/set_tilt_stage (SubVI).vi"/>
 		<Item Name="valve_lights.vi" Type="VI" URL="../valve_lights.vi"/>
 		<Item Name="valve_pressures.vi" Type="VI" URL="../valve_pressures.vi"/>
 		<Item Name="valves.vi" Type="VI" URL="../valves.vi"/>
+		<Item Name="variable_steps_logic.vi" Type="VI" URL="../DAQ/variable_steps_logic.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
+			<Item Name="instr.lib" Type="Folder">
+				<Item Name="Rohde&amp;Schwarz HMC 804x Power Supplies.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Rohde&amp;Schwarz HMC 804x Power Supplies/Rohde&amp;Schwarz HMC 804x Power Supplies.lvlib"/>
+			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="__closeStorageFromObject.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/storage/Storage.llb/__closeStorageFromObject.vi"/>
 				<Item Name="__closeStorageFromStorage.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/storage/Storage.llb/__closeStorageFromStorage.vi"/>
@@ -561,7 +571,7 @@
 				<Item Name="whitespace.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/whitespace.ctl"/>
 				<Item Name="Write File+ (string).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Write File+ (string).vi"/>
 			</Item>
-			<Item Name="AbortMotion.vi" Type="VI" URL="../Tilt Stage/Command VIs/AbortMotion.vi"/>
+			<Item Name="AbortMotion.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/AbortMotion.vi"/>
 			<Item Name="AG-UC2-UC8_Close.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Close.vi"/>
 			<Item Name="AG-UC2-UC8_Open.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Open.vi"/>
 			<Item Name="AgilisCmdLib.dll" Type="Document" URL="../../../../../../../Program Files/Newport/Piezo Motion Control/Newport AG-UC2-UC8 Applet/Samples/LabVIEW 2009/AgilisCmdLib.dll"/>
@@ -571,16 +581,17 @@
 			<Item Name="ChooseCorrectInstrument.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/ChooseCorrectInstrument.vi"/>
 			<Item Name="clean_up_data_tasks (SubVI).vi" Type="VI" URL="../DAQ/clean_up_data_tasks (SubVI).vi"/>
 			<Item Name="clean_up_instruments (SubVI).vi" Type="VI" URL="../DAQ/clean_up_instruments (SubVI).vi"/>
+			<Item Name="CmdLib.dll" Type="Document" URL="../Examples/Tilt Stage/CmdLib.dll"/>
 			<Item Name="CmdLib.dll" Type="Document" URL="../Tilt Stage/CmdLib.dll"/>
 			<Item Name="create_file_name (SubVI).vi" Type="VI" URL="../DAQ/create_file_name (SubVI).vi"/>
 			<Item Name="create_process_list (SubVI).vi" Type="VI" URL="../DAQ/create_process_list (SubVI).vi"/>
 			<Item Name="Get Full Terminal Name.vi" Type="VI" URL="../DAQ/Get Full Terminal Name.vi"/>
-			<Item Name="GetErrorMsg.vi" Type="VI" URL="../Tilt Stage/Command VIs/GetErrorMsg.vi"/>
-			<Item Name="GetMasterDeviceAddress.vi" Type="VI" URL="../Tilt Stage/Device VIs/GetMasterDeviceAddress.vi"/>
-			<Item Name="GetMotionDone.vi" Type="VI" URL="../Tilt Stage/Command VIs/GetMotionDone.vi"/>
-			<Item Name="GetPosition.vi" Type="VI" URL="../Tilt Stage/Command VIs/GetPosition.vi"/>
+			<Item Name="GetErrorMsg.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetErrorMsg.vi"/>
+			<Item Name="GetMasterDeviceAddress.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/GetMasterDeviceAddress.vi"/>
+			<Item Name="GetMotionDone.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetMotionDone.vi"/>
+			<Item Name="GetPosition.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetPosition.vi"/>
 			<Item Name="initialize_instruments (SubVI).vi" Type="VI" URL="../DAQ/initialize_instruments (SubVI).vi"/>
-			<Item Name="InitSingleDevice.vi" Type="VI" URL="../Tilt Stage/Device VIs/InitSingleDevice.vi"/>
+			<Item Name="InitSingleDevice.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/InitSingleDevice.vi"/>
 			<Item Name="lvStorage.dll" Type="Document" URL="lvStorage.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
@@ -590,10 +601,9 @@
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
 			<Item Name="read_data (SubVI).vi" Type="VI" URL="../DAQ/read_data (SubVI).vi"/>
-			<Item Name="RelativeMove.vi" Type="VI" URL="../Tilt Stage/Command VIs/RelativeMove.vi"/>
+			<Item Name="RelativeMove.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/RelativeMove.vi"/>
 			<Item Name="save_data (SubVI).vi" Type="VI" URL="../DAQ/save_data (SubVI).vi"/>
-			<Item Name="set_instruments (SubVI).vi" Type="VI" URL="../DAQ/set_instruments (SubVI).vi"/>
-			<Item Name="SetZeroPosition.vi" Type="VI" URL="../Tilt Stage/Command VIs/SetZeroPosition.vi"/>
+			<Item Name="SetZeroPosition.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/SetZeroPosition.vi"/>
 			<Item Name="sweep.vi" Type="VI" URL="../sweep.vi"/>
 			<Item Name="take_data (SubVI).vi" Type="VI" URL="../DAQ/take_data (SubVI).vi"/>
 			<Item Name="VISA_Query.vi" Type="VI" URL="../VISA_Query.vi"/>

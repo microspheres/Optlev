@@ -9,7 +9,7 @@ import bead_util as bu
 #refname = r""
 #fname0 = r""
 #path = r"C:\data\201705010_noise_electric"
-path = r'C:\data\20170717\bead15_15um_QWP\reality_test_trig_good'
+path = r'C:\data\20170717\bead15_15um_QWP\steps\measurement_2'
 
 make_plot_vs_time = True
 		 
@@ -67,15 +67,15 @@ F = np.zeros(NFFT/2 + 1)
 X = np.zeros(NFFT/2 + 1)
 driveX = np.zeros(NFFT/2 + 1)
 
-for file in list_file_time_order(path)[50:]:
+for file in list_file_time_order(path)[:]:
     a = getdata(file)
     F = np.array(a[0])
     X += np.array(a[1])
     driveX += np.array(a[2])
 
 
-plt.loglog(F,np.sqrt(X/len( list_file_time_order(path)[50:])))
-plt.loglog(F,driveX/len( list_file_time_order(path)[50:]))
+plt.loglog(F,np.sqrt(X/len( list_file_time_order(path)[:])))
+plt.loglog(F,driveX/len( list_file_time_order(path)[:]))
 yvalues = plt.ylim()
 # clist = bu.get_color_map( len(frequency_list) )
 # for i,f in enumerate(frequency_list):
