@@ -30,7 +30,7 @@ Nucleons = 1.1E15
 
 path_charge = r"C:\data\20170726\bead8_15um_QWP\steps\calibration_1positive"
 
-path_signal = r"C:\data\20170726\bead8_15um_QWP\steps\47_3Hz_7_+1000"
+path_signal = r"C:\data\20170726\bead8_15um_QWP\steps\plates_and_flips_2"
 
 path_noise = r"C:\data\20170717\bead15_15um_QWP\steps\calibration_charge"
 
