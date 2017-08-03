@@ -13,7 +13,7 @@ import cPickle as pickle
 
 from scipy.optimize import curve_fit
 
-path = r"C:\data\20170622\bead4_15um_QWP\charge11"
+path = '/data/20170602/bead4_15um_QWP/charge1'
 ts = 1.
 
 fdrive = 41.
@@ -92,8 +92,11 @@ best_phase = []
 corr = []
    
 for i in np.arange(len(list_file_time_order(path))):
-        best_phase.append(getphase( list_file_time_order(path)[i] ))
-        corr.append(getdata(list_file_time_order(path)[i],best_phase[i]))
+        try:
+                best_phase.append(getphase( list_file_time_order(path)[i] ))
+                corr.append(getdata(list_file_time_order(path)[i],best_phase[i]))
+        except:
+                continue
 
 #time = []
 #T = 0

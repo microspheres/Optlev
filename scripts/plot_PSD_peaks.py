@@ -9,11 +9,11 @@ import numpy as np
 NFFT = 2 ** 17
 make_psd_plot = True
 debugging = False
-use_as_script = False
+use_as_script = True
 
 if use_as_script:
-    calib = "/data/20170717/bead15_15um_QWP/calibration"
-    path = "/data/20170717/bead15_15um_QWP/dipole4_Z"
+    calib = "/data/20170726/bead4_15um_QWP/calibration_47_3Hz"
+    path = "/data/20170726/bead4_15um_QWP/pressure"
 
 if debugging:
     print "debugging on in plot_PSD_peaks.py: prepare for spam"
@@ -84,7 +84,7 @@ def plot_peaks2Fernando(path, plot_peaks = True):
     return
 
 #"""               # this is Fernando's plot             """
-plot_peaks2Fernando(path)
+#plot_peaks2Fernando(path)
 #""""""""""""""""""""""" THINGS HERE """""""""""""""""""""""
 
 # this is Sumita's plot
@@ -113,15 +113,17 @@ def getConstant(calibration_path):
     nx2 = get_PSD_peak_parameters(calibration_list[:i], use_theta = False) # for one electron
     return np.average(nx2)# Newtons/electron
 
-def plot_PSD_peaks(path, calib_path = '', last_plot = False):
+def plot_PSD_peaks(path, calib_path = '', use_theta = True, last_plot = False):
     file_list = time_ordered_file_list(path)
     if calib_path != '':
         c = getConstant(calib_path) # Newtons/electron
         if debugging: print "c = ", c
-    theta, nx2 = get_PSD_peak_parameters(file_list) # steps, Newtons
+    if use_theta: theta, nx2 = get_PSD_peak_parameters(file_list) # steps, Newtons
+    else: nx2 = get_PSD_peak_parameters(file_list, use_theta=False) # Newtons
     if calib_path != '': nx2 = nx2/c # electrons
     plt.figure()
-    plt.plot(theta, nx2, 'o')
+    if use_theta: plt.plot(theta, nx2, 'o')
+    else: plt.plot(nx2, fmt='o')
     plt.xlabel('Steps in theta')
     plt.ylabel('Amplitude [electrons]')
     plt.title('PSD peaks at twice the drive frequency')
@@ -129,7 +131,7 @@ def plot_PSD_peaks(path, calib_path = '', last_plot = False):
     plt.show(block = last_plot)
     return
 
-plot_PSD_peaks(path, calib, last_plot = True)
+plot_PSD_peaks(path, calib_path=calib, use_theta=False, last_plot = True)
 
 # now on to doing the area calibration thing
 # integrating over basically the main peak

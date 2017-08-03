@@ -2,12 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5a0b9c6-3529-447c-8442-233d9f3aa8d0" name="Default" comment="Update correlation_steps.py to have gaussian mean vs dc offset plot">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/plot_PSD_peaks_auto.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Plot Data Even Quicker-checkpoint.ipynb" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/Plot Data Even Quicker-checkpoint.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.ipynb_checkpoints/correlation_steps_notebook-checkpoint.ipynb" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/correlation_steps_notebook-checkpoint.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Plot Data Even Quicker.ipynb" afterPath="$PROJECT_DIR$/Plot Data Even Quicker.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/charge_mod.py" afterPath="$PROJECT_DIR$/charge_mod.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/correlation.py" afterPath="$PROJECT_DIR$/correlation.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/correlation_steps.py" afterPath="$PROJECT_DIR$/correlation_steps.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_corr_peaks.py" afterPath="$PROJECT_DIR$/plot_corr_peaks.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_corr_peaks_auto.py" afterPath="$PROJECT_DIR$/plot_corr_peaks_auto.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/correlation_steps_notebook.ipynb" afterPath="$PROJECT_DIR$/correlation_steps_notebook.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dipole_fit.py" afterPath="$PROJECT_DIR$/dipole_fit.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dipole_fit_ACDC.py" afterPath="$PROJECT_DIR$/dipole_fit_ACDC.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dipole_fit_AC_multi.py" afterPath="$PROJECT_DIR$/dipole_fit_AC_multi.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dipole_plots_multi.py" afterPath="$PROJECT_DIR$/dipole_plots_multi.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_PSD_peaks.py" afterPath="$PROJECT_DIR$/plot_PSD_peaks.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_data_quick.py" afterPath="$PROJECT_DIR$/plot_data_quick.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,27 +23,14 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="correlation_steps.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/correlation_steps.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="513">
+            <state relative-caret-position="444">
               <caret line="156" column="31" lean-forward="false" selection-start-line="156" selection-start-column="31" selection-end-line="156" selection-end-column="31" />
-              <folding>
-                <element signature="e#238#425#0" expanded="false" />
-                <element signature="e#465#1288#0" expanded="false" />
-                <element signature="e#1345#2530#0" expanded="false" />
-                <element signature="e#2565#2917#0" expanded="false" />
-                <element signature="e#2956#3514#0" expanded="false" />
-                <element signature="e#3564#3615#0" expanded="false" />
-                <element signature="e#3663#4563#0" expanded="false" />
-                <element signature="e#4603#4925#0" expanded="false" />
-                <element signature="e#4969#5083#0" expanded="false" />
-                <element signature="e#5108#5484#0" expanded="false" />
-                <element signature="e#5487#5638#1" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -99,10 +93,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1938" />
-    <option name="height" value="1048" />
+    <option name="y" value="24" />
+    <option name="width" value="1920" />
+    <option name="height" value="1032" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -120,40 +113,13 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane" />
       <pane id="Scratches" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Equilibrium values from sphere diameter" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="C:/Program Files/Git/bin/git.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="last.edited.regexp" value="Sample Text" />
@@ -168,119 +134,6 @@
       <recent name="C:\Users\Sumita\Documents\GitHub\Optlev\scripts\Equilibrium values from sphere diameter" />
     </key>
   </component>
-  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
-    <UpdatedFiles>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Updated from server" />
-        <option name="myStatusName" value="Changed on server" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="CHANGED_ON_SERVER" />
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Updated" />
-          <option name="myStatusName" value="Changed" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.ipynb_checkpoints/correlation_steps_notebook-checkpoint.ipynb</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Plot Data Even Quicker.ipynb</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/correlation_steps.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/correlation_steps_notebook.ipynb</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Created" />
-          <option name="myStatusName" value="Created" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="CREATED" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Deleted" />
-          <option name="myStatusName" value="Deleted" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="true" />
-          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Restored" />
-          <option name="myStatusName" value="Will be restored" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="RESTORED" />
-        </FILE-GROUP>
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Modified" />
-        <option name="myStatusName" value="Modified" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MODIFIED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Skipped" />
-        <option name="myStatusName" value="Skipped" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SKIPPED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with conflicts" />
-        <option name="myStatusName" value="Will be merged with conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_CONFLICTS" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with tree conflicts" />
-        <option name="myStatusName" value="Merged with tree conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with property conflicts" />
-        <option name="myStatusName" value="Will be merged with property conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged" />
-        <option name="myStatusName" value="Will be merged" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Not in repository" />
-        <option name="myStatusName" value="Not in repository" />
-        <option name="mySupportsDeletion" value="true" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="UNKNOWN" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally added" />
-        <option name="myStatusName" value="Locally added" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_ADDED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally removed" />
-        <option name="myStatusName" value="Locally removed" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_REMOVED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Switched" />
-        <option name="myStatusName" value="Switched" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SWITCHED" />
-      </FILE-GROUP>
-    </UpdatedFiles>
-  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -294,6 +147,55 @@
     </option>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="scripts" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="scripts" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <module name="scripts" />
+    </configuration>
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -358,38 +260,6 @@
       <option name="ADDITIONAL_ARGS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="scripts" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <module name="scripts" />
-      <method />
-    </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -404,26 +274,6 @@
       <scripts />
       <node-interpreter value="project" />
       <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Doctests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="scripts" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Nosetests">
@@ -513,26 +363,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <frame x="0" y="24" width="1920" height="1032" extended-state="0" />
     <layout>
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25599584" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21177803" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.42695355" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25617614" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.42702702" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -584,13 +434,18 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/correlation_steps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/correlation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#12978#13491#1" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -598,7 +453,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="4" column="55" lean-forward="false" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="55" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -606,22 +460,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
           <caret line="7" column="25" lean-forward="false" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-          <folding>
-            <element signature="e#1883#3406#0" expanded="false" />
-            <element signature="e#3447#3891#0" expanded="false" />
-            <element signature="e#3926#3969#0" expanded="false" />
-            <element signature="e#4016#4163#0" expanded="false" />
-            <element signature="e#4321#6378#0" expanded="false" />
-            <element signature="e#6522#8800#0" expanded="false" />
-            <element signature="e#8826#9549#0" expanded="false" />
-            <element signature="e#9582#9721#0" expanded="false" />
-            <element signature="e#9799#10282#0" expanded="false" />
-            <element signature="e#10336#10668#0" expanded="false" />
-            <element signature="e#10761#11681#0" expanded="false" />
-            <element signature="e#11789#12436#0" expanded="false" />
-            <element signature="e#12473#12523#0" expanded="false" />
-            <element signature="e#12552#12784#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -636,7 +474,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1358">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -644,9 +481,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -654,7 +488,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="99">
           <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -662,7 +495,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -677,25 +509,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="660">
           <caret line="43" column="0" lean-forward="true" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-            <element signature="e#340#724#0" expanded="false" />
-            <element signature="e#758#1220#0" expanded="false" />
-            <element signature="e#1265#1368#0" expanded="false" />
-            <element signature="e#1413#1511#0" expanded="false" />
-            <element signature="e#1537#1620#0" expanded="false" />
-            <element signature="e#1646#1729#0" expanded="false" />
-            <element signature="e#1763#1909#0" expanded="false" />
-            <element signature="e#1973#2766#0" expanded="false" />
-            <element signature="e#2825#3020#0" expanded="false" />
-            <element signature="e#3091#4132#0" expanded="false" />
-            <element signature="e#4220#4592#0" expanded="false" />
-            <element signature="e#4660#5243#0" expanded="false" />
-            <element signature="e#5306#5698#0" expanded="false" />
-            <element signature="e#5777#6796#0" expanded="false" />
-            <element signature="e#6872#7404#0" expanded="false" />
-            <element signature="e#7503#9383#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -703,25 +516,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1287">
           <caret line="199" column="19" lean-forward="false" selection-start-line="199" selection-start-column="19" selection-end-line="199" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-            <element signature="e#340#724#0" expanded="false" />
-            <element signature="e#758#1220#0" expanded="false" />
-            <element signature="e#1265#1368#0" expanded="false" />
-            <element signature="e#1413#1511#0" expanded="false" />
-            <element signature="e#1537#1620#0" expanded="false" />
-            <element signature="e#1646#1729#0" expanded="false" />
-            <element signature="e#1763#1909#0" expanded="false" />
-            <element signature="e#1973#2766#0" expanded="false" />
-            <element signature="e#2825#3020#0" expanded="false" />
-            <element signature="e#3091#4132#0" expanded="false" />
-            <element signature="e#4220#4592#0" expanded="false" />
-            <element signature="e#4660#5243#0" expanded="false" />
-            <element signature="e#5306#5698#0" expanded="false" />
-            <element signature="e#5777#6796#0" expanded="false" />
-            <element signature="e#6872#7404#0" expanded="false" />
-            <element signature="e#7503#9383#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -729,9 +523,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="5" column="14" lean-forward="false" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#30#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -739,7 +530,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
           <caret line="24" column="3" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="24" selection-end-column="3" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -747,22 +537,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3597">
           <caret line="360" column="0" lean-forward="true" selection-start-line="360" selection-start-column="0" selection-end-line="360" selection-end-column="0" />
-          <folding>
-            <element signature="e#1883#3406#0" expanded="false" />
-            <element signature="e#3447#3891#0" expanded="false" />
-            <element signature="e#3926#3969#0" expanded="false" />
-            <element signature="e#4016#4163#0" expanded="false" />
-            <element signature="e#4321#6378#0" expanded="false" />
-            <element signature="e#6522#8800#0" expanded="false" />
-            <element signature="e#8826#9549#0" expanded="false" />
-            <element signature="e#9582#9721#0" expanded="false" />
-            <element signature="e#9799#10282#0" expanded="false" />
-            <element signature="e#10336#10668#0" expanded="false" />
-            <element signature="e#10761#11681#0" expanded="false" />
-            <element signature="e#11789#12436#0" expanded="false" />
-            <element signature="e#12473#12523#0" expanded="false" />
-            <element signature="e#12552#12784#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -773,33 +547,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Equilibrium values from sphere diameter/correlation_steps_notebook.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="-1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Equilibrium values from sphere diameter/correlation_steps_notebook.ipynb" />
     <entry file="file://$PROJECT_DIR$/Equilibrium values from sphere diameter/EquilibriumValuesFromSphereDiameter_fns.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="245">
           <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-          <folding>
-            <element signature="e#340#724#0" expanded="false" />
-            <element signature="e#758#1220#0" expanded="false" />
-            <element signature="e#1265#1368#0" expanded="false" />
-            <element signature="e#1413#1511#0" expanded="false" />
-            <element signature="e#1537#1620#0" expanded="false" />
-            <element signature="e#1646#1729#0" expanded="false" />
-            <element signature="e#1763#1938#0" expanded="false" />
-            <element signature="e#3119#4160#0" expanded="false" />
-            <element signature="e#4248#4620#0" expanded="false" />
-            <element signature="e#4688#5271#0" expanded="false" />
-            <element signature="e#5334#5726#0" expanded="false" />
-            <element signature="e#5805#6824#0" expanded="false" />
-            <element signature="e#6900#7432#0" expanded="false" />
-            <element signature="e#7531#9411#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -807,9 +559,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1518">
           <caret line="96" column="0" lean-forward="true" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-          <folding>
-            <element signature="e#705#1138#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -817,18 +566,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1320">
           <caret line="80" column="48" lean-forward="false" selection-start-line="80" selection-start-column="48" selection-end-line="80" selection-end-column="48" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#47#91#1" expanded="false" />
-            <element signature="e#565#695#0" expanded="false" />
-            <element signature="e#764#862#0" expanded="false" />
-            <element signature="e#896#953#0" expanded="false" />
-            <element signature="e#984#1794#0" expanded="false" />
-            <element signature="e#1850#2446#0" expanded="false" />
-            <element signature="e#2479#2825#0" expanded="false" />
-            <element signature="e#2862#3251#0" expanded="false" />
-            <element signature="e#3319#3955#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -836,9 +573,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="363">
           <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#46#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -846,9 +580,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="6" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -856,21 +587,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
           <caret line="15" column="53" lean-forward="true" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="53" />
-          <folding>
-            <element signature="e#512#642#0" expanded="false" />
-            <element signature="e#744#1336#0" expanded="false" />
-            <element signature="e#1373#1970#0" expanded="false" />
-            <element signature="e#2022#2269#0" expanded="false" />
-            <element signature="e#2325#2934#0" expanded="false" />
-            <element signature="e#3023#3083#0" expanded="false" />
-            <element signature="e#3171#3776#0" expanded="false" />
-            <element signature="e#3817#4102#0" expanded="false" />
-            <element signature="e#4170#4680#0" expanded="false" />
-            <element signature="e#4867#5591#0" expanded="false" />
-            <element signature="e#5656#6521#0" expanded="false" />
-            <element signature="e#6619#7306#0" expanded="false" />
-            <element signature="e#7393#8818#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -878,43 +594,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-825">
           <caret line="14" column="23" lean-forward="true" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
-          <folding>
-            <element signature="e#1160#1745#0" expanded="false" />
-            <element signature="e#1818#2646#0" expanded="false" />
-            <element signature="e#2688#3453#0" expanded="false" />
-            <element signature="e#3487#3700#0" expanded="false" />
-            <element signature="e#3728#3804#0" expanded="false" />
-            <element signature="e#3935#5818#0" expanded="false" />
-            <element signature="e#5870#6137#0" expanded="false" />
-            <element signature="e#6249#8761#0" expanded="false" />
-            <element signature="e#8812#8940#0" expanded="false" />
-            <element signature="e#8979#9377#0" expanded="false" />
-            <element signature="e#9479#10587#0" expanded="false" />
-            <element signature="e#10700#11663#0" expanded="false" />
-            <element signature="e#11792#12484#0" expanded="false" />
-            <element signature="e#12528#12976#0" expanded="false" />
-            <element signature="e#12978#13491#1" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/correlation_steps.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
+        <state relative-caret-position="444">
           <caret line="156" column="31" lean-forward="false" selection-start-line="156" selection-start-column="31" selection-end-line="156" selection-end-column="31" />
-          <folding>
-            <element signature="e#238#425#0" expanded="false" />
-            <element signature="e#465#1288#0" expanded="false" />
-            <element signature="e#1345#2530#0" expanded="false" />
-            <element signature="e#2565#2917#0" expanded="false" />
-            <element signature="e#2956#3514#0" expanded="false" />
-            <element signature="e#3564#3615#0" expanded="false" />
-            <element signature="e#3663#4563#0" expanded="false" />
-            <element signature="e#4603#4925#0" expanded="false" />
-            <element signature="e#4969#5083#0" expanded="false" />
-            <element signature="e#5108#5484#0" expanded="false" />
-            <element signature="e#5487#5638#1" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>

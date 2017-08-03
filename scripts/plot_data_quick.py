@@ -1,34 +1,27 @@
 import numpy, h5py, matplotlib
 import matplotlib.pyplot as plt
-import os
+import os, glob
 import scipy.signal as sp
 import numpy as np
 import bead_util as bu
+from correlation import get_num_electrons
 
-refname = r"auto_xyzcool_G100_att_test3_synth2mV47Hz4000mVdc_0.h5"
-fname0 = r""
-path = "/data/20170706/bead3_15um_QWP"
+refname = "auto_xyzcool_G100_att_synth1000mV41Hz0mVdc.h5"
+fname0 = "auto_xyzcool_G100_att_synth1000mV41Hz0mVdc.h5"
+path = "/data/20170622/bead4_15um_QWP/arb_charge"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
-make_plot_vs_time = True
+make_plot_vs_time = False
+normal_plots = False
 conv_fac = 4.4e-14
 if fname0 == "":
-	filelist = os.listdir(path)
-
-	mtime = 0
-	mrf = ""
-	for fin in filelist:
-		f = os.path.join(path, fin)
-		if os.path.getmtime(f)>mtime:
-			mrf = f
-			mtime = os.path.getmtime(f)
-
-	fname0 = mrf		 
+	filelist = bu.time_ordered_file_list(path)
+	fname0 = filelist[-1]	 
 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**17
+NFFT = 2**19
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -88,25 +81,41 @@ if make_plot_vs_time:
                 plt.plot(data1[3][:, bu.zi] - np.mean(data1[3][:, bu.zi]) )
        
 
-fig = plt.figure()
-plt.subplot(4, 1, 1)
-plt.loglog(data0[0], np.sqrt(data0[1]),label="test")
-if refname:
+if normal_plots:
+    fig = plt.figure()
+    plt.subplot(4, 1, 1)
+    plt.loglog(data0[0], np.sqrt(data0[1]),label="test")
+    if refname:
 	plt.loglog(data1[0], np.sqrt(data1[1]),label="ref")
-plt.ylabel("V/rtHz")
-plt.legend(loc=3)
-plt.subplot(4, 1, 2)
-plt.loglog(data0[0], np.sqrt(data0[2]))
-if refname:
+    plt.ylabel("V/rtHz")
+    plt.legend(loc=3)
+    plt.subplot(4, 1, 2)
+    plt.loglog(data0[0], np.sqrt(data0[2]))
+    if refname:
 	plt.loglog(data1[0], np.sqrt(data1[2]))
-plt.subplot(4, 1, 3)
-plt.loglog(data0[0],  np.sqrt(data0[4]))
-if refname:
+    plt.subplot(4, 1, 3)
+    plt.loglog(data0[0],  np.sqrt(data0[4]))
+    if refname:
 	plt.loglog(data1[0], np.sqrt(data1[4]))
-plt.ylabel("V/rtHz")
-plt.subplot(4, 1, 4)
-plt.loglog(data0[0],  np.sqrt(data0[5]))
-if refname:
+    plt.ylabel("V/rtHz")
+    plt.subplot(4, 1, 4)
+    plt.loglog(data0[0],  np.sqrt(data0[5]))
+    if refname:
         plt.loglog(data1[0], np.sqrt(data1[5]))
-plt.xlabel("Frequency[Hz]")
-plt.show()
+    plt.xlabel("Frequency[Hz]")
+    plt.show()
+else:
+    c = 5518849.7864509681
+    
+    plt.figure()
+    plt.loglog(data0[0], np.sqrt(data0[1])/c,label="1.6e-6 mbar")
+    plt.loglog(data1[0], np.sqrt(data1[1])/c,label="1 mbar")
+
+    matplotlib.rcParams.update({'font.size': 18})
+
+    plt.xlabel('Frequency [Hz]')
+    plt.ylabel('Noise Floor [electron/sqrtHz]')
+    plt.legend(prop={'size': 16}, loc=3)
+
+    plt.grid()
+    plt.show()
