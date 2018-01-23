@@ -9,13 +9,13 @@ import bead_util as bu
 #refname = r""
 #fname0 = r""
 #path = r"C:\data\201705010_noise_electric"
-path = r'C:\data\20170717\bead15_15um_QWP\steps\measurement_2'
+path = r'C:\data\20171002\bead2_23um_QWP_NS\meas\DC_no_AC_2'
 
 make_plot_vs_time = True
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**20
+NFFT = 2**19
 
 def getdata(fname):
         print "Opening file: ", fname

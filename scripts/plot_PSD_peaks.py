@@ -28,7 +28,7 @@ make_psd_plot = True
 
 # fname0 = r"auto_xyzcool_G100_att_synth4500mV41Hz0mVdc_stage_tilt_-597thetaY_0thetaZ.h5"
 
-path = r"C:\data\20170726\bead8_15um_QWP\dipoleZ_18"
+path = r"C:\data\20170823\bead2_15um_QWP_NS\dipole1"
 file_list = glob.glob(path+"\*.h5")
 
 def getdata1(fname):

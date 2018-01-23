@@ -2105,11 +2105,9 @@
 					<Item Name="Clear Errors.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Clear Errors.vi"/>
 					<Item Name="lvSimController.dll" Type="Document" URL="/&lt;vilib&gt;/rvi/Simulation/lvSimController.dll"/>
 					<Item Name="niFPGA BW CU Order 1 (16-bit).vi" Type="VI" URL="/&lt;vilib&gt;/rvi/Analysis/measure/butterworth/templates/niFPGA BW CU Order 1 (16-bit).vi"/>
+					<Item Name="niFPGA BW CU Order 4 (16-bit).vi" Type="VI" URL="/&lt;vilib&gt;/rvi/Analysis/measure/butterworth/templates/niFPGA BW CU Order 4 (16-bit).vi"/>
 					<Item Name="niFPGA I32xI32 MAC+ MSB.vi" Type="VI" URL="/&lt;vilib&gt;/rvi/Analysis/utilities/niFPGA I32xI32 MAC+ MSB.vi"/>
 				</Item>
-				<Item Name="BeadCoolerFixedZ(SubVI).vi" Type="VI" URL="../MultiChannelFeedbackCooling FPGA/BeadCoolerFixedZ(SubVI).vi"/>
-				<Item Name="BeadCoolerFixedZ(SubVI)_noint_extraHP.vi" Type="VI" URL="../MultiChannelFeedbackCooling FPGA/BeadCoolerFixedZ(SubVI)_noint_extraHP.vi"/>
-				<Item Name="rangelimiter.vi" Type="VI" URL="../MultiChannelFeedbackCooling FPGA/rangelimiter.vi"/>
 			</Item>
 			<Item Name="Build Specifications" Type="Build">
 				<Item Name="MultiChannelfFeedbackCooling (FPGA)" Type="{F4C5E96F-7410-48A5-BB87-3559BC9B167F}">
@@ -2250,8 +2248,8 @@
 				<Item Name="Trim Whitespace.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Trim Whitespace.vi"/>
 				<Item Name="whitespace.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/whitespace.ctl"/>
 			</Item>
+			<Item Name="Microspherefeedb_FPGATarget_MultiChannelfFee_cW1Hvxk6p+4.lvbitx" Type="Document" URL="../FPGA Bitfiles/Microspherefeedb_FPGATarget_MultiChannelfFee_cW1Hvxk6p+4.lvbitx"/>
 			<Item Name="Microspherefeedb_FPGATarget_MultiChannelfFee_I4gqCtRo9c0.lvbitx" Type="Document" URL="../FPGA Bitfiles/Microspherefeedb_FPGATarget_MultiChannelfFee_I4gqCtRo9c0.lvbitx"/>
-			<Item Name="Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_FIX_INT.lvbitx" Type="Document" URL="../FPGA Bitfiles/Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_FIX_INT.lvbitx"/>
 			<Item Name="NiFpgaLv.dll" Type="Document" URL="NiFpgaLv.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>

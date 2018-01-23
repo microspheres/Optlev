@@ -36,8 +36,9 @@ np.savetxt(out_path + "square_buffer.txt", dtot, delimiter=",",fmt="%d")
 t = np.linspace(0,2*np.pi,half_length*2)
 xtot = np.round(half_length*np.sin(frequency*t) + 0.1*half_length)
 ytot = np.round(half_length*np.cos(frequency*t))
+ztot = np.round(half_length*np.cos(frequency*t))
 
-dtot = np.transpose( np.vstack( (xtot, ytot) ) )
+dtot = np.transpose( np.vstack( (xtot, ytot, ztot) ) )
 
 dtot = 1.0*max_val*dtot/np.max(dtot)
 np.savetxt(out_path + "circle_buffer_faster.txt", dtot, delimiter=",",fmt="%d")
@@ -106,6 +107,23 @@ t2 = np.linspace(0, 2.*np.pi, 2.*half_length + 1)
 modx = np.cos(t2 - np.pi) + 1.
 mody = np.cos(t2 - np.pi) + 1.
 
-xtot = modx[: -1]*np.hstack([s, s])
-ytot = mody[: -1]*np.hstack([s, s])
+# xtot = modx[: -1]*np.hstack([s, s])
+# ytot = mody[: -1]*np.hstack([s, s])
 
+xtot = np.hstack([s, s])
+ytot = np.hstack([s, s])
+
+dtot = np.transpose( np.vstack( (xtot, ytot) ) )
+
+dtot = 1.0*max_val*dtot/np.max(dtot)
+np.savetxt(out_path + "gauss_buffer.txt", dtot, delimiter=",",fmt="%d")
+
+## sinxwhite noise
+t = np.linspace(0,2*np.pi,half_length*2)
+xtot = np.round(half_length*np.random.randn(len(t)))
+ytot = np.zeros(len(t))
+
+dtot = np.transpose( np.vstack( (xtot, ytot) ) )
+
+dtot = 1.0*max_val*dtot/np.max(dtot)
+np.savetxt(out_path + "white_noise_X.txt", dtot, delimiter=",",fmt="%d")

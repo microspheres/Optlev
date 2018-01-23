@@ -12,37 +12,53 @@ from scipy import signal
 import bead_util as bu
 import glob
 
+from scipy.optimize import curve_fit
+
+def list_file_time_order(filelist):
+    filelist.sort(key=os.path.getmtime)
+    return filelist
+
+startfile = 0
+
+endfile = -1
+
 start_index = 0
 
 electron = 1.60E-19
 
-d = 0.0008
+d = 0.001
 
-Vpp = 200.0
+Vpp = 200.0*0.1
 
-conversion41 = 0.248313748577
+conversion41 = -0.0992747805
 
-conversion82 = 7.24620552647e-05
+conversion82 = -0.0992747805
 
-Vmeasurement_pp = 200.0*7.3
+Vmeasurement_pp = 200.0*20.0
 
-Nucleons = 1.1E15
+Nucleons = (3.55e15)/3.6
 
-path_charge = r"C:\data\20170726\bead8_15um_QWP\steps\calibration_1positive"
+# path_charge = r"C:\data\20170622\bead4_15um_QWP\reality_test3" #41drive
+path_charge = r"C:\data\20171004\bead9_15um_QWP_NS\calibration1e\1"
 
-path_signal = r"C:\data\20170726\bead8_15um_QWP\steps\plates_and_flips_2"
+path_signal = r"C:\data\20171004\bead9_15um_QWP_NS\meas\DC_no_AC"
 
-path_noise = r"C:\data\20170717\bead15_15um_QWP\steps\calibration_charge"
+path_noise = r"C:\data\20170919\bead6_15um_QWP_NS\calibration_1positive"
 
 p = bu.drive
 
-fdrive = 39.
+fdrive = 30.
 
 Fs = 10000
 
 li = 30.
 
-ls = 200.
+ls = 60.
+
+# li = 950.
+
+# ls = 1050.
+
 
 butterp = 1
 
@@ -51,6 +67,19 @@ butterp = 1
 file_list_noise = glob.glob(path_noise+"\*.h5")
 file_list_signal = glob.glob(path_signal+"\*.h5")
 file_list_charge = glob.glob(path_charge+"\*.h5")
+
+# def get_specific_DC(list):
+#     file_list_new = []
+#     for i in range(len(list)):
+#         if np.abs(float(re.findall("-?\d+mVDC",list[i])[0][:-4])) == 1880:
+#             file_list_new.append(list[i])
+#     return file_list_new
+
+# file_list_signal = get_specific_DC(file_list_signal)
+
+file_list_signal = list_file_time_order(file_list_signal)
+
+file_list_signal = file_list_signal[startfile:endfile]
 
 def butter_bandpass(lowcut, highcut, fs, order=5):
     nyq = 0.5 * fs
@@ -87,7 +116,7 @@ def getdata_x_d(fname):
     
 	drive2W = (driveNf*driveNf - np.mean(driveNf*driveNf))/np.max(driveNf*driveNf - np.mean(driveNf*driveNf))
 	
-	return [x, driveN, drive2W  ]
+	return [x, driveN, drive2W]
 
 
 def getdata_noise(fname):
@@ -106,11 +135,19 @@ def getdata_noise(fname):
 	return [x]
 
 
-def getphase(fname, driveN, x, Fs):
+# def getphase(fname, driveN, x, Fs):
+
+#     xdat = np.append(x, np.zeros( int(Fs/fdrive) ))
+#     corr2 = np.correlate(xdat, driveN)
+#     maxv = np.armax(corr2) 
+	
+#     return maxv
+
+def getphase(driveN, x, Fs):
 
     xdat = np.append(x, np.zeros( int(Fs/fdrive) ))
     corr2 = np.correlate(xdat, driveN)
-    maxv = np.armax(corr2) 
+    maxv = np.argmax(corr2) 
 	
     return maxv
 
@@ -144,11 +181,14 @@ def corr_aux(drive2WN, driveN, x, Jnoise, maxv):
 
     jx = Jnoise
 
+    # Fi = 30
+    # Fs = 2000
+
     Fi = np.argmax(fftd2W) - 5
     Fs = np.argmax(fftd2W) + 5
 
-    # boundi = 1500
-    # bounds = 7500
+    # boundi = 0
+    # bounds = -1
 
     boundi = np.argmax(fftd) - 5
     bounds = np.argmax(fftd) + 5
@@ -203,9 +243,7 @@ def do_corr_trigger(file_list_signal, maxv, Jnoise, d, d2):
         print "corr", a/len(file_list_signal)
     return [corr, corr2W]
 
-def list_file_time_order(filelist):
-    filelist.sort(key=os.path.getmtime)
-    return filelist
+
 
 def find_voltagesDC(list):
     aux = np.zeros(len(list))
@@ -213,6 +251,20 @@ def find_voltagesDC(list):
         aux[i] = float(re.findall("-?\d+mVDC",list[i])[0][:-4])
     return aux
 
+
+# def organize_DC_pos(list):
+#     file_list_new = []
+#     for i in range(len(list)):
+#         if True:# float(re.findall("-?\d+mVDC",list[i])[0][:-4]) > 0:
+#             file_list_new.append(list[i])
+#     return file_list_new
+
+# def organize_DC_neg(list):
+#     file_list_new = []
+#     for i in range(len(list)):
+#         if True: # float(re.findall("-?\d+mVDC",list[i])[0][:-4]) < 0:
+#             file_list_new.append(list[i])
+#     return file_list_new
 
 def organize_DC_pos(list):
     file_list_new = []
@@ -235,26 +287,31 @@ def list_corr(v1,v2):
         a.append(aux)
     return np.real(a)
     
-file_list_pos = organize_DC_pos(list_file_time_order(file_list_signal))
-file_list_neg = organize_DC_neg(list_file_time_order(file_list_signal))
+# file_list_pos = organize_DC_pos(list_file_time_order(file_list_signal))
+# file_list_neg = organize_DC_neg(list_file_time_order(file_list_signal))
 
-l1 = len(file_list_pos)
-l2 = len(file_list_neg)
-lmin = np.min([l1,l2])
+# l1 = len(file_list_pos)
+# l2 = len(file_list_neg)
+# lmin = np.min([l1,l2])
 
-file_list_pos = file_list_pos[:lmin]
-file_list_neg = file_list_neg[:lmin]
+# file_list_pos = file_list_pos[:lmin]
+# file_list_neg = file_list_neg[:lmin]
 
 Jx = Jnoise(file_list_noise, 0)
 
 drive_t, drive2_t = get_drive(file_list_charge)
 
+xph, dph, d2ph = getdata_x_d(file_list_charge[0])
+phasebin = 0*getphase(drive_t, xph, Fs)
+
+print len(file_list_signal)
+
 # # corr, corr2 = do_corr(file_list_signal, 0, Jx)
-corr, corr2 = do_corr_trigger(file_list_signal, 0, Jx, drive_t, drive2_t)
+corr, corr2 = do_corr_trigger(file_list_signal, phasebin, Jx, drive_t, drive2_t)
 
 
-corr_pos, bpos = do_corr_trigger(file_list_pos, 0, Jx, drive_t, drive2_t)
-corr_neg, bneg = do_corr_trigger(file_list_neg, 0, Jx, drive_t, drive2_t)
+# corr_pos, bpos = do_corr_trigger(file_list_pos, phasebin, Jx, drive_t, drive2_t)
+# corr_neg, bneg = do_corr_trigger(file_list_neg, phasebin, Jx, drive_t, drive2_t)
 
 print np.mean(corr)
 print np.mean(corr2)
@@ -265,22 +322,130 @@ print "e#/nucleon at w", ((np.real(np.mean(corr))/conversion41)*(Vpp/Vmeasuremen
 print "e#/nucleon at 2w", ((np.real(np.mean(corr2))/conversion82)*(Vpp/Vmeasurement_pp))/(Nucleons)
 
 
-print 0.5*((np.real(np.mean(corr_pos) + np.mean(corr_neg))/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons)
+# print 0.5*((np.real(np.mean(corr_pos) + np.mean(corr_neg))/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons)
 
-a = list_corr(corr_pos,corr_neg)
+# a = list_corr(corr_pos,corr_neg)
 
-print ((np.mean(a)/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons)
+# print ((np.mean(a)/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons)
+
+
+# plt.figure()
+# plt.plot(((np.real(corr_pos)/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons), 'ro')
+# plt.plot(((np.real(corr_neg)/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons), 'bo')
+# plt.plot(((np.real((corr_pos+corr_neg)/2.)/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons), 'go')
+# plt.plot(((a/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons), 'ko')
+plt.grid()
+
+
+# plt.figure()
+# plt.plot(((np.real(bpos + bneg)/conversion82)*(Vpp/Vmeasurement_pp))/(Nucleons), 'ro')
+# plt.grid()
+# # plt.show()
+
+# aaa = ((np.real((corr_pos+corr_neg)/2.)/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons)
+
+aaa = ((np.real((corr)/1.)/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons)
+
+def gauss(x,a,b,c):
+    g = c*np.exp(-0.5*((x-a)/b)**2)
+    return g
+
+h,b = np.histogram(aaa, bins = 25)
+
+bc = np.diff(b)/2 + b[:-1]
+
+p0 = [0.01*10**-19, 0.5*10**-19, 2]
+try:
+    popt, pcov = curve_fit(gauss, bc, h, p0)
+except:
+    popt = p0
+
+xxx = np.linspace(bc[0],bc[-1], 100)
+
+print "result from charge fit in e#"
+print popt
+print np.sqrt(pcov[0,0])
 
 
 plt.figure()
-plt.plot(((np.real(corr_pos)/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons), 'ro')
-plt.plot(((np.real(corr_neg)/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons), 'bo')
-plt.plot(((np.real((corr_pos+corr_neg)/2.)/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons), 'go')
-plt.plot(((a/conversion41)*(Vpp/Vmeasurement_pp))/(Nucleons), 'ko')
+plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = 'ko')
+plt.plot(xxx, gauss(xxx,*popt))
+plt.xlabel("Electron Number")
 plt.grid()
-plt.show()
 
 plt.figure()
-plt.plot(((np.real(bpos + bneg)/conversion82)*(Vpp/Vmeasurement_pp))/(Nucleons), 'ro')
+plt.plot(aaa, 'ro')
+
+
+
+
+
+#############################################
+#############################################
+
+# from electron number to Force:
+
+# conversion41_force = (np.mean(corr)/(electron*Vpp*0.5/d)) # for the calibration file. the factor 0.5 comes from vpp to vamp
+# print conversion41_force
+
+conversion41_force = -6.20467378458e+13
+
+# print "force in Newtons"
+# print np.real(np.mean(corr))/conversion41_force
+
+force_points = ((np.real((corr)/1.)/conversion41_force))
+
+h1,b1 = np.histogram(force_points, bins = 25)
+
+bc1 = np.diff(b1)/2 + b1[:-1]
+
+p01 = [-0.1*10**-19, 5.*10**-17, 2]
+try:
+    popt1, pcov1 = curve_fit(gauss, bc1, h1, p01)
+except:
+    popt1 = p01
+
+xxx1 = np.linspace(bc1[0],bc1[-1], 100)
+
+print "result from force fit Newtons"
+print popt1
+print np.sqrt(pcov1[0,0])
+
+
+plt.figure()
+plt.errorbar(bc1, h1, yerr = np.sqrt(h1), fmt = 'ko')
+plt.plot(xxx1, gauss(xxx1,*popt1))
+plt.xlabel("Force [N]")
 plt.grid()
+
+
+# from electron number to acceleration:
+
+mass = (1.18*10**-11)/3.6 #kg
+
+acc_points = ((np.real((corr)/1.)/conversion41_force))/mass
+
+h2,b2 = np.histogram(acc_points, bins = 25)
+
+bc2 = np.diff(b2)/2 + b2[:-1]
+
+p02 = [-0.1*10**-8, 5.*10**-7, 2]
+try:
+    popt2, pcov2 = curve_fit(gauss, bc2, h2, p02)
+except:
+    popt2 = p02
+
+xxx2 = np.linspace(bc2[0],bc2[-1], 100)
+
+print "result from acceleration fit SI units"
+print popt2
+print np.sqrt(pcov2[0,0])
+
+
+plt.figure()
+plt.errorbar(bc2, h2, yerr = np.sqrt(h2), fmt = 'ko')
+plt.plot(xxx2, gauss(xxx2,*popt2))
+plt.xlabel("acceleration [m/s^2]")
+plt.grid()
+
 plt.show()

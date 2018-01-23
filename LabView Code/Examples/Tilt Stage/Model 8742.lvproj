@@ -77,7 +77,7 @@
 		<Item Name="AppendToOutput.vi" Type="VI" URL="../AppendToOutput.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="CmdLib.dll" Type="Document" URL="../CmdLib.dll"/>
-			<Item Name="CmdLib.dll" Type="Document" URL="../../../../../../../../Code/Apps/Utilities/Picomotor/PicomotorApp/Install/Samples/LabVIEW/Model 8742/LabVIEW 2009/CmdLib.dll"/>
+			<Item Name="CmdLib.dll" Type="Document" URL="../../../../../../../../../Code/Apps/Utilities/Picomotor/PicomotorApp/Install/Samples/LabVIEW/Model 8742/LabVIEW 2009/CmdLib.dll"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build"/>
 	</Item>

@@ -39,7 +39,7 @@ p = bu.drive
 
 make_psd_plot = True
 
-path = r"C:\data\20170726\bead8_15um_QWP\dipoleZ_17"
+path = r"C:\data\20170823\bead2_15um_QWP_NS\dipole1"
 
 file_list = glob.glob(path+"\*.h5")
 
