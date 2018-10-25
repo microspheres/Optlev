@@ -1,0 +1,91 @@
+## load all files in a directory and plot the correlation of the resonse
+## with the drive signal versus time
+
+import numpy as np
+import matplotlib, calendar
+import matplotlib.pyplot as plt
+import os, re, time, glob
+import bead_util as bu
+import scipy.signal as sp
+import scipy.optimize as opt
+import cPickle as pickle
+from scipy.signal import butter, lfilter
+
+from scipy.optimize import curve_fit
+
+fname0 = r"test_ixiyzcool_G100_att_synth10000mV41Hz0mVdc.h5"
+path = r"C:\data\20170530\bead7_15um_QWP\feedback\test1"path = r"C:\data\20170530\bead7_15um_QWP\test_corr"
+ts = 1.
+
+NFFT = 2**17
+
+fdrive = 41.
+make_plot = True
+
+data_columns = [0, bu.xi] ## column to calculate the correlation against
+drive_column = bu.drive ##-1 ## column containing drive signal
+
+def getdata(fname):
+	print "Opening file: ", fname
+	## guess at file type from extension
+	_, fext = os.path.splitext( fname )
+	if( fext == ".h5"):
+		f = h5py.File(fname,'r')
+		dset = f['beads/data/pos_data']
+		dat = numpy.transpose(dset)
+		#max_volt = dset.attrs['max_volt']
+		#nbit = dset.attrs['nbit']
+		Fs = dset.attrs['Fsamp']
+		
+		#dat = 1.0*dat*max_volt/nbit
+                dat = dat * 10./(2**15 - 1)
+                
+	else:
+		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
+
+	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT) 
+	ypsd, freqs = matplotlib.mlab.psd(dat[:, bu.yi]-numpy.mean(dat[:, bu.yi]), Fs = Fs, NFFT = NFFT)
+        zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
+        xpsd_old, freqs = matplotlib.mlab.psd(dat[:, bu.xi_old]-numpy.mean(dat[:, bu.xi_old]), Fs = Fs, NFFT = NFFT)
+        # Ddrive = dat[:, bu.drive]*np.gradient(dat[:,bu.drive])
+        # DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT)
+
+
+	norm = numpy.median(dat[:, bu.zi])
+        #for h in [xpsd, ypsd, zpsd]:
+        #        h /= numpy.median(dat[:,bu.zi])**2
+	return [freqs, xpsd, ypsd, dat, zpsd, xpsd_old]
+
+def butter_bandpass(lowcut, highcut, fs, order=5):
+    nyq = 0.5 * fs
+    low = lowcut / nyq
+    high = highcut / nyq
+    b, a = butter(order, [low, high], btype='band')
+    return b, a
+
+
+def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
+    b, a = butter_bandpass(lowcut, highcut, fs, order=order)
+    y = lfilter(b, a, data)
+    return y
+
+def test(fname):
+        print "Getting phase from: ", fname 
+        dat, attribs, cf = bu.getdata(os.path.join(path, fname))
+        fsamp = attribs["Fsamp"]
+        xdat = dat[:,data_columns[1]]
+        xdat = np.append(xdat, np.zeros( int(fsamp/fdrive) ))
+
+        driver = butter_bandpass_filter(dat[:,drive_column], 30., 60., 10000., order=6)
+        Ddriver = np.gradient(driver)
+        corr2 = np.correlate(xdat,driver*Ddriver)
+        maxv = np.argmax(corr2) 
+
+        cf.close()
+
+        return Ddriver
+
+
+plt.plot(test(fname0))
+plt.grid()
+plt.show()

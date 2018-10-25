@@ -1,6 +1,6 @@
 ## set of utility functions useful for analyzing bead data
 
-import h5py, os, matplotlib, re
+import h5py, os, matplotlib, re, glob
 import numpy as np
 import datetime as dt
 import matplotlib.pyplot as plt
@@ -21,9 +21,9 @@ yi = 1
 zi = 2
 xl = 3
 yl = 4
-#zl = 5
-#drive = 6
-#xi_old = 7
+zl = 5
+drive = 7
+xi_old = 6
 
 ## default columns for data files FOR FILES CREATED BEFORE 5/23/2017
 # xi = 0
@@ -31,13 +31,29 @@ yl = 4
 # zi = 2
 # xl = 3
 # yl = 4
-drive = 5
-xi_old = 6
+# drive = 5
+# xi_old = 6
 
 ## get the shape of the chameleon force vs. distance from Maxime's calculation
 #cforce = np.loadtxt(r"c:\GitHub\opt_lev\scripts\data\chameleon_force.txt", delimiter=",")
 ## fit a spline to the data
 #cham_spl = interp.UnivariateSpline( cforce[::5,0], cforce[::5,1], s=0 )
+
+def time_ordered_file_list(path):
+    file_list = glob.glob(path + "\*.h5")
+    file_list.sort(key=os.path.getmtime)
+    return file_list
+
+
+def time_ordered_h5_and_npy_file_list(path, all_npy):
+    file_list = glob.glob(path + "\*.h5")
+    if all_npy:
+        file_list +=  glob.glob(path + "\*.npy")
+    else:
+        file_list += glob.glob(path + "\measurement_x.npy") + glob.glob(path + "\measurement_y.npy")
+    file_list.sort(key=os.path.getmtime)
+    return file_list
+
 
 def gain_fac( val ):
     ### Return the gain factor corresponding to a given voltage divider

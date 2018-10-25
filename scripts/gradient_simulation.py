@@ -22,6 +22,7 @@ plt.plot(a[0],a[1],'.')
 plt.plot(a[0], parabola(a[0], *popt))
 plt.xlabel("$\\theta$(rad)")
 plt.ylabel("dE/E")
+plt.grid()
 plt.show()
 
 print popt
