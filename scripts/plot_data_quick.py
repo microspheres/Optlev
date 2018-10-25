@@ -6,9 +6,9 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"3mbar_zcool_G5_84deg.h5"
+refname = r"modulator_10kHz.h5"
 fname0 = r""
-path = r"C:\data\20180109\bead15_um_POL_NS_VAT"
+path = r"C:\data\20181002\highfreq_test"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
@@ -31,7 +31,7 @@ if fname0 == "":
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**14
+NFFT = 2**15
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -56,8 +56,7 @@ def getdata(fname):
         zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
         xpsd_old, freqs = matplotlib.mlab.psd(dat[:, bu.xi_old]-numpy.mean(dat[:, bu.xi_old]), Fs = Fs, NFFT = NFFT)
         # Ddrive = dat[:, bu.drive]*np.gradient(dat[:,bu.drive])
-        # DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT)
-
+        # DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT))
 
 	norm = numpy.median(dat[:, bu.zi])
         #for h in [xpsd, ypsd, zpsd]:

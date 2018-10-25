@@ -44,6 +44,17 @@ def time_ordered_file_list(path):
     file_list.sort(key=os.path.getmtime)
     return file_list
 
+
+def time_ordered_h5_and_npy_file_list(path, all_npy):
+    file_list = glob.glob(path + "\*.h5")
+    if all_npy:
+        file_list +=  glob.glob(path + "\*.npy")
+    else:
+        file_list += glob.glob(path + "\measurement_x.npy") + glob.glob(path + "\measurement_y.npy")
+    file_list.sort(key=os.path.getmtime)
+    return file_list
+
+
 def gain_fac( val ):
     ### Return the gain factor corresponding to a given voltage divider
     ### setting.  These numbers are from the calibration of the voltage

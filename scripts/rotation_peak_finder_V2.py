@@ -12,7 +12,7 @@ def list_file_time_order(filelist):
     return filelist
 
 
-path1 = r"C:\data\201712018\bead2_um_QWP_NS_VAT\85_6deg"
+path1 = r"C:\data\20180129\bead1_um_POL_NS_SiO2_10um\meas_1"
 
 
 file_list1 = glob.glob(path1+"\*.h5")
@@ -20,9 +20,8 @@ file_list1 = list_file_time_order(file_list1)
 file_list1 = file_list1
 
 
-
-Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**16
+# Fs = 10e3  ## this is ignored with HDF5 files
+NFFT = 2**10
 
 
 def getdata(fname):
@@ -80,7 +79,7 @@ def finder(filelist, peak_pos, peaks_distance, peak_step):
             data += gd[5]
         data /= N
 
-        W = peaks_distance
+        W = peaks_distance*peak_pos
         argpeak = return_arg(freq, peak_pos)
         argW = return_arg(freq, W)
         
@@ -110,19 +109,23 @@ def finder(filelist, peak_pos, peaks_distance, peak_step):
             plt.loglog(freq,data)
             plt.plot(shortfreq, data[(argpeak - argW):(argpeak + argW)])
             plt.plot(shortfreq[Peak], data[(argpeak - argW):(argpeak + argW)][Peak], "rx")
-            plt.xlim([peak_pos - 2*peaks_distance, peak_pos + 2*peaks_distance])
+            #plt.xlim([peak_pos - 2*peaks_distance, peak_pos + 2*peaks_distance])
             plt.show()
 
-        if(i > 0 or j > 0):
+        if(i > 0 ):
             curr_step = rot-last_peak_pos
-            if np.abs(curr_step) < 3*np.abs(last_step):
-                peak_pos += (rot - last_peak_pos)
-                last_step = rot-last_peak_pos
-                last_peak_pos = rot
-            else:
-                peak_pos += last_step
-                last_peak_pos = peak_pos
+        else:
+            curr_step = 10*last_step
+        
+        if np.abs(curr_step) < 5*np.abs(last_step):
+            peak_pos = rot
+            last_step = curr_step
+            last_peak_pos = rot
+        else:
+            peak_pos = rot #+= last_step
+            last_peak_pos = peak_pos
 
+        # print peak_pos, rot, last_peak_pos
 
         #print peak_pos, last_peak_pos, rot     
         #if rot > 0:
@@ -142,7 +145,7 @@ def finder(filelist, peak_pos, peaks_distance, peak_step):
 
 
 
-c1 = finder(file_list1, 5.84632E+6, 3.E5, 5e4)
+c1 = finder(file_list1, 820000., 0.8, 20000./4)
 
 
 #  fitting
@@ -152,43 +155,56 @@ def func(x, x0, A, tau):
     f = A*(1.0 - np.exp(-(x-x0)/tau))
     return f
 
-p0 = [-510.0 ,6.27E6, 200]
-popt, pcov = curve_fit(func, c1[2], c1[0], p0 = np.array(p0))
+def func2(X, x0, A, B): # takes pressure into account
+    x, p = X
+    f = A*p*(1.0 - np.exp(-(x-x0)*B/p))
+    return f
 
-print popt
+def funcdecay(x, x0, A, tau, v0):
+    f = A + v0*np.exp(-(x-x0)/tau)
+    return f
 
-data2 = []
-time2 = []
-press2 = []
-for i in range(len(c1[0])):
-    if np.abs(c1[0][i] - func(c1[2][i], *p0)) < 0.7E5:
-        d2 = c1[0][i]
-        t2 = c1[2][i]
-        p2 = c1[1][i]
-        data2.append(d2)
-        time2.append(t2)
-        press2.append(p2)
+def funcdecay2(X, x0, A, B): # takes pressure into account
+    x, p = X
+    f = A*p*(np.exp(-(x-x0)*B/p))
+    return f
 
-        
-popt2, pcov2 = curve_fit(func, time2[-200:], data2[-200:], p0 = np.array(p0))
+# p0 = [-510.0 ,6.27E6, 11000]
+# popt, pcov = curve_fit(func, c1[2][150:200], c1[0][150:200], p0 = np.array(p0))
 
-times =  np.linspace(0, 510, 6000)
 
+# print popt
+# print pcov
+
+
+times =  np.linspace(11000, 21000, 10000)
+times2 =  np.linspace(20500, 28000, 10000)
+times3 =  np.linspace(28000, 32000, 10000)
+pressures = np.linspace(1E-5, 1E-7, 10000)
+
+
+plt.figure()
+plt.scatter(c1[2], c1[0], s=3, c=np.log10(c1[1]), label = "", vmin = -6.5, vmax = -6.25)
+plt.plot(times, func(times, *popt), "r--", label = "")
+# plt.plot(times, func2((times, pressures), *popt2), "g--", label = "")
+
+plt.plot(times2, funcdecay(times2, *popt3), "r--", label = "")
+# plt.plot(times3, funcdecay(times3, *popt4), "r--", label = "")
+
+plt.grid()
+
+plt.ylabel("Rotation [Hz]", fontsize=13)
+plt.xlabel("Time [s]", fontsize=13)
+
+plt.colorbar()
+plt.show()
 
 # plt.figure()
-# plt.plot(c1[1], c1[0], "bo", label = "QWP = 85.6 deg")
+# plt.plot(c1[2], c1[0], "b.")
 
 # plt.legend(loc="upper right", frameon = False)
-# plt.ylabel("Rotation [Hz]", fontsize=13)
-# plt.xlabel("Pressure [mbar]", fontsize=13)
+
 # plt.grid()
 # plt.yticks(fontsize=12)
 # plt.xticks(fontsize=12)
 # plt.tight_layout(pad = 0)
-
-plt.figure()
-plt.scatter(time2, data2, s=3, c=press2, label = "QWP = 85.6 deg")
-# plt.scatter(c1[2], c1[0], s=3, c=c1[1], label = "QWP = 85.6 deg")
-plt.plot(times, func(times, *popt2), "k-", label = "QWP = 85.6 deg")
-plt.colorbar()
-plt.show()

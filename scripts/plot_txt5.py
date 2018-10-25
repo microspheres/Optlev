@@ -60,8 +60,8 @@ popt, pcov = curve_fit(func, sphere2[0][fit], sphere2[1][fit], p0 = [220,1e4,0.1
 plt.figure()
 # plt.loglog(sphere2[0], 20*1e6*func(sphere2[0],*popt)/9.8)
 
-plt.loglog(sphere1[0],20*(sphere1[1]/9.8)*10**6, label = "1mbar no feedback", color = "b")
-plt.loglog(sphere2[0],20*(sphere2[1]/9.8)*10**6, label = "1mbar with feedback", color = "orange", alpha = 1)
+plt.loglog(sphere1[0], 20*(sphere1[1]/9.8)*10**6, label = "1mbar no feedback", color = "b")
+plt.loglog(sphere2[0], 20*(sphere2[1]/9.8)*10**6, label = "1mbar with feedback", color = "orange", alpha = 1)
 plt.loglog(sphere3[0],(sphere3[1]/9.8)*10**6, label = "$10^{-6}$mbar with feedback", color = "k", lw = 1)
 plt.loglog(sphere4[0], sphere4[1], lw = 1, color = "lawngreen" ,alpha = 1, label = "Laser before chamber")
 plt.loglog(sphere4[0], sphere4[1]*func(sphere4[0],*popt)/(5.18e-5), lw = 1, color = "r" ,alpha = 0.6, label = "Predicted noise")
@@ -76,6 +76,11 @@ L2 = plt.legend(loc="center left", bbox_to_anchor=(-0.02,0.59), frameon = False,
 plt.xlabel("Frequency [Hz]", fontsize = 17)
 plt.ylabel("$\sqrt{S_a}$ [$\mu g$/$\sqrt{Hz}$]", fontsize = 17)
 
+# print sphere1[0][145:230]
+# t1aux = 20*(sphere1[1]/9.8)*10**6
+# t2aux = (sphere3[1]/9.8)*10**6
+# print "temp:", 300/(( np.sum(t1aux[145:230])/np.sum(t2aux[145:230]) )**2)
+
 l = plt.gca().add_patch(
     patches.Rectangle(
         (13,95),   # (x,y)
@@ -88,6 +93,7 @@ l.set_zorder(20)
 L2.set_zorder(20) 
 plt.xlim(10, 1000)
 plt.ylim(0.5, 1000)
+
 plt.yticks(fontsize=16)
 plt.xticks(fontsize=16)
 plt.grid()

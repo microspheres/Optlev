@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-frequency_list = [48.]
+frequency_list = [0.001]
 # frequency_list = [31. - 5., 41. -3., 47.+3., 67.-5., 71.-7., 73.+5., 89.-5.]
 
 # frequency_list = [11.1, 33.3, 99.9, 133.2, 166.5, 199.8, 233.1, 266.4, 299.7, 399.6, 499.5, 666.0, 832.5, 1098.9, 1665.0, 1931.4, 2231.1]
@@ -79,10 +79,10 @@ def kick(sf):
     return function/np.max(function), time
 
 
-f,t = cons_forDC_function(frequency_list,sampling_freq)
+f,t = fixed_function(frequency_list,sampling_freq)
 # f,t = kick(sampling_freq)
 
-np.savetxt("fixed_averaged.txt", f)
+np.savetxt(r"C:\Users\UsphereLab\Documents\GitHub\Optlev\scripts\freq_comb\freq_0.001Hz.txt", f)
 print len(f)
 
 print f[0]

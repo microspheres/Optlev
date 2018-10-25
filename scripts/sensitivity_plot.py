@@ -14,11 +14,11 @@ import glob
 # file1 = r"1_6E-6mbar_xyzcool_G5_att.h5"
 
 # 23 um		 
-path_charge = r"C:\data\20171002\bead2_23um_QWP_NS\calibration_1p\1"
+path_charge = r"C:\data\20180323\bead1_SiO2_15um_POL_NS\calibration\1positive"
 file_list_charge = glob.glob(path_charge+"\*.h5")
 
-path_psd = r"C:\data\20171002\bead2_23um_QWP_NS\meas\DC_no_AC2"
-file1 = r"auto_xyzcool_G100_att_0.h5"
+path_psd = r"C:\data\20180323\bead1_SiO2_15um_POL_NS\calibration\1positive"
+file1 = r"auto_xyzcool_G100_synth1000mV47Hz0mVdc_0.h5"
 
 mass = 1.0*10**-11 #kg
 

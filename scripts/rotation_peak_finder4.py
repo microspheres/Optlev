@@ -12,7 +12,7 @@ def list_file_time_order(filelist):
     return filelist
 
 
-path1 = r"C:\data\20171221_2\bead1_um_QWP_NS_VAT\angles_005mbar"
+path1 = r"C:\data\20180129\bead1_um_POL_NS_SiO2_10um\pressures3"
 
 
 
