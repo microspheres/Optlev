@@ -6,7 +6,7 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"test.h5"
+refname = r"test2.h5"
 fname0 = r""
 path = r"C:\data\20181218\test"
 # refname = r"C:\data\20170403\bead6_15um"
