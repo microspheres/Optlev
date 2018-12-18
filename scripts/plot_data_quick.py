@@ -6,9 +6,9 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"modulator_10kHz.h5"
+refname = r"test.h5"
 fname0 = r""
-path = r"C:\data\20181002\highfreq_test"
+path = r"C:\data\20181218\test"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
