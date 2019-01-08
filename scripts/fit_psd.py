@@ -7,10 +7,13 @@ import bead_util as bu
 import glob
 import scipy.optimize as opt
 
-name = r"xy_6mbar_3.h5"
-path = r"C:\data\20190104\15um"
+name = r"4mbar_XY.h5"
+path = r"C:\data\20190108\15um"
 
-NFFT = 2**15
+f_start = 50.
+f_end = 300.
+
+NFFT = 2**12
 
 kb = 1.38*10**-23
 
@@ -24,7 +27,7 @@ R = 7.5*10**-6
 
 M = (4./3.)*np.pi*(R**3)*rho
 
-press = 600.
+press = 440.
 
 temp = 300
 
@@ -74,14 +77,11 @@ def psd(f, A, f0, gamma):
     w0 = 2.*np.pi*f0
     w = 2.*np.pi*f
     s1 = 2.*kb*temp*(gamma*(w0)**2)
-    s2 = M*(w0**2)*((w0**2 - w**2)**2 + (gamma*w0)**2)
+    s2 = 1.*M*(w0**2)*((w0**2 - w**2)**2 + (gamma*w0)**2)
     s = np.sqrt(s1/s2)
     return A*s
 
 gamma = Gamma(vis, press, temp, mass, R, M)
-
-f_start = 50.
-f_end = 700.
 
 fit_points = np.logical_and(data[0] > f_start, data[0] < f_end )
 
