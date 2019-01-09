@@ -6,9 +6,9 @@ import numpy as np
 import bead_util as bu
 import glob
 
-single_channel = False
-VEOM_h5 = True
-measuring_with_xyz = True
+single_channel = True
+VEOM_h5 = False
+measuring_with_xyz = False
 
 scope = True # gets the correct FS
 
@@ -19,10 +19,7 @@ def list_file_time_order(filelist):
 
 savetxt = True
 
-#path = r"C:\data\20180215\bead4_VAT_POL_NS\EOM_4e-2mbar_meas9"
-#path = r"C:\data\20180702\bead2_SiO2_15um_POL_NS\rotation3"
-#path = r"C:\data\20180129\bead1_um_POL_NS_SiO2_10um\meas_new_turbo_3_V+10"
-path = r"C:\data\20180925\bead1_SiO2_15um_POL_NS\rotation2"
+path = r"C:\data\20190108\15um\rotation2"
 
 file_list = glob.glob(path+"\*.h5")
 
@@ -31,7 +28,7 @@ file_list = list_file_time_order(file_list)
 file_list = file_list[-5:]
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**14
+NFFT = 2**18
 
 if single_channel:
     a = 0
@@ -59,7 +56,7 @@ def getdata(fname):
                     Volt = dset.attrs['EOM_voltage']
                 if scope:
                     Fs = dset.attrs['FS_scope']
-                		
+                print Fs
 		#dat = 1.0*dat*max_volt/nbit
                 dat = dat * 10./(2**15 - 1)
                 Time = dset.attrs["Time"]

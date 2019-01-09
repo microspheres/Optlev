@@ -7,13 +7,17 @@ import bead_util as bu
 import glob
 import scipy.optimize as opt
 
-name = r"4mbar_XY.h5"
+name = r"4mbar_zcool.h5"
 path = r"C:\data\20190108\15um"
 
-f_start = 50.
-f_end = 300.
+comparison = True
+acc = True # plots also acc sensitivity
+comp_file = "4.3e-7mbar_xyzcool.h5"
 
-NFFT = 2**12
+f_start = 50.
+f_end = 400.
+
+NFFT = 2**14
 
 kb = 1.38*10**-23
 
@@ -76,8 +80,8 @@ def Gamma(vis, press, temp, mass, R, M):
 def psd(f, A, f0, gamma):
     w0 = 2.*np.pi*f0
     w = 2.*np.pi*f
-    s1 = 2.*kb*temp*(gamma*(w0)**2)
-    s2 = 1.*M*(w0**2)*((w0**2 - w**2)**2 + (gamma*w0)**2)
+    s1 = 2.*kb*temp*(gamma*(w0**2))
+    s2 = 1.*M*(w0**2)*((w0**2 - w**2)**2 + (gamma*w)**2)
     s = np.sqrt(s1/s2)
     return A*s
 
@@ -91,6 +95,9 @@ px, cx = opt.curve_fit(psd, data[0][fit_points], np.sqrt(data[1][fit_points]), p
 
 py, cy = opt.curve_fit(psd, data[0][fit_points], np.sqrt(data[2][fit_points]), p0 = [1e6, 100, gamma] )
 
+if comparison:
+        comp = getdata(os.path.join(path, comp_file))
+
 
 
 
@@ -98,15 +105,54 @@ fig = plt.figure()
 plt.subplot(2, 1, 1)
 plt.loglog(data[0], np.sqrt(data[1])/px[0],label="x")
 plt.loglog(f, psd(f, *px)/px[0])
-
-plt.ylabel("m/rtHz")
+if comparison:
+        plt.loglog(comp[0], np.sqrt(comp[1])/px[0],label="comparison_x")
+        
+plt.grid()
+plt.ylabel("$m/ \sqrt{Hz}$")
 plt.legend(loc=3)
 plt.subplot(2, 1, 2)
-plt.loglog(data[0], np.sqrt(data[2])/py[0])
+plt.loglog(data[0], np.sqrt(data[2])/py[0], label = "y")
 plt.loglog(f, psd(f, *py)/py[0])
+if comparison:
+        plt.loglog(comp[0], np.sqrt(comp[2])/py[0],label="comparison_y")
+        
 plt.xlabel("Frequency[Hz]")
+plt.ylabel("$m/ \sqrt{Hz}$")
+plt.legend(loc=3)
+plt.grid()
 
-plt.show()
+
+if acc:
+
+        ax = (((2.*np.pi)*abs(px[1]))**2)/9.8
+        ay = (((2.*np.pi)*abs(py[1]))**2)/9.8
+        
+        fig2 = plt.figure()
+        plt.subplot(2, 1, 1)
+        plt.loglog(data[0], 1e6*ax*np.sqrt(data[1])/px[0],label="x")
+        plt.loglog(f, 1e6*ax*psd(f, *px)/px[0])
+        if comparison:
+                plt.loglog(comp[0], 1e6*ax*np.sqrt(comp[1])/px[0],label="comparison_x")
+        
+        plt.grid()
+        plt.ylabel("$\mu g/ \sqrt{Hz}$")
+        plt.legend(loc=3)
+        plt.subplot(2, 1, 2)
+        plt.loglog(data[0], 1e6*ay*np.sqrt(data[2])/py[0], label = "y")
+        plt.loglog(f, 1e6*ay*psd(f, *py)/py[0])
+        if comparison:
+                plt.loglog(comp[0], 1e6*ay*np.sqrt(comp[2])/py[0],label="comparison_y")
+        
+        plt.xlabel("Frequency[Hz]")
+        plt.ylabel("$\mu g/ \sqrt{Hz}$")
+        plt.legend(loc=3)
+        plt.grid()
+
 
 print px
+print cx
 print py
+print cy
+
+plt.show()

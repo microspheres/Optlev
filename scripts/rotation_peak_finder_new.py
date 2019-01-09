@@ -37,7 +37,7 @@ radius = 15.0*1e-6 #m #22um sphere
 parameters = [1370000., 0.1, 5000, "down", NFFT]  # last entry shoulp help with aliasing. Gets "up", "down" or "none". "up" for curves that go up," down" for curves that go down and "none" for nothing to happens.
 
 
-path_list = [r"C:\data\20180323\bead3_SiO2_15um_POL_NS\meas6_spin_scan"]
+path_list = [r"C:\data\20190108\15um\rotation"]
 
 
 
@@ -367,7 +367,7 @@ plt.ylim(ylim[0],ylim[1])
 
 plt.ylabel("Rotation [kHz]", fontsize=13)
 plt.xlabel("Time [s]", fontsize=13)
-# plt.plot(c1[2][good_points1], c1[0][good_points1], color = "g")
+plt.plot(c1[2][good_points1], c1[0][good_points1], color = "g")
 plt.colorbar()
 plt.legend(loc="lower right", frameon = False)
 plt.tight_layout(pad = 0)
