@@ -7,17 +7,17 @@ import bead_util as bu
 import glob
 import scipy.optimize as opt
 
-name = r"4mbar_zcool.h5"
-path = r"C:\data\20190108\15um"
+name = r"4mbar_zcool7.h5"
+path = r"C:\data\20190111\15um\SN"
 
 comparison = True
-acc = True # plots also acc sensitivity
-comp_file = "4.3e-7mbar_xyzcool.h5"
+acc = False # plots also acc sensitivity
+comp_file = "4mbar_zcool9.h5"
 
-f_start = 50.
+f_start = 40.
 f_end = 400.
 
-NFFT = 2**14
+NFFT = 2**12
 
 kb = 1.38*10**-23
 
@@ -31,7 +31,7 @@ R = 7.5*10**-6
 
 M = (4./3.)*np.pi*(R**3)*rho
 
-press = 440.
+press = 350.
 
 temp = 300
 

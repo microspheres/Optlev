@@ -26,7 +26,7 @@ file_list = glob.glob(path+"\*.h5")
 file_list = list_file_time_order(file_list)
 
 # file_list = file_list[-5:]
-file_list = file_list[-5::1]
+file_list = file_list[-30::2]
 
 Fs = 10e3  ## this is ignored with HDF5 files
 NFFT = 2**18
