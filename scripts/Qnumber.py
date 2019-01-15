@@ -10,14 +10,12 @@ import scipy.optimize as opt
 name = r"2.4mbar_zcool.h5"
 path = r"C:\data\20190115\15um\2"
 
-comparison = True
-acc = True # plots also acc sensitivity
 comp_file = "3.2e-7mbar_xyzcool.h5"
 
 f_start = 40.
-f_end = 350.
+f_end = 400.
 
-NFFT = 2**15
+NFFT = 2**14
 
 kb = 1.38*10**-23
 
@@ -31,7 +29,7 @@ R = 7.5*10**-6
 
 M = (4./3.)*np.pi*(R**3)*rho
 
-press = 240.
+press = 360.
 
 temp = 300
 
@@ -55,8 +53,12 @@ def getdata(fname):
 
 	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT) 
 	ypsd, freqs = matplotlib.mlab.psd(dat[:, bu.yi]-numpy.mean(dat[:, bu.yi]), Fs = Fs, NFFT = NFFT)
+
+        x = dat[:, bu.xi]-numpy.mean(dat[:, bu.xi])
+
+        y = dat[:, bu.yi]-numpy.mean(dat[:, bu.yi])
         
-	return [freqs, xpsd, ypsd]
+	return [freqs, xpsd, ypsd, x, y]
 
 data = getdata(os.path.join(path, name))
 
@@ -95,8 +97,8 @@ px, cx = opt.curve_fit(psd, data[0][fit_points], np.sqrt(data[1][fit_points]), p
 
 py, cy = opt.curve_fit(psd, data[0][fit_points], np.sqrt(data[2][fit_points]), p0 = [1e6, 100, gamma] )
 
-if comparison:
-        comp = getdata(os.path.join(path, comp_file))
+
+comp = getdata(os.path.join(path, comp_file))
 
 
 
@@ -105,17 +107,17 @@ fig = plt.figure()
 plt.subplot(2, 1, 1)
 plt.loglog(data[0], np.sqrt(data[1])/px[0],label="x")
 plt.loglog(f, psd(f, *px)/px[0])
-if comparison:
-        plt.loglog(comp[0], np.sqrt(comp[1])/px[0],label="comparison_x")
-     
+
+plt.loglog(comp[0], np.sqrt(comp[1])/px[0],label="comparison_x")
+        
 plt.grid()
 plt.ylabel("$m/ \sqrt{Hz}$")
 plt.legend(loc=3)
 plt.subplot(2, 1, 2)
 plt.loglog(data[0], np.sqrt(data[2])/py[0], label = "y")
 plt.loglog(f, psd(f, *py)/py[0])
-if comparison:
-        plt.loglog(comp[0], np.sqrt(comp[2])/py[0],label="comparison_y")
+
+plt.loglog(comp[0], np.sqrt(comp[2])/py[0],label="comparison_y")
         
 plt.xlabel("Frequency[Hz]")
 plt.ylabel("$m/ \sqrt{Hz}$")
@@ -123,38 +125,29 @@ plt.legend(loc=3)
 plt.grid()
 
 
-if acc:
+stdx = np.std(comp[3])/px[0]
+stdy = np.std(comp[4])/py[0]
 
-        ax = (((2.*np.pi)*abs(px[1]))**2)/9.8
-        ay = (((2.*np.pi)*abs(py[1]))**2)/9.8
-        
-        fig2 = plt.figure()
-        plt.subplot(2, 1, 1)
-        plt.loglog(data[0], 1e6*ax*np.sqrt(data[1])/px[0],label="x")
-        plt.loglog(f, 1e6*ax*psd(f, *px)/px[0])
-        if comparison:
-                plt.loglog(comp[0], 1e6*ax*np.sqrt(comp[1])/px[0],label="comparison_x")
+T = numpy.linspace(0,1e4,1e5)
+dT = T[1]-T[0]
+vx = numpy.gradient(comp[3]/px[0], dT)
+vy = numpy.gradient(comp[4]/py[0], dT)
 
-        plt.ylim(1e-2,1e3)
-        plt.grid()
-        plt.ylabel("$\mu g/ \sqrt{Hz}$")
-        plt.legend(loc=3)
-        plt.subplot(2, 1, 2)
-        plt.loglog(data[0], 1e6*ay*np.sqrt(data[2])/py[0], label = "y")
-        plt.loglog(f, 1e6*ay*psd(f, *py)/py[0])
-        if comparison:
-                plt.loglog(comp[0], 1e6*ay*np.sqrt(comp[2])/py[0],label="comparison_y")
-        
-        plt.xlabel("Frequency[Hz]")
-        plt.ylabel("$\mu g/ \sqrt{Hz}$")
-        plt.legend(loc=3)
-        plt.grid()
-        plt.ylim(1e-2,1e3)  
+stdvx = np.std(vx)
+stdvy = np.std(vy)
+
+hbar = 1.0545718*10**(-34)
+
+nx = M*stdx*stdvx/(hbar) - 0.5
+ny = M*stdy*stdvy/(hbar) - 0.5
+
+print stdvx
+print stdvy
+
+print "nx = ", nx
+print "ny = ", ny
 
 
-print px
-print cx
-print py
-print cy
+
 
 plt.show()
