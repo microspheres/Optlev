@@ -7,12 +7,18 @@ import bead_util as bu
 import glob
 import scipy.optimize as opt
 
-name = r"2.4mbar_zcool.h5"
 path = r"C:\data\20190115\15um\2"
+
+name = r"2.4mbar_zcool.h5"
 
 comparison = True
 acc = True # plots also acc sensitivity
-comp_file = "3.2e-7mbar_xyzcool.h5"
+comp_file = "2.0e-7mbar_xyzcool.h5"
+
+laser_only = True
+name_laser_only = "laser_only.h5"
+laser_off = True
+name_laser_off = "laser_off.h5"
 
 f_start = 40.
 f_end = 350.
@@ -27,7 +33,7 @@ vis = 18.54*10**-6
 
 rho = 1800
 
-R = 7.5*10**-6
+R = 7.0*10**-6
 
 M = (4./3.)*np.pi*(R**3)*rho
 
@@ -98,6 +104,12 @@ py, cy = opt.curve_fit(psd, data[0][fit_points], np.sqrt(data[2][fit_points]), p
 if comparison:
         comp = getdata(os.path.join(path, comp_file))
 
+if laser_only:
+        lo = getdata(os.path.join(path, name_laser_only))
+
+if laser_off:
+        loff = getdata(os.path.join(path, name_laser_off))
+
 
 
 
@@ -106,7 +118,13 @@ plt.subplot(2, 1, 1)
 plt.loglog(data[0], np.sqrt(data[1])/px[0],label="x")
 plt.loglog(f, psd(f, *px)/px[0])
 if comparison:
-        plt.loglog(comp[0], np.sqrt(comp[1])/px[0],label="comparison_x")
+        plt.loglog(comp[0], np.sqrt(comp[1])/px[0],label="low_pressure_x")
+
+if laser_only:
+        plt.loglog(lo[0], np.sqrt(lo[1])/px[0],label="laser_only_x")
+
+if laser_off:
+        plt.loglog(loff[0], np.sqrt(loff[1])/px[0],label="laser_off_x")
      
 plt.grid()
 plt.ylabel("$m/ \sqrt{Hz}$")
@@ -115,12 +133,19 @@ plt.subplot(2, 1, 2)
 plt.loglog(data[0], np.sqrt(data[2])/py[0], label = "y")
 plt.loglog(f, psd(f, *py)/py[0])
 if comparison:
-        plt.loglog(comp[0], np.sqrt(comp[2])/py[0],label="comparison_y")
+        plt.loglog(comp[0], np.sqrt(comp[2])/py[0],label="low_pressure_y")
+
+if laser_only:
+        plt.loglog(lo[0], np.sqrt(lo[2])/py[0],label="laser_only_y")
+
+if laser_off:
+        plt.loglog(loff[0], np.sqrt(loff[2])/py[0],label="laser_off_y")
         
 plt.xlabel("Frequency[Hz]")
 plt.ylabel("$m/ \sqrt{Hz}$")
 plt.legend(loc=3)
 plt.grid()
+plt.tight_layout(pad = 0)
 
 
 if acc:
@@ -135,7 +160,13 @@ if acc:
         if comparison:
                 plt.loglog(comp[0], 1e6*ax*np.sqrt(comp[1])/px[0],label="comparison_x")
 
-        plt.ylim(1e-2,1e3)
+        if laser_only:
+                plt.loglog(lo[0], 1e6*ax*np.sqrt(lo[1])/px[0],label="laser_only_x")
+
+        if laser_off:
+                plt.loglog(loff[0], 1e6*ax*np.sqrt(loff[1])/px[0],label="laser_off_x")
+
+        plt.ylim(5e-3,1e3)
         plt.grid()
         plt.ylabel("$\mu g/ \sqrt{Hz}$")
         plt.legend(loc=3)
@@ -143,18 +174,26 @@ if acc:
         plt.loglog(data[0], 1e6*ay*np.sqrt(data[2])/py[0], label = "y")
         plt.loglog(f, 1e6*ay*psd(f, *py)/py[0])
         if comparison:
-                plt.loglog(comp[0], 1e6*ay*np.sqrt(comp[2])/py[0],label="comparison_y")
+                plt.loglog(comp[0], 1e6*ax*np.sqrt(comp[2])/py[0],label="comparison_y")
+
+        if laser_only:
+                plt.loglog(lo[0], 1e6*ax*np.sqrt(lo[2])/py[0],label="laser_only_y")
+
+        if laser_off:
+                plt.loglog(loff[0], 1e6*ax*np.sqrt(loff[2])/py[0],label="laser_off_y")
         
         plt.xlabel("Frequency[Hz]")
         plt.ylabel("$\mu g/ \sqrt{Hz}$")
         plt.legend(loc=3)
         plt.grid()
-        plt.ylim(1e-2,1e3)  
+        plt.ylim(5e-3,1e3)
+        plt.tight_layout(pad = 0)
 
 
 print px
 print cx
 print py
 print cy
+
 
 plt.show()

@@ -10,7 +10,7 @@ import scipy.optimize as opt
 name = r"2.4mbar_zcool.h5"
 path = r"C:\data\20190115\15um\2"
 
-comp_file = "3.2e-7mbar_xyzcool.h5"
+comp_file = "2.8e-7mbar_xyzcool.h5"
 
 f_start = 40.
 f_end = 400.
