@@ -2098,9 +2098,6 @@
 					<Item Name="niFPGA BW CU Order 4 (16-bit).vi" Type="VI" URL="/&lt;vilib&gt;/rvi/Analysis/measure/butterworth/templates/niFPGA BW CU Order 4 (16-bit).vi"/>
 					<Item Name="niFPGA I32xI32 MAC+ MSB.vi" Type="VI" URL="/&lt;vilib&gt;/rvi/Analysis/utilities/niFPGA I32xI32 MAC+ MSB.vi"/>
 				</Item>
-				<Item Name="BeadCoolerFixedZ(SubVI).vi" Type="VI" URL="../MultiChannelFeedbackCooling FPGA/BeadCoolerFixedZ(SubVI).vi"/>
-				<Item Name="BeadCoolerFixedZ(SubVI)_noint_extraHP.vi" Type="VI" URL="../MultiChannelFeedbackCooling FPGA/BeadCoolerFixedZ(SubVI)_noint_extraHP.vi"/>
-				<Item Name="rangelimiter.vi" Type="VI" URL="../MultiChannelFeedbackCooling FPGA/rangelimiter.vi"/>
 			</Item>
 			<Item Name="Build Specifications" Type="Build">
 				<Item Name="MultiChannelfFeedbackCooling (FPGA)_PIDXYZ_laserPID" Type="{F4C5E96F-7410-48A5-BB87-3559BC9B167F}">
@@ -2204,6 +2201,7 @@
 				<Item Name="Trim Whitespace.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Trim Whitespace.vi"/>
 				<Item Name="whitespace.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/whitespace.ctl"/>
 			</Item>
+			<Item Name="Microspherefeedb_FPGATarget2_MultiChannelfFee_SMENcAWM-fA.lvbitx" Type="Document" URL="../FPGA Bitfiles/Microspherefeedb_FPGATarget2_MultiChannelfFee_SMENcAWM-fA.lvbitx"/>
 			<Item Name="Microspherefeedb_FPGATarget_MultiChannelfFee_-5RO42C0JZ0.lvbitx" Type="Document" URL="../FPGA Bitfiles/Microspherefeedb_FPGATarget_MultiChannelfFee_-5RO42C0JZ0.lvbitx"/>
 			<Item Name="Microspherefeedb_FPGATarget_MultiChannelfFee_I4gqCtRo9c0.lvbitx" Type="Document" URL="../FPGA Bitfiles/Microspherefeedb_FPGATarget_MultiChannelfFee_I4gqCtRo9c0.lvbitx"/>
 			<Item Name="Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_eom2.lvbitx" Type="Document" URL="../FPGA Bitfiles/Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_eom2.lvbitx"/>

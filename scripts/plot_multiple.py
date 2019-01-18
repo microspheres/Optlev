@@ -19,7 +19,7 @@ def list_file_time_order(filelist):
 
 savetxt = True
 
-path = r"C:\data\20190115\15um\2\rotation9"
+path = r"C:\data\GADI"
 
 file_list = glob.glob(path+"\*.h5")
 

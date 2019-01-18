@@ -10,7 +10,7 @@ import scipy.optimize as opt
 name = r"2.4mbar_zcool.h5"
 path = r"C:\data\20190115\15um\2"
 
-comp_file = "2.8e-7mbar_xyzcool.h5"
+comp_file = "2.0e-7mbar_xyzcool.h5"
 
 f_start = 40.
 f_end = 400.
@@ -58,7 +58,7 @@ def getdata(fname):
 
         y = dat[:, bu.yi]-numpy.mean(dat[:, bu.yi])
         
-	return [freqs, xpsd, ypsd, x, y]
+	return [freqs, xpsd, ypsd, x, y, Fs]
 
 data = getdata(os.path.join(path, name))
 
@@ -124,6 +124,25 @@ plt.ylabel("$m/ \sqrt{Hz}$")
 plt.legend(loc=3)
 plt.grid()
 
+filter = True
+if filter:
+    from scipy import signal
+    Fs = comp[5]
+    def butter_bandpass(L, H, fs, order):
+        nyq = 0.5 * fs
+        nH = H / nyq
+        nL = L / nyq
+        b, a = signal.butter(order, [nL, nH], btype='bandpass', analog=False)
+        return b, a
+
+    def butter_bandpass_filter(data, L, H, fs, order):
+        b, a = butter_bandpass(L, H, fs, order=order)
+        y = signal.filtfilt(b, a, data)
+        return y
+
+    compfx = butter_bandpass_filter(comp[3], 70., 90., Fs, 1)
+
+
 
 stdx = np.std(comp[3])/px[0]
 stdy = np.std(comp[4])/py[0]
@@ -147,7 +166,12 @@ print stdvy
 print "nx = ", nx
 print "ny = ", ny
 
+print ((np.std(compfx)/px[0])**2)*(2.*M*(2.*np.pi*abs(px[1])))/(2.*hbar)
+print np.std(compfx)/px[0]
 
+plt.show()
 
-
+plt.figure()
+plt.plot(comp[3])
+plt.plot(compfx)
 plt.show()
