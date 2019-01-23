@@ -20,8 +20,8 @@ name_laser_only = "laser_only.h5"
 laser_off = True
 name_laser_off = "laser_off.h5"
 
-f_start = 40.
-f_end = 350.
+f_start = 40. # for the fit
+f_end = 350. # for the fit
 
 NFFT = 2**15
 
@@ -61,7 +61,7 @@ def getdata(fname):
 
 	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT) 
 	ypsd, freqs = matplotlib.mlab.psd(dat[:, bu.yi]-numpy.mean(dat[:, bu.yi]), Fs = Fs, NFFT = NFFT)
-        
+
 	return [freqs, xpsd, ypsd]
 
 data = getdata(os.path.join(path, name))
