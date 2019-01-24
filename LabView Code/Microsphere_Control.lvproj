@@ -39,15 +39,19 @@
 		<Item Name="name_dipole_voltage.vi" Type="VI" URL="../DAQ/name_dipole_voltage.vi"/>
 		<Item Name="Powermeter.vi" Type="VI" URL="../../Powermeter.vi"/>
 		<Item Name="Powermeter_eom.vi" Type="VI" URL="../../Powermeter_eom.vi"/>
+		<Item Name="pressures.vi" Type="VI" URL="../pressures.vi"/>
+		<Item Name="pressures_sub.vi" Type="VI" URL="../pressures_sub.vi"/>
 		<Item Name="rotation_mount.vi" Type="VI" URL="../rotation_mount.vi"/>
 		<Item Name="set_dipole_voltage.vi" Type="VI" URL="../DAQ/set_dipole_voltage.vi"/>
 		<Item Name="set_instruments (SubVI).vi" Type="VI" URL="../DAQ/set_instruments (SubVI).vi"/>
 		<Item Name="set_QWP.vi" Type="VI" URL="../set_QWP.vi"/>
 		<Item Name="set_tilt_stage (SubVI).vi" Type="VI" URL="../DAQ/set_tilt_stage (SubVI).vi"/>
 		<Item Name="test_tilt_stage_positions.vi" Type="VI" URL="../test_tilt_stage_positions.vi"/>
+		<Item Name="TIC Query Command daq.vi" Type="VI" URL="../TIC Query Command daq.vi"/>
+		<Item Name="TIC Query Command.vi" Type="VI" URL="../TIC Query Command.vi"/>
+		<Item Name="TIC Read Gauge Pressure or Volts daq.vi" Type="VI" URL="../TIC Read Gauge Pressure or Volts daq.vi"/>
 		<Item Name="TIC Read Gauge Pressure or Volts.vi" Type="VI" URL="../TIC Read Gauge Pressure or Volts.vi"/>
 		<Item Name="valve_lights.vi" Type="VI" URL="../valve_lights.vi"/>
-		<Item Name="valve_pressures.vi" Type="VI" URL="../valve_pressures.vi"/>
 		<Item Name="valves.vi" Type="VI" URL="../valves.vi"/>
 		<Item Name="variable_steps_logic.vi" Type="VI" URL="../DAQ/variable_steps_logic.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
@@ -662,10 +666,8 @@
 			<Item Name="sweep_Gadi.vi" Type="VI" URL="../sweep_Gadi.vi"/>
 			<Item Name="take_data (SubVI).vi" Type="VI" URL="../DAQ/take_data (SubVI).vi"/>
 			<Item Name="TIC Build Gauge Command.vi" Type="VI" URL="../Turbo Instrument Controller.llb/TIC Build Gauge Command.vi"/>
-			<Item Name="TIC Query Command.vi" Type="VI" URL="../Turbo Instrument Controller.llb/TIC Query Command.vi"/>
 			<Item Name="Type Def - Gauge Num Selection.ctl" Type="VI" URL="../Turbo Instrument Controller.llb/Type Def - Gauge Num Selection.ctl"/>
 			<Item Name="Type Def - Units.ctl" Type="VI" URL="../Turbo Instrument Controller.llb/Type Def - Units.ctl"/>
-			<Item Name="VISA_Query.vi" Type="VI" URL="../VISA_Query.vi"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build"/>
 	</Item>
