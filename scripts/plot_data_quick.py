@@ -6,9 +6,9 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"5mbar.h5"
+refname = r"3mbar_zcool3.h5"
 fname0 = r""
-path = r"C:\data\20180118\15um\2spheres"
+path = r"C:\data\20190125\15um\1"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
@@ -54,14 +54,13 @@ def getdata(fname):
 	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT) 
 	ypsd, freqs = matplotlib.mlab.psd(dat[:, bu.yi]-numpy.mean(dat[:, bu.yi]), Fs = Fs, NFFT = NFFT)
         zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
-        xpsd_old, freqs = matplotlib.mlab.psd(dat[:, bu.xi_old]-numpy.mean(dat[:, bu.xi_old]), Fs = Fs, NFFT = NFFT)
         # Ddrive = dat[:, bu.drive]*np.gradient(dat[:,bu.drive])
         # DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT))
 
 	norm = numpy.median(dat[:, bu.zi])
         #for h in [xpsd, ypsd, zpsd]:
         #        h /= numpy.median(dat[:,bu.zi])**2
-	return [freqs, xpsd, ypsd, dat, zpsd, xpsd_old]
+	return [freqs, xpsd, ypsd, dat, zpsd]
 
 data0 = getdata(os.path.join(path, fname0))
 
@@ -97,25 +96,21 @@ if make_plot_vs_time:
        
 
 fig = plt.figure()
-plt.subplot(4, 1, 1)
+plt.subplot(3, 1, 1)
 plt.loglog(data0[0], np.sqrt(data0[1]),label="test")
 if refname:
 	plt.loglog(data1[0], np.sqrt(data1[1]),label="ref")
 plt.ylabel("V/rtHz")
 plt.legend(loc=3)
-plt.subplot(4, 1, 2)
+plt.subplot(3, 1, 2)
 plt.loglog(data0[0], np.sqrt(data0[2]))
 if refname:
 	plt.loglog(data1[0], np.sqrt(data1[2]))
-plt.subplot(4, 1, 3)
+plt.subplot(3, 1, 3)
 plt.loglog(data0[0],  np.sqrt(data0[4]))
 if refname:
 	plt.loglog(data1[0], np.sqrt(data1[4]))
 plt.ylabel("V/rtHz")
-plt.subplot(4, 1, 4)
-plt.loglog(data0[0],  np.sqrt(data0[5]))
-if refname:
-        plt.loglog(data1[0], np.sqrt(data1[5]))
 plt.xlabel("Frequency[Hz]")
 plt.show()
 

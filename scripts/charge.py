@@ -11,14 +11,14 @@ import scipy.signal as sp
 import scipy.optimize as opt
 import cPickle as pickle
 
-path = r"C:\data\20180925\bead1_SiO2_15um_POL_NS\charge"
+path = r"C:\data\20190125\15um\1\charge"
 ts = 1.
 
-fdrive = 48. #31.
+fdrive = 47. #31.
 make_plot = True
 
 data_columns = [0, bu.xi] # column to calculate the correlation against
-drive_column = bu.drive # column containing drive signal
+drive_column = 3 # column containing drive signal
 
 def getphase(fname):
         print "Getting phase from: ", fname 

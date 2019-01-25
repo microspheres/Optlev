@@ -1,5 +1,6 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <Project Type="Project" LVVersion="18008000">
+	<Property Name="varPersistentID:{DBCDF894-F460-4C74-9860-1F9DCDF81D68}" Type="Ref">/My Computer/Dependencies/AFG-2225.lvlib/input 1</Property>
 	<Item Name="My Computer" Type="My Computer">
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="server.control.propertiesEnabled" Type="Bool">true</Property>
@@ -30,6 +31,8 @@
 		<Item Name="dipole_voltage_control(Sub VI).vi" Type="VI" URL="../DAQ/dipole_voltage_control(Sub VI).vi"/>
 		<Item Name="dipole_voltage_control_logic(SubVI).vi" Type="VI" URL="../DAQ/dipole_voltage_control_logic(SubVI).vi"/>
 		<Item Name="EOM.vi" Type="VI" URL="../FPGA code/FPGA Bitfiles/EOM.vi"/>
+		<Item Name="Gwinstek_chan_1_2.vi" Type="VI" URL="../Gwinstek_chan_1_2.vi"/>
+		<Item Name="Gwinstek_chan_1_2_sub.vi" Type="VI" URL="../Gwinstek_chan_1_2_sub.vi"/>
 		<Item Name="initialize_oscilloscope_chan1.vi" Type="VI" URL="../initialize_oscilloscope_chan1.vi"/>
 		<Item Name="load_arbitrary_waveform.vi" Type="VI" URL="../load_arbitrary_waveform.vi"/>
 		<Item Name="Move Stage.vi" Type="VI" URL="../Move Stage.vi"/>
@@ -616,6 +619,7 @@
 				<Item Name="Write Spreadsheet String.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Write Spreadsheet String.vi"/>
 			</Item>
 			<Item Name="AbortMotion.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/AbortMotion.vi"/>
+			<Item Name="AFG-2225.lvlib" Type="Library" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/AFG-2225.lvlib"/>
 			<Item Name="AG-UC2-UC8_Close.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Close.vi"/>
 			<Item Name="AG-UC2-UC8_Open.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Open.vi"/>
 			<Item Name="AgilisCmdLib.dll" Type="Document" URL="../../../../../../../Program Files/Newport/Piezo Motion Control/Newport AG-UC2-UC8 Applet/Samples/LabVIEW 2009/AgilisCmdLib.dll"/>

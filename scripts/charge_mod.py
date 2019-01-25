@@ -13,14 +13,14 @@ import cPickle as pickle
 
 from scipy.optimize import curve_fit
 
-path = r"C:\data\20170717\bead15_15um_QWP\charge6"
+path = r"C:\data\20190125\15um\1\charge"
 ts = 1.
 
-fdrive = 41.
+fdrive = 48.
 make_plot = True
 
 data_columns = [0, bu.xi] ## column to calculate the correlation against
-drive_column = bu.drive ##-1 ## column containing drive signal
+drive_column = 3 ##-1 ## column containing drive signal
 
 def getphase(fname):
         print "Getting phase from: ", fname 
