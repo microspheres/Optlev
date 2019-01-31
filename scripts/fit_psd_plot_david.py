@@ -117,34 +117,34 @@ if laser_off:
 
 fig = plt.figure()
 plt.subplot(2, 1, 1)
-plt.loglog(data[0], np.sqrt(data[1])/px[0],label="x")
+plt.loglog(data[0], np.sqrt(data[1])/px[0],label="2.4 mbar")
 plt.loglog(f, psd(f, *px)/px[0])
 if comparison:
-        plt.loglog(comp[0], np.sqrt(comp[1])/px[0],label="low_pressure_x")
+        plt.loglog(comp[0], np.sqrt(comp[1])/px[0],label="2E-7 mbar")
 
 if laser_only:
-        plt.loglog(lo[0], np.sqrt(lo[1])/px[0],label="laser_only_x")
+        plt.loglog(lo[0], np.sqrt(lo[1])/px[0],label="No Sphere")
 
 if laser_off:
-        plt.loglog(loff[0], np.sqrt(loff[1])/px[0],label="laser_off_x")
+        plt.loglog(loff[0], np.sqrt(loff[1])/px[0],label="laser off")
      
 plt.grid()
-plt.ylabel("$m/ \sqrt{Hz}$")
+plt.ylabel("$ \sqrt{S_{xx}} \\ m/ \sqrt{Hz}$")
 plt.legend(loc=3)
 plt.subplot(2, 1, 2)
-plt.loglog(data[0], np.sqrt(data[2])/py[0], label = "y")
+plt.loglog(data[0], np.sqrt(data[2])/py[0], label = "2.4 mbar")
 plt.loglog(f, psd(f, *py)/py[0])
 if comparison:
-        plt.loglog(comp[0], np.sqrt(comp[2])/py[0],label="low_pressure_y")
+        plt.loglog(comp[0], np.sqrt(comp[2])/py[0],label="2E-7 mbar")
 
 if laser_only:
-        plt.loglog(lo[0], np.sqrt(lo[2])/py[0],label="laser_only_y")
+        plt.loglog(lo[0], np.sqrt(lo[2])/py[0],label="No Sphere")
 
 if laser_off:
-        plt.loglog(loff[0], np.sqrt(loff[2])/py[0],label="laser_off_y")
+        plt.loglog(loff[0], np.sqrt(loff[2])/py[0],label="laser off")
         
 plt.xlabel("Frequency[Hz]")
-plt.ylabel("$m/ \sqrt{Hz}$")
+plt.ylabel("$ \sqrt{S_{yy}} \\ m/ \sqrt{Hz}$")
 plt.legend(loc=3)
 plt.grid()
 plt.tight_layout(pad = 0)
@@ -157,35 +157,35 @@ if acc:
         
         fig2 = plt.figure()
         plt.subplot(2, 1, 1)
-        plt.loglog(data[0], 1e6*ax*np.sqrt(data[1])/px[0],label="x")
+        plt.loglog(data[0], 1e6*ax*np.sqrt(data[1])/px[0],label="2.4 mbar")
         plt.loglog(f, 1e6*ax*psd(f, *px)/px[0])
         if comparison:
-                plt.loglog(comp[0], 1e6*ax*np.sqrt(comp[1])/px[0],label="comparison_x")
+                plt.loglog(comp[0], 1e6*ax*np.sqrt(comp[1])/px[0],label="2E-7 mbar")
 
         if laser_only:
-                plt.loglog(lo[0], 1e6*ax*np.sqrt(lo[1])/px[0],label="laser_only_x")
+                plt.loglog(lo[0], 1e6*ax*np.sqrt(lo[1])/px[0],label="No Sphere")
 
         if laser_off:
-                plt.loglog(loff[0], 1e6*ax*np.sqrt(loff[1])/px[0],label="laser_off_x")
+                plt.loglog(loff[0], 1e6*ax*np.sqrt(loff[1])/px[0],label="laser off")
 
         plt.ylim(5e-3,1e3)
         plt.grid()
-        plt.ylabel("$\mu g/ \sqrt{Hz}$")
+        plt.ylabel("$ \sqrt{S_{aa}} \\ \mu g/ \sqrt{Hz}$")
         plt.legend(loc=3)
         plt.subplot(2, 1, 2)
-        plt.loglog(data[0], 1e6*ay*np.sqrt(data[2])/py[0], label = "y")
+        plt.loglog(data[0], 1e6*ay*np.sqrt(data[2])/py[0], label = "2.4 mbar")
         plt.loglog(f, 1e6*ay*psd(f, *py)/py[0])
         if comparison:
-                plt.loglog(comp[0], 1e6*ax*np.sqrt(comp[2])/py[0],label="comparison_y")
+                plt.loglog(comp[0], 1e6*ax*np.sqrt(comp[2])/py[0],label="2E-7 mbar")
 
         if laser_only:
-                plt.loglog(lo[0], 1e6*ax*np.sqrt(lo[2])/py[0],label="laser_only_y")
+                plt.loglog(lo[0], 1e6*ax*np.sqrt(lo[2])/py[0],label="No Sphere")
 
         if laser_off:
-                plt.loglog(loff[0], 1e6*ax*np.sqrt(loff[2])/py[0],label="laser_off_y")
+                plt.loglog(loff[0], 1e6*ax*np.sqrt(loff[2])/py[0],label="laser off")
         
         plt.xlabel("Frequency[Hz]")
-        plt.ylabel("$\mu g/ \sqrt{Hz}$")
+        plt.ylabel("$ \sqrt{S_{aa}} \\ \mu g/ \sqrt{Hz}$")
         plt.legend(loc=3)
         plt.grid()
         plt.ylim(5e-3,1e3)

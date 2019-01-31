@@ -11,10 +11,10 @@ import scipy.signal as sp
 import scipy.optimize as opt
 import cPickle as pickle
 
-path = r"C:\data\20190125\15um\1\charge"
+path = r"C:\data\20190125\15um\12\charge2"
 ts = 1.
 
-fdrive = 47. #31.
+fdrive = 48. #31.
 make_plot = True
 
 data_columns = [0, bu.xi] # column to calculate the correlation against
@@ -83,7 +83,8 @@ corr_data = []
 
 if make_plot:
     fig0 = plt.figure()
-    plt.hold(False)
+    # plt.hold(False)
+    # plt.clf()
 
 last_file = ""
 while( True ):

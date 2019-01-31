@@ -10,7 +10,7 @@ single_channel = True
 VEOM_h5 = False
 measuring_with_xyz = False
 
-scope = True # gets the correct FS
+scope = False # gets the correct FS
 
 def list_file_time_order(filelist):
     filelist.sort(key=os.path.getmtime)
@@ -19,17 +19,18 @@ def list_file_time_order(filelist):
 
 savetxt = True
 
-path = r"C:\data\20190125\15um\1\rot2"
+path = r"C:\data\20190125\15um\12\test"
 
 file_list = glob.glob(path+"\*.h5")
 
 file_list = list_file_time_order(file_list)
 
+# file_list = file_list[0:30:4]
 file_list = file_list[-5:]
 # file_list = file_list[-40::3]
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**15
+NFFT = 2**20
 
 if single_channel:
     a = 0
