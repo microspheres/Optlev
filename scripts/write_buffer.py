@@ -3,7 +3,7 @@ import scipy.stats as sp
 import scipy.signal as ss
 import matplotlib.pyplot as plt
 
-out_path = r"C:\Users\UsphereLab\Documents\GitHub\Optlev\scripts"
+out_path = r"C:\Users\yalem\GitHub\Documents\Optlev"
 frequency = 500.
 
 half_length = 8192
@@ -127,3 +127,15 @@ dtot = np.transpose( np.vstack( (xtot, ytot) ) )
 
 dtot = 1.0*max_val*dtot/np.max(dtot)
 np.savetxt(out_path + "white_noise_X.txt", dtot, delimiter=",",fmt="%d")
+
+
+## sinz
+t = np.linspace(0,2*np.pi,half_length*2)
+xtot = np.round(0.*half_length*np.sin(10.*t))
+ytot = np.round(0.*half_length*np.cos(10*t))
+ztot = np.round(half_length*np.sin(10*t))
+
+dtot = np.transpose( np.vstack( (xtot, ytot, ztot*0.2) ) )
+
+dtot = 1.0*max_val*dtot/np.max(dtot)
+np.savetxt(out_path + "sinz_buffer.txt", dtot, delimiter=",",fmt="%d")
