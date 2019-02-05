@@ -10,7 +10,7 @@ single_channel = True
 VEOM_h5 = False
 measuring_with_xyz = False
 
-scope = False # gets the correct FS
+scope = True # gets the correct FS
 
 def list_file_time_order(filelist):
     filelist.sort(key=os.path.getmtime)
@@ -19,7 +19,7 @@ def list_file_time_order(filelist):
 
 savetxt = True
 
-path = r"C:\data\20190125\15um\12\test"
+path = r"C:\data\20190202\15um\4\rot2"
 
 file_list = glob.glob(path+"\*.h5")
 
@@ -30,7 +30,7 @@ file_list = file_list[-5:]
 # file_list = file_list[-40::3]
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**20
+NFFT = 2**14
 
 if single_channel:
     a = 0
@@ -52,7 +52,7 @@ def getdata(fname):
 		#max_volt = dset.attrs['max_volt']
 		#nbit = dset.attrs['nbit']
 		Fs = dset.attrs['Fsamp']
-                Press = dset.attrs['temps'][0]
+                Press = dset.attrs['pressures'][0]
                 Volt = 0.0
                 if VEOM_h5:
                     Volt = dset.attrs['EOM_voltage']

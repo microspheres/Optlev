@@ -6,9 +6,9 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"2mbar_zcool5.h5"
+refname = r"2mbar_zcool.h5"
 fname0 = r""
-path = r"C:\data\20190125\15um\13"
+path = r"C:\data\20190202\15um\4"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
@@ -44,6 +44,7 @@ def getdata(fname):
 		#max_volt = dset.attrs['max_volt']
 		#nbit = dset.attrs['nbit']
 		Fs = dset.attrs['Fsamp']
+                pid = dset.attrs['PID']
 		
 		#dat = 1.0*dat*max_volt/nbit
                 dat = dat * 10./(2**15 - 1)
@@ -56,7 +57,7 @@ def getdata(fname):
         zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
         # Ddrive = dat[:, bu.drive]*np.gradient(dat[:,bu.drive])
         # DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT))
-
+        print pid
 	norm = numpy.median(dat[:, bu.zi])
         #for h in [xpsd, ypsd, zpsd]:
         #        h /= numpy.median(dat[:,bu.zi])**2

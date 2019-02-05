@@ -1,6 +1,6 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <Project Type="Project" LVVersion="18008000">
-	<Property Name="varPersistentID:{DBCDF894-F460-4C74-9860-1F9DCDF81D68}" Type="Ref">/My Computer/Dependencies/AFG-2225.lvlib/input 1</Property>
+	<Property Name="varPersistentID:{C31C942E-0743-4B46-980F-A133352DF93B}" Type="Ref">/My Computer/Dependencies/AFG-2225.lvlib/input 1</Property>
 	<Item Name="My Computer" Type="My Computer">
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="server.control.propertiesEnabled" Type="Bool">true</Property>
@@ -647,7 +647,7 @@
 			</Item>
 			<Item Name="make_synth_array (SubVI).vi" Type="VI" URL="../DAQ/make_synth_array (SubVI).vi"/>
 			<Item Name="make_tilt_stage_array (SubVI).vi" Type="VI" URL="../DAQ/make_tilt_stage_array (SubVI).vi"/>
-			<Item Name="Microspherefeedb_FPGATarget2_MultiChannelfFee_SMENcAWM-fA.lvbitx" Type="Document" URL="../FPGA code/FPGA Bitfiles/Microspherefeedb_FPGATarget2_MultiChannelfFee_SMENcAWM-fA.lvbitx"/>
+			<Item Name="Microspherefeedb_FPGATarget2_(FPGA)PIDXYZlase_ErjQEsBLsCA.lvbitx" Type="Document" URL="../FPGA code/FPGA Bitfiles/Microspherefeedb_FPGATarget2_(FPGA)PIDXYZlase_ErjQEsBLsCA.lvbitx"/>
 			<Item Name="Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_eom.lvbitx" Type="Document" URL="../FPGA code/FPGA Bitfiles/Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_eom.lvbitx"/>
 			<Item Name="move_tilt_stage_simpler(Sub VI).vi" Type="VI" URL="../move_tilt_stage_simpler(Sub VI).vi"/>
 			<Item Name="NiFpgaLv.dll" Type="Document" URL="NiFpgaLv.dll">
