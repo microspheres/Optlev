@@ -196,7 +196,7 @@ def plot_all(pathlist):
         plt.figure()
         plt.loglog(dg, T, "ro")
         if no_sphere:
-                plt.loglog(aa, 1e6*tt, "b", alpha = 0.5, label = "System Noise")
+                plt.loglog(aa, 1e6*tt, "b", alpha = 0.5, label = "Imaging System Noise")
                 plt.fill_between(aa, 1e6*tt, facecolor='blue', alpha=0.5)
         plt.xlabel("dgx")
         plt.ylabel("COMx Temp [$\mu$K]")
