@@ -7,9 +7,11 @@ import bead_util as bu
 import glob
 import scipy.optimize as opt
 
-path_list = [r"C:\data\20190202\15um\4\PID\COMx6"]
+path_list = [r"C:\data\20190202\15um\4\PID\COMx1", r"C:\data\20190202\15um\4\PID\COMx2", r"C:\data\20190202\15um\4\PID\COMx3", r"C:\data\20190202\15um\4\PID\COMx4", r"C:\data\20190202\15um\4\PID\COMx5", r"C:\data\20190202\15um\4\PID\COMx6", r"C:\data\20190202\15um\4\PID\COMx7", r"C:\data\20190202\15um\4\PID\COMx8", r"C:\data\20190202\15um\4\PID\COMx9", r"C:\data\20190202\15um\4\PID\COMx10", r"C:\data\20190202\15um\4\PID\COMx11"]
 
 plot = False
+plot_heat = False
+plot_cool = False
 
 
 def getdata(fname):
@@ -38,7 +40,6 @@ def getdata(fname):
 
 Q = getdata(glob.glob((path_list[0]+"\*.h5"))[0])
 fs = Q[3]
-dgx = Q[2][0]
 
 def get_files_path(path):
     file_list = glob.glob(path+"\*.h5")
@@ -173,22 +174,23 @@ def plot_and_fit_cool(path, plot):
         for i in range(len(a[0][j])):
             c1 = 0
             p1 = np.array([0.1, 0.3, 2*np.pi*80, np.pi/2])
+            notfail = True
             try:
                 p, c = opt.curve_fit(fit_cool, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1, bounds = ((-1,0.00002,2*np.pi*60, 0),(1, 0.99, 2*np.pi*95, np.pi)))
             except RuntimeError:
                 c = 0
                 p = p1
                 print "FIT FAIL"
+                notfail = False
             if plot:
                 plt.figure()
                 plt.plot(np.array(a[0][0][i])/fs, a[1][0][i])
                 plt.plot(np.array(a[0][0][i])/fs, fit_cool(np.array(a[0][0][i]/fs), *p), "k--")
-            P.append(p)
-            C.append(c)
-            damp = 2.*p[1]*p[2]
-            D.append(damp)
-        plt.figure()
-        plt.plot(D, label = "damping")
+            if notfail:
+                P.append(p)
+                C.append(c)
+                damp = 2.*p[1]*p[2]
+                D.append(damp)
         Df.append(D)
         Pf.append(P)
         Cf.append(C)
@@ -206,50 +208,86 @@ def plot_and_fit_heat(path, plot):
         for i in range(len(a[0][j])):
             c1 = 0
             p1 = np.array([0.01, 0.03, 2*np.pi*70, 0.])
+            notfail = True
             try:
                 p, c = opt.curve_fit(fit_heat, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1)
             except RuntimeError:
                 c = 0
                 p = p1
+                notfail = False
                 print "FIT FAIL"
             if plot:
                 plt.figure()
                 plt.plot(np.array(a[0][0][i])/fs, a[1][0][i])
                 plt.plot(np.array(a[0][0][i])/fs, fit_heat(np.array(a[0][0][i]/fs), *p), "k--")
-            P.append(p)
-            C.append(c)
-            damp = 2.*p[1]*p[2]
-            D.append(damp)
+            if notfail:
+                P.append(p)
+                C.append(c)
+                damp = 2.*p[1]*p[2]
+                D.append(damp)
         Pf.append(P)
         Cf.append(C)
         Df.append(D)
     return [Pf, Cf, Df]
 
 
-
-def get_from_pathlist(pathlist):
+def get_from_pathlist(pathlist): ### return [a][b] a is the folder and b is 0 for heating rate, 1 for damping rate and 2 for dgx of that folder.
     Info = []
-    for i in range(len(pathlist)):
-        damp = plot_and_fit_cool(path_list[i], plot)[2]
-        
-        
+    L = len(pathlist)
+    for i in range(L):
+        heat = plot_and_fit_heat(path_list[i], plot_heat)[2]
+        damp = plot_and_fit_cool(path_list[i], plot_cool)[2]
+        dgx_aux = getdata(glob.glob((pathlist[i]+"\*.h5"))[0])[2][0]
+        info = np.array([heat, damp, dgx_aux])
+        Info.append(info)
+    return Info
 
 
+def plot_all(pathlist):
+    Info = get_from_pathlist(pathlist)
+    L = len(pathlist)
+    for i in range(L):
+        dgx = Info[i][2]
+        label1 = "dgx = " + str("%0.2f" % dgx) + "mean damping = " + str( "%0.1f" % np.mean(Info[i][1][0]) )
+        label2 = "OFFdgx = " + str("%0.2f" % dgx) + "mean heating = " + str( "%0.1f" % np.mean(Info[i][0][0]) )
+        plt.figure()
+        plt.plot(Info[i][1][0], "ro", label = label1)
+        plt.xlabel("Measurements")
+        plt.ylabel("Damping [Hz]")
+        plt.legend(loc=3)
+        plt.grid()
+        plt.tight_layout(pad = 0)
+        plt.figure()
+        plt.plot(Info[i][0][0], "ro", label = label2)
+        plt.xlabel("Measurements")
+        plt.ylabel("Heating [Hz]")
+        plt.legend(loc=3)
+        plt.grid()
+        plt.tight_layout(pad = 0)
+    return Info
+
+plot_all(path_list)
+
+# A = get_from_pathlist(path_list)
+# plt.figure()
+# plt.plot(A[0][0][0])
+# plt.figure()
+# plt.plot(A[0][1][0])
+# print A[0][2]
     
-# damp = plot_and_fit_cool(path_list[0], plot)[2][0]
+# damp = plot_and_fit_cool(path_list[0], plot)[2]
 # plt.figure()
 # plt.plot(damp)
-# print "damp =", np.mean(damp)
-# print "dgx =", dgx
+# print "damp =", damp
 
 
 
-antidamp = plot_and_fit_heat(path_list[0], plot)[2][0]
-plt.figure()
-plt.plot(antidamp)
-print "antidamp =", np.mean(antidamp)
+# antidamp = plot_and_fit_heat(path_list[0], plot)[2][0]
+# plt.figure()
+# plt.plot(antidamp)
+# print "antidamp =", np.mean(antidamp)
 
 
 if plot:
-plt.legend(loc=3)
+    plt.legend(loc=3)
 plt.show()
