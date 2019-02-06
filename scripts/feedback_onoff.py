@@ -7,11 +7,16 @@ import bead_util as bu
 import glob
 import scipy.optimize as opt
 
+################# THIS CODE REQUIRES THE TRIGGER AND FEEDBACK ON AND OFF
+
 path_list = [r"C:\data\20190202\15um\4\PID\COMx1", r"C:\data\20190202\15um\4\PID\COMx2", r"C:\data\20190202\15um\4\PID\COMx3", r"C:\data\20190202\15um\4\PID\COMx4", r"C:\data\20190202\15um\4\PID\COMx5", r"C:\data\20190202\15um\4\PID\COMx6", r"C:\data\20190202\15um\4\PID\COMx7", r"C:\data\20190202\15um\4\PID\COMx8", r"C:\data\20190202\15um\4\PID\COMx9", r"C:\data\20190202\15um\4\PID\COMx10", r"C:\data\20190202\15um\4\PID\COMx11"]
+
+# path_list = [r"C:\data\20190202\15um\4\PID\COMx10"]
 
 plot = False
 plot_heat = False
 plot_cool = False
+bins = 13
 
 
 def getdata(fname):
@@ -40,6 +45,10 @@ def getdata(fname):
 
 Q = getdata(glob.glob((path_list[0]+"\*.h5"))[0])
 fs = Q[3]
+# plt.figure()
+# plt.plot(Q[1])
+# plt.plot(Q[0])
+# plt.show()
 
 def get_files_path(path):
     file_list = glob.glob(path+"\*.h5")
@@ -242,14 +251,13 @@ def get_from_pathlist(pathlist): ### return [a][b] a is the folder and b is 0 fo
         Info.append(info)
     return Info
 
-
 def plot_all(pathlist):
     Info = get_from_pathlist(pathlist)
     L = len(pathlist)
     for i in range(L):
         dgx = Info[i][2]
-        label1 = "dgx = " + str("%0.2f" % dgx) + "mean damping = " + str( "%0.1f" % np.mean(Info[i][1][0]) )
-        label2 = "OFFdgx = " + str("%0.2f" % dgx) + "mean heating = " + str( "%0.1f" % np.mean(Info[i][0][0]) )
+        label1 = "dgx = " + str("%0.2f" % dgx) + " mean damping = " + str( "%0.1f" % np.mean(Info[i][1][0]) ) + " [Hz]"
+        label2 = "OFFdgx = " + str("%0.2f" % dgx) + " mean heating = " + str( "%0.1f" % np.mean(Info[i][0][0]) ) + " [Hz]"
         plt.figure()
         plt.plot(Info[i][1][0], "ro", label = label1)
         plt.xlabel("Measurements")
@@ -266,7 +274,89 @@ def plot_all(pathlist):
         plt.tight_layout(pad = 0)
     return Info
 
-plot_all(path_list)
+def gauss(x,a,b,c):
+    g = c*np.exp(-0.5*((x-a)/b)**2)
+    return g
+
+def plot_all_histogram(pathlist, plot):
+    Info = get_from_pathlist(pathlist)
+    L = len(pathlist)
+    Dx = []
+    dmean = []
+    derror = []
+    hmean = []
+    herror = []
+    for i in range(L):
+        dgx = Info[i][2]
+        damp = Info[i][1][0]
+        heat = Info[i][0][0]
+        
+        #hist for damping
+        h,b = np.histogram(damp, bins = bins)
+        bc = np.diff(b)/2 + b[:-1]
+        p0 = np.array([np.mean(damp), np.std(damp)/5, 15])
+        poptd, pcovd = opt.curve_fit(gauss, bc, h, p0 = p0)
+        label1 = "dgx = " + str("%0.2f" % dgx) + " damping = " + str( "%0.1f" % poptd[0] ) + "$\pm$" + str( "%0.1f" % np.sqrt(pcovd[0][0]) ) + " [Hz]"
+        space = np.arange(np.mean(damp) - 1000, np.mean(damp) + 1000, 0.1)
+        if plot:
+            plt.figure()
+            plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = 'ko')
+            plt.plot(space, gauss(space,*poptd))
+            plt.xlabel("Histogram Damping [Hz]")
+            plt.ylabel("Measurements")
+            plt.legend(loc=3)
+            plt.grid()
+            plt.tight_layout(pad = 0)
+
+        #hist for heating
+        h,b = np.histogram(heat, bins = bins)
+        bc = np.diff(b)/2 + b[:-1]
+        p0 = np.array([np.mean(heat), np.std(heat)/5, 15])
+        popth, pcovh = opt.curve_fit(gauss, bc, h, p0 = p0)
+        label1 = "dgx = " + str("%0.2f" % dgx) + " heating = " + str( "%0.1f" % popth[0] ) + "$\pm$" + str( "%0.1f" % np.sqrt(pcovh[0][0]) ) + " [Hz]"
+        space = np.arange(np.mean(heat) - 1000, np.mean(heat) + 1000, 0.1)
+        if plot:
+            plt.figure()
+            plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = 'ko')
+            plt.plot(space, gauss(space,*popth))
+            plt.xlabel("Histogram Heating [Hz]")
+            plt.ylabel("Measurements")
+            plt.legend(loc=3)
+            plt.grid()
+            plt.tight_layout(pad = 0)
+
+        Dx.append(dgx)
+        dmean.append(poptd[0])
+        derror.append(np.sqrt(pcovd[0][0]))
+        hmean.append(popth[0])
+        herror.append(np.sqrt(pcovh[0][0]))
+
+    return [Dx, dmean, hmean, derror, herror]
+
+
+def final_plot(pathlist):
+    para = plot_all_histogram(pathlist, False)
+    plt.figure()
+    plt.errorbar(para[0], np.array(para[2])/(2.*np.pi), yerr = np.array(para[4])/(2.*np.pi), fmt = "bo", label = "Heating")
+
+    # careful for the damping: the measurement gives an effective damping. The real one has to consider the heating.
+
+    md = np.array(para[2])/(2.*np.pi) + np.array(para[1])/(2.*np.pi)
+    er =  np.sqrt((np.array(para[3])/(2.*np.pi))**2 + (np.array(para[4])/(2.*np.pi))**2)
+    
+    plt.errorbar(para[0], md, yerr = er, fmt = "ro", label = "Damping")
+    plt.xlabel("Derivative gain X axis")
+    plt.ylabel("$\Gamma / 2\pi$ [Hz]")
+    plt.legend()
+    plt.grid()
+    plt.tight_layout(pad = 0)
+    plt.show()
+
+final_plot(path_list)
+
+
+
+
 
 # A = get_from_pathlist(path_list)
 # plt.figure()
@@ -275,7 +365,7 @@ plot_all(path_list)
 # plt.plot(A[0][1][0])
 # print A[0][2]
     
-# damp = plot_and_fit_cool(path_list[0], plot)[2]
+# damp = plot_and_fit_cool(path_list[0], True)[2]
 # plt.figure()
 # plt.plot(damp)
 # print "damp =", damp
