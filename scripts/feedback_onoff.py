@@ -11,6 +11,8 @@ import scipy.optimize as opt
 
 path_list = [r"C:\data\20190202\15um\4\PID\COMx1", r"C:\data\20190202\15um\4\PID\COMx2", r"C:\data\20190202\15um\4\PID\COMx3", r"C:\data\20190202\15um\4\PID\COMx4", r"C:\data\20190202\15um\4\PID\COMx5", r"C:\data\20190202\15um\4\PID\COMx6", r"C:\data\20190202\15um\4\PID\COMx7", r"C:\data\20190202\15um\4\PID\COMx8", r"C:\data\20190202\15um\4\PID\COMx9", r"C:\data\20190202\15um\4\PID\COMx10", r"C:\data\20190202\15um\4\PID\COMx11"]
 
+path_save = r"C:\data\20190202\15um\4\PID"
+
 # path_list = [r"C:\data\20190202\15um\4\PID\COMx10"]
 
 plot = False
@@ -337,20 +339,30 @@ def plot_all_histogram(pathlist, plot):
 def final_plot(pathlist):
     para = plot_all_histogram(pathlist, False)
     plt.figure()
-    plt.errorbar(para[0], np.array(para[2])/(2.*np.pi), yerr = np.array(para[4])/(2.*np.pi), fmt = "bo", label = "Heating")
+
+    hm =  np.array(para[2])/(2.*np.pi)
+    her = np.array(para[4])/(2.*np.pi)
+    plt.errorbar(para[0], hm, yerr = her, fmt = "bo", label = "Heating")
 
     # careful for the damping: the measurement gives an effective damping. The real one has to consider the heating.
 
-    md = np.array(para[2])/(2.*np.pi) + np.array(para[1])/(2.*np.pi)
-    er =  np.sqrt((np.array(para[3])/(2.*np.pi))**2 + (np.array(para[4])/(2.*np.pi))**2)
+    dm = np.array(para[2])/(2.*np.pi) + np.array(para[1])/(2.*np.pi)
+    der =  np.sqrt((np.array(para[3])/(2.*np.pi))**2 + (np.array(para[4])/(2.*np.pi))**2)
     
-    plt.errorbar(para[0], md, yerr = er, fmt = "ro", label = "Damping")
+    plt.errorbar(para[0], dm, yerr = der, fmt = "ro", label = "Damping")
     plt.xlabel("Derivative gain X axis")
     plt.ylabel("$\Gamma / 2\pi$ [Hz]")
     plt.legend()
     plt.grid()
     plt.tight_layout(pad = 0)
-    plt.show()
+
+
+    a = np.array([para[0], hm, her, dm, der])
+    name = str(path_save) + "\output_from_feed_backonoff.npy"
+    np.save(name , a)
+    
+    return a
+    
 
 final_plot(path_list)
 

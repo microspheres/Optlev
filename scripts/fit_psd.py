@@ -8,20 +8,20 @@ import bead_util as bu
 import glob
 import scipy.optimize as opt
 
-path = r"C:\data\20190115\15um\2"
+path = r"C:\data\20190211\15um\1"
 
-name = r"2.4mbar_zcool.h5"
+name = r"3mbar_zcool3.h5"
 
 comparison = True
 acc = True # plots also acc sensitivity
-comp_file = "2.0e-7mbar_xyzcool.h5"
+comp_file = "lp_xyzcool.h5"
 
 laser_only = True
-name_laser_only = "laser_only.h5"
-laser_off = True
+name_laser_only = "nosphere.h5"
+laser_off = False
 name_laser_off = "laser_off.h5"
 
-temperature = True
+temperature = False
 
 f_start = 40. # for the fit
 f_end = 350. # for the fit

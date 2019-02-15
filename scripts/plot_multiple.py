@@ -7,7 +7,7 @@ import bead_util as bu
 import glob
 
 single_channel = True
-VEOM_h5 = False
+VEOM_h5 = True
 measuring_with_xyz = False
 
 scope = True # gets the correct FS
@@ -19,7 +19,7 @@ def list_file_time_order(filelist):
 
 savetxt = True
 
-path = r"C:\data\20190202\15um\4\rot2"
+path = r"C:\data\20190215\15um\2\rot2"
 
 file_list = glob.glob(path+"\*.h5")
 
@@ -30,7 +30,7 @@ file_list = file_list[-5:]
 # file_list = file_list[-40::3]
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**14
+NFFT = 2**16
 
 if single_channel:
     a = 0
@@ -106,4 +106,6 @@ for idx,c in zip(range(len(file_list)/N), cmap):
 plt.ylabel(r'Sensor response [$V^2/Hz$]', fontsize = 20)
 plt.xlabel(r'Frequency [Hz]', fontsize = 20)
 plt.rcParams.update({'font.size':20})
+plt.grid()
+plt.tight_layout(pad = 0)
 plt.show()

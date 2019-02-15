@@ -7,16 +7,23 @@ import bead_util as bu
 import glob
 import scipy.optimize as opt
 
-path300k = r"C:\data\20190202\15um\4"
-name300k = r"2mbar_yzcool.h5"
+# path300k = r"C:\data\20190202\15um\4"
+# name300k = r"2mbar_yzcool.h5"
+
+# path_save = r"C:\data\20190202\15um\4\PID"
+
+path300k = r"C:\data\20190211\15um\1"
+name300k = r"3mbar_zcool3.h5"
+
+path_save = r"C:\data\20190202\15um\4\PID"
 
 no_sphere = True
 if no_sphere:
-        pathno = [r"C:\data\20190202\15um\4\PID\laseroffx"]
-        fileno = r"pd_xyzcool.h5"
+        pathno = [r"C:\data\20190211\15um\1\no_sphere"]
+        fileno = r"lp_xyzcool.h5"
 
-f_start = 50. # for the fit
-f_end = 110. # for the fit
+f_start = 65. # for the fit
+f_end = 130. # for the fit
 
 NFFT = 2**17
 
@@ -24,7 +31,7 @@ kb = 1.38*10**-23
 
 mass = 2.*2.3*10**-26
 
-vis = 18.54*10**-6
+vis = 2.98e-5
 vis_hidrogen = 1.37e-5
 
 rho = 1800
@@ -67,7 +74,8 @@ data = getdata(os.path.join(path300k, name300k))
 fit_points = np.logical_and(data[0] > f_start, data[0] < f_end)
 
 fit_points1 = np.logical_and(data[0] > f_start, data[0] < 59.6)
-fit_points2 = np.logical_and(data[0] > 60.6 , data[0] < f_end)
+fit_points2 = np.logical_and(data[0] > 60.6 , data[0] < 119)
+fit_points4 = np.logical_and(data[0] > 121 , data[0] < f_end)
 fit_points_new = fit_points1+fit_points2
 
 ####################
@@ -84,12 +92,13 @@ def Kn(vis, press, temp, mass, R):
 def Gamma(vis, press, temp, mass, R, M):
     A = (6.0*np.pi*vis*R/M)
     B = 0.619/(0.619 + Kn(vis, press, temp, mass, R))
-    C = (1. + 0.31*Kn(vis, press, temp, mass, R)/(0.785 + 1.152*Kn(vis, press, temp, mass, R)) )
+    C = (1. + 0.31*Kn(vis, press, temp, mass, R)/(0.785 + 1.152*Kn(vis, press, temp, mass, R) + Kn(vis, press, temp, mass, R)**2) )
     return A*B*C
 
-def psd(f, A, f0, gamma):
+def psd(f, A, f0, gammaover2pi):
     w0 = 2.*np.pi*f0
     w = 2.*np.pi*f
+    gamma = 2.*np.pi*gammaover2pi
     s1 = 2.*kb*temp*(gamma*(w0**2))
     s2 = 1.*M*(w0**2)*((w0**2 - w**2)**2 + (gamma*w)**2)
     s = np.sqrt(s1/s2)
@@ -102,13 +111,15 @@ px, cx = opt.curve_fit(psd, data[0][fit_points_new], np.sqrt(data[1][fit_points_
 f = np.arange(f_start, f_end, 1e-2)
 
 ############################ folder with temperatures
-path_list = [r"C:\data\20190202\15um\4\PID\full1", r"C:\data\20190202\15um\4\PID\full2", r"C:\data\20190202\15um\4\PID\full3",r"C:\data\20190202\15um\4\PID\full4", r"C:\data\20190202\15um\4\PID\full5", r"C:\data\20190202\15um\4\PID\full6", r"C:\data\20190202\15um\4\PID\full7", r"C:\data\20190202\15um\4\PID\full8", r"C:\data\20190202\15um\4\PID\full9", r"C:\data\20190202\15um\4\PID\full10", r"C:\data\20190202\15um\4\PID\full11", r"C:\data\20190202\15um\4\PID\full12"]
+# path_list = [r"C:\data\20190202\15um\4\PID\full1", r"C:\data\20190202\15um\4\PID\full2", r"C:\data\20190202\15um\4\PID\full3",r"C:\data\20190202\15um\4\PID\full4", r"C:\data\20190202\15um\4\PID\full5", r"C:\data\20190202\15um\4\PID\full6", r"C:\data\20190202\15um\4\PID\full7", r"C:\data\20190202\15um\4\PID\full8", r"C:\data\20190202\15um\4\PID\full9", r"C:\data\20190202\15um\4\PID\full10", r"C:\data\20190202\15um\4\PID\full11", r"C:\data\20190202\15um\4\PID\full12"]
+
+path_list = [r"C:\data\20190211\15um\1\lp\1", r"C:\data\20190211\15um\1\lp\2", r"C:\data\20190211\15um\1\lp\3", r"C:\data\20190211\15um\1\lp\4", r"C:\data\20190211\15um\1\lp\5", r"C:\data\20190211\15um\1\lp\6", r"C:\data\20190211\15um\1\lp\7", r"C:\data\20190211\15um\1\lp\8", r"C:\data\20190211\15um\1\lp\9", r"C:\data\20190211\15um\1\lp\10", r"C:\data\20190211\15um\1\lp\11"]
 
 
 ######### Gamma low pressure
 PP = getdata(glob.glob(path_list[0]+"\*.h5")[0])[3]
-G = Gamma(vis_hidrogen, PP, temp, mass, R, M)
-G = 100.*G # to Pa
+G = Gamma(vis_hidrogen, 100.*PP, temp, mass, R, M)
+Gover2pi = G/(2*np.pi)
 
 ####################
 
@@ -117,7 +128,6 @@ def get_files_path(path):
         file_list = glob.glob(path+"\*.h5")
         return file_list
 
-print get_files_path(r"C:\data\20190202\15um\2\PID\full1")[0]
 
 def get_data_path(path):
         info = getdata(get_files_path(path)[0])
@@ -127,24 +137,27 @@ def get_data_path(path):
         for i in get_files_path(path):
                 a = getdata(i)
                 Xpsd += a[1]
-        return [Xpsd, dgx]
+                p = a[3]
+        return [Xpsd, dgx, p]
         
 
 def psd_paths(pathlist):
         dgx = []
         xpsd = []
+        P = []
         for i in pathlist:
                a = get_data_path(i)
                dgx.append(a[1])
                xpsd.append(a[0])
-        return [xpsd, dgx]
+               P.append(a[2])
+        return [xpsd, dgx, P]
 
 def fit_paths(pathlist):
         A = psd_paths(pathlist)[0]
         PX = []
         CX = []
         for i in range(len(A)):
-                px_aux, cx_aux = opt.curve_fit(psd, data[0][fit_points_new], np.sqrt(A[i][fit_points_new]), p0 = [1e6, abs(px[1]), gamma], bounds = ([1e2, abs(px[1])-10., 0.001*gamma], [1e10, abs(px[1])+10., 200.*gamma]) )
+                px_aux, cx_aux = opt.curve_fit(psd, data[0][fit_points_new], np.sqrt(A[i][fit_points_new]), p0 = [1e6, abs(px[1]), gamma], bounds = ([1e2, abs(px[1])-10., 0.001*gamma], [1e10, abs(px[1])+10., 150.]) )
                 CX.append(cx_aux)
                 PX.append(px_aux)
         return [PX, CX]
@@ -157,17 +170,17 @@ def plot_all(pathlist):
         aux = psd_paths(pathlist)
         aux2 = fit_paths(pathlist)
         for i in range(len(pathlist)):
-                if i == 0 or  i == 11:
-                        name = "dgx = " + str("%.1E" % aux[1][i]) + " $\Gamma$ = " + str("%.1E" % aux2[0][i][2]) + " Hz" + " $f_0$ = " + str("%.1E" % aux2[0][i][1]) + " $\pm$ " + str("%.0E" % np.sqrt(aux2[1][i][1][1])) + " Hz"
+                if i == 0 or  i == 10:
+                        name = "dgx = " + str("%.1E" % aux[1][i]) + " $\Gamma$ = " + str("%.2E" % aux2[0][i][2]) + " Hz" + " $f_0$ = " + str("%.2E" % aux2[0][i][1]) + " $\pm$ " + str("%.0E" % np.sqrt(aux2[1][i][1][1])) + " Hz"
                         plt.loglog(data[0], np.sqrt(aux[0][i])/px[0], label = name)
                         plt.loglog(f, psd(f, *aux2[0][i])/px[0])
 
-        plt.xlim(20,200)
+        plt.xlim(1,500)
         plt.ylim(2e-13,2e-8)
 
         if no_sphere:
                 No = getdata(os.path.join(pathno[0], fileno))
-                plt.loglog(No[0][fit_points_new], np.sqrt(No[1][fit_points_new])/px[0], label = "No sphere")
+                plt.loglog(No[0], np.sqrt(No[1])/px[0], label = "No sphere")
                 pno, cno = opt.curve_fit(psd, No[0][fit_points_new], np.sqrt(No[1][fit_points_new]), p0 = [1e6, abs(px[1]), gamma], bounds = ([1e2, abs(px[1])-15., 0.001*gamma], [1e10, abs(px[1])+15., 200.*gamma]) )
                 plt.loglog(f, psd(f, *pno)/px[0])
                 
@@ -212,10 +225,10 @@ def plot_all(pathlist):
                 plt.errorbar(aux[1][i], aux2[0][i][2], yerr = np.sqrt(aux2[1][i][2][2]), fmt = "ro")
         hh = np.arange(0,2,0.01)
         
-        G1 = G*np.ones(len(hh))
-        nameG = "Calculated Residual Gas Damping at " + str("%0.1E" % G) + " [Pa]"
+        G1 = Gover2pi*np.ones(len(hh))
+        nameG = "Calculated Residual Gas Damping at " + str("%0.1E" % PP) + " [mbar]"
         plt.plot(hh, G1, "blue", label = nameG)
-        plt.fill_between(hh, G1, facecolor='blue', alpha=0.5)
+        # plt.fill_between(hh, G1, facecolor='blue', alpha=0.5)
         plt.xscale("log")
         plt.yscale("log")
         plt.xlabel("dgx")
@@ -225,5 +238,67 @@ def plot_all(pathlist):
         plt.grid()
         plt.tight_layout(pad = 0)
 
+        
+        name = str(path_save) + "\Gamma_from_com_temp.npy"
+        Dg = []
+        Dam = []
+        Daerr = []
+        for i in range(len(pathlist)):
+                dgx = aux[1][i]
+                dm = aux2[0][i][2]
+                derr = np.sqrt(aux2[1][i][2][2])
+                Dg.append(dgx)
+                Dam.append(dm)
+                Daerr.append(derr)
+        a = np.array([Dg, Dam, Daerr, Gover2pi, PP])
+        np.save(name , a)
+
+
+
+def plot_COM_temp_high_pressure(pathlist):
+        ## get P and xpsd
+        P = []
+        X = []
+        F = []
+        for i in pathlist:
+                flist = get_files_path(i)
+                xpsd = 0
+                for j in flist:
+                        A = getdata(j)
+                        p = A[3]
+                        freq = A[0]
+                        xpsd += A[1]
+                F.append(freq)
+                X.append(xpsd)
+                P.append(p)
+        fit_points_new2 = np.logical_and(data[0] > 30., data[0] < 300.)
+        i = 0
+        popt, pcov = opt.curve_fit(psd, F[0][fit_points_new2], np.sqrt(X[i][fit_points_new2]))
+        g = popt[2]
+        plt.figure()
+        gth = Gamma(vis, 100.*P[i], temp, mass, R, M)/(2.*np.pi)
+        name = "press = " + str(P[i]) + " mbar"
+        name2 = "Gamma/2pi = " + str(g) + " Hz"
+        plt.loglog(F[0], np.sqrt(X[i]), label = name)
+        plt.loglog(F[0][fit_points_new2], psd(F[0][fit_points_new2], *popt), label = name2)
+        plt.legend()
+        print gth
+        
+        
+        # plt.figure()
+        # for i in range(len(pathlist)):
+        #         plt.loglog(F[i], np.sqrt(X[i]))
+
+        # plt.figure()
+        # T = []
+        # PP = []
+        # for i in range(len(pathlist)):
+        #         T.append(np.sum(X[i]))
+        #         PP.append(P[i])
+        # plt.plot(PP, T, "ro")
+        
+                
+
+# plot_COM_temp_high_pressure(path_list2)
 plot_all(path_list)
 plt.show()
