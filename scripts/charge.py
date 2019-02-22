@@ -11,7 +11,7 @@ import scipy.signal as sp
 import scipy.optimize as opt
 import cPickle as pickle
 
-path = r"C:\data\20190215\15um\2\charge"
+path = r"C:\data\20190220\15um\2\charge5"
 ts = 1.
 
 fdrive = 48. #31.
@@ -84,7 +84,6 @@ corr_data = []
 if make_plot:
     fig0 = plt.figure()
     # plt.hold(False)
-    # plt.clf()
 
 last_file = ""
 while( True ):
@@ -113,7 +112,8 @@ while( True ):
     np.savetxt( os.path.join(path, "current_corr.txt"), [corr,] )
 
     if make_plot:
+        plt.clf()
         plt.plot(np.array(corr_data))
+        plt.grid()
         plt.draw()
         plt.pause(0.001)
-        plt.grid()

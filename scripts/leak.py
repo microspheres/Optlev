@@ -7,10 +7,10 @@ import bead_util as bu
 import glob
 import scipy.optimize as opt
 
+plot = False
+path = r"C:\data\leak\fesh0600afterchamber\aom"
 
-path = r"C:\data\leak\deflection"
-
-filelist = ["0.6W.h5", "0.8W.h5" ,"1.0W.h5", "1.2W.h5", "1.4W.h5", "1.6W.h5" ,"1.8W.h5" ,"2W.h5"]
+filelist = ["nofilter.h5", "filter.h5", "filter2.h5", "filter3.h5", "filter3_lowpressure.h5"]
 
 Fs = 10e3  ## this is ignored with HDF5 files
 NFFT = 2**17
@@ -44,7 +44,7 @@ def getdata(fname):
 
 
 
-p = 38
+p = 267
 
 A = []
 
@@ -57,36 +57,41 @@ for i in filelist:
     a = np.sqrt(a)
     df = data[0][1]
     a = a*df
-    power = float(str(i).split("W.")[0])
     A.append(a)
-    Power.append(power)
-    plt.loglog(data[0], np.sqrt(data[1]))
+    if plot:
+        power = float(str(i).split("W.")[0])
+        Power.append(power)
+    plt.loglog(data[0], np.sqrt(data[1]), label = str(i))
     plt.plot(data[0][p], np.sqrt(data[1][p]), "rx")
+    plt.legend()
 
 
 
+if plot:
+    def fit(x, a, b, c):
+        return a*(x**2) + b*x + c
 
-def fit(x, a, b, c):
-    return a*(x**2) + b*x + c
+    popt, pcov = opt.curve_fit(fit ,Power, A)
 
-popt, pcov = opt.curve_fit(fit ,Power, A)
+    PP = np.arange(0.6, 2, 0.01)
 
-PP = np.arange(0.6, 2, 0.01)
+    plt.figure()
+    plt.plot(Power, A, "ro")
+    plt.plot(PP, fit(PP, *popt))
+    plt.ylabel("X sensor [V]")
+    plt.xlabel("Laser Power [W]")
 
-plt.figure()
-plt.plot(Power, A, "ro")
-plt.plot(PP, fit(PP, *popt))
-plt.ylabel("X sensor [V]")
-plt.xlabel("Laser Power [W]")
+    print popt
+    print pcov
 
-print popt
-print pcov
+    a = "a = " + str(popt[0]) + "+-" +  str(np.sqrt(pcov[0][0]))
+    b = "b = " + str(popt[1]) + "+-" +  str(np.sqrt(pcov[1][1])) 
 
-a = "a = " + str(popt[0]) + "+-" +  str(np.sqrt(pcov[0][0]))
-b = "b = " + str(popt[1]) + "+-" +  str(np.sqrt(pcov[1][1])) 
-
-print a
-print b
+    print a
+    print b
 
 plt.show()
 
+# path = r"C:\data\leak\with_filter_block532\deflection"
+
+# filelist = ["0.6W.h5", "0.8W.h5" ,"1.0W.h5", "1.2W.h5", "1.4W.h5", "1.6W.h5" ,"1.8W.h5" ,"2W.h5"]
