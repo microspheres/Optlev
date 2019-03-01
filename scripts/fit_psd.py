@@ -8,15 +8,15 @@ import bead_util as bu
 import glob
 import scipy.optimize as opt
 
-path = r"C:\data\20190211\15um\1"
+path = r"C:\data\20190225\15um\2"
 
-name = r"3mbar_zcool3.h5"
+name = r"3mbar_zcool_xyint.h5"
 
 comparison = True
-acc = True # plots also acc sensitivity
-comp_file = "lp_xyzcool.h5"
+acc = False # plots also acc sensitivity
+comp_file = "pd_xyzcool_0.4Vpp.h5"
 
-laser_only = True
+laser_only = False
 name_laser_only = "nosphere.h5"
 laser_off = False
 name_laser_off = "laser_off.h5"
@@ -40,7 +40,9 @@ R = 7.0*10**-6
 
 M = (4./3.)*np.pi*(R**3)*rho
 
-press = 240.
+print M
+
+press = 300.
 
 temp = 300
 
@@ -221,3 +223,19 @@ if temperature and comparison:
         print "temp", 300.*b/a
 
 plt.show()
+
+
+# path = r"C:\data\20190211\15um\1"
+
+# name = r"3mbar_zcool3.h5"
+
+# comparison = True
+# acc = True # plots also acc sensitivity
+# comp_file = "lp_xyzcool.h5"
+
+# laser_only = True
+# name_laser_only = "nosphere.h5"
+# laser_off = False
+# name_laser_off = "laser_off.h5"
+
+# temperature = False

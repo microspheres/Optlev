@@ -6,9 +6,9 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"3mbar_zcool.h5"
+refname = r"2mbar_zcool.h5"
 fname0 = r""
-path = r"C:\data\20190220\15um\2"
+path = r"C:\data\20190301\15um\1"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
@@ -31,7 +31,7 @@ if fname0 == "":
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**14
+NFFT = 2**13
 
 def getdata(fname):
 	print "Opening file: ", fname
