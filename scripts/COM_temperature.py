@@ -6,26 +6,31 @@ import numpy as np
 import bead_util as bu
 import glob
 import scipy.optimize as opt
+# import Volt_to_meter_single_e as vm
 
 # path300k = r"C:\data\20190202\15um\4"
 # name300k = r"2mbar_yzcool.h5"
 
 # path_save = r"C:\data\20190202\15um\4\PID"
 
-path300k = r"C:\data\20190211\15um\1"
-name300k = r"3mbar_zcool3.h5"
+charge = True
+if charge:
+        path_1e = r"C:\data\20190304\15um_low532\6\1electron"
 
-path_save = r"C:\data\20190202\15um\4\PID"
+path300k = r"C:\data\20190304\15um_low532\6"
+name300k = r"2mbar_yzcool.h5"
+
+path_save = r"C:\data\20190304\15um_low532\6\PID"
 
 no_sphere = True
 if no_sphere:
-        pathno = [r"C:\data\20190211\15um\1\no_sphere"]
-        fileno = r"lp_xyzcool.h5"
+        pathno = [r"C:\data\20190304\15um_low532\6"]
+        fileno = r"nosphere.h5"
 
 f_start = 65. # for the fit
 f_end = 130. # for the fit
 
-NFFT = 2**17
+NFFT = 2**16
 
 kb = 1.38*10**-23
 
@@ -34,13 +39,13 @@ mass = 2.*2.3*10**-26
 vis = 2.98e-5
 vis_hidrogen = 1.37e-5
 
-rho = 1800
+rho = 1800.0
 
-R = 7.0*10**-6
+R = 7.5*10**-6
 
 M = (4./3.)*np.pi*(R**3)*rho
 
-press = 240.
+press = 200.
 
 temp = 300
 
@@ -113,7 +118,9 @@ f = np.arange(f_start, f_end, 1e-2)
 ############################ folder with temperatures
 # path_list = [r"C:\data\20190202\15um\4\PID\full1", r"C:\data\20190202\15um\4\PID\full2", r"C:\data\20190202\15um\4\PID\full3",r"C:\data\20190202\15um\4\PID\full4", r"C:\data\20190202\15um\4\PID\full5", r"C:\data\20190202\15um\4\PID\full6", r"C:\data\20190202\15um\4\PID\full7", r"C:\data\20190202\15um\4\PID\full8", r"C:\data\20190202\15um\4\PID\full9", r"C:\data\20190202\15um\4\PID\full10", r"C:\data\20190202\15um\4\PID\full11", r"C:\data\20190202\15um\4\PID\full12"]
 
-path_list = [r"C:\data\20190211\15um\1\lp\1", r"C:\data\20190211\15um\1\lp\2", r"C:\data\20190211\15um\1\lp\3", r"C:\data\20190211\15um\1\lp\4", r"C:\data\20190211\15um\1\lp\5", r"C:\data\20190211\15um\1\lp\6", r"C:\data\20190211\15um\1\lp\7", r"C:\data\20190211\15um\1\lp\8", r"C:\data\20190211\15um\1\lp\9", r"C:\data\20190211\15um\1\lp\10", r"C:\data\20190211\15um\1\lp\11"]
+# path_list = [r"C:\data\20190211\15um\1\lp\1", r"C:\data\20190211\15um\1\lp\2", r"C:\data\20190211\15um\1\lp\3", r"C:\data\20190211\15um\1\lp\4", r"C:\data\20190211\15um\1\lp\5", r"C:\data\20190211\15um\1\lp\6", r"C:\data\20190211\15um\1\lp\7", r"C:\data\20190211\15um\1\lp\8", r"C:\data\20190211\15um\1\lp\9", r"C:\data\20190211\15um\1\lp\10", r"C:\data\20190211\15um\1\lp\11"]
+
+path_list = [r"C:\data\20190304\15um_low532\6\PID\gx1", r"C:\data\20190304\15um_low532\6\PID\gx2", r"C:\data\20190304\15um_low532\6\PID\gx3", r"C:\data\20190304\15um_low532\6\PID\gx4", r"C:\data\20190304\15um_low532\6\PID\gx5", r"C:\data\20190304\15um_low532\6\PID\gx6",]
 
 
 ######### Gamma low pressure
@@ -166,11 +173,12 @@ def plot_all(pathlist):
         plt.figure()
         name_hp = "dgx = " + str("%.1E" % data[2][0]) + " $\Gamma$ = " + str("%.1E" % px[2]) + " Hz" + " $f_0$ = " + str("%.1E" % abs(px[1])) + " $\pm$ " + str("%.0E" % np.sqrt(abs(cx[1][1])))  +  " Hz"
         plt.loglog(data[0], np.sqrt(data[1])/px[0], label = name_hp)
+        print "conversion[V/m] = ", px[0]
         plt.loglog(f, psd(f,*px)/px[0])
         aux = psd_paths(pathlist)
         aux2 = fit_paths(pathlist)
         for i in range(len(pathlist)):
-                if i == 0 or  i == 10:
+                if i < 7:
                         name = "dgx = " + str("%.1E" % aux[1][i]) + " $\Gamma$ = " + str("%.2E" % aux2[0][i][2]) + " Hz" + " $f_0$ = " + str("%.2E" % aux2[0][i][1]) + " $\pm$ " + str("%.0E" % np.sqrt(aux2[1][i][1][1])) + " Hz"
                         plt.loglog(data[0], np.sqrt(aux[0][i])/px[0], label = name)
                         plt.loglog(f, psd(f, *aux2[0][i])/px[0])
@@ -217,6 +225,7 @@ def plot_all(pathlist):
         plt.legend(loc=3)
         plt.grid()
         plt.tight_layout(pad = 0)
+        return [dg, T]
 
         ########
 
@@ -299,6 +308,39 @@ def plot_COM_temp_high_pressure(pathlist):
         
                 
 
-# plot_COM_temp_high_pressure(path_list2)
-plot_all(path_list)
+#plot_COM_temp_high_pressure(path_list)
+info = plot_all(path_list)
+
+# if charge:
+#         acc = vm.acc(path_1e)
+#         aux = vm.findAC_peak(path_1e)
+#         peakpos = aux[0]
+#         freq_0 = aux[1]
+#         aux2 = vm.get_data_path(path_1e)
+#         freq = aux2[4]
+#         xpsd_volt = aux2[0]
+#         x_amp_volt = np.sum(xpsd_volt[peakpos - 3:peakpos +3])
+#         x_amp_volt = np.sqrt(x_amp_volt) # not dividing by pi because I am comparing to the conversion made above.
+
+#         print x_amp_volt
+
+#         Z = np.sqrt( (630.)**2 + (1/((2.*np.pi*freq_0)**2))*((2.*np.pi*px[1])**2 - (2.*np.pi*freq_0)**2)**2  )
+
+#         x_m = acc/(Z*(2.*np.pi*freq_0))
+
+#         convertion_v_to_m = x_amp_volt/x_m
+
+#         print convertion_v_to_m
+
+#         plt.figure()
+#         plt.loglog(data[0], np.sqrt(data[1])/px[0], label = "psd conversion")
+#         plt.loglog(data[0], np.sqrt(data[1])/convertion_v_to_m, label = "1e conversion")
+#         plt.legend()
+
+        
+        
+
+
+
+        
 plt.show()

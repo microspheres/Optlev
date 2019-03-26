@@ -11,26 +11,30 @@ several_DC = False
 do_fit = True
 save_figure = True
 
-path_charge = r"C:\data\20180323\bead3_SiO2_15um_POL_NS\several_distances\back3_and_M2tilt\M2tilt_0\calibration1p"
+path_charge = r"C:\data\20190304\15um_low532\6\1electron"
 file_list_charge = glob.glob(path_charge+"\*.h5")
 
-path_psd = r"C:\Users\UsphereLab\Desktop\SPIE\low_pressure"
+path_psd = r"C:\data\20190304\15um_low532\6\PID\gx6"
 file_list_psd = glob.glob(path_psd+"\*.h5")
 
 path_save = path_psd
 
-mass = (2.58*10**-12) # in kg
+rho = 1800.0
+
+R = 7.5*10**-6
+
+mass = (4./3.)*np.pi*(R**3)*rho
 
 Number_of_e = (7.76*10**14)
 
 v_calibration = 1.0 # vpp in the daq
 v_calibration = v_calibration/2.0 # now v is in amplitude
 
-distance = 0.0021 #m
+distance = 0.01 #m
 
 VAC = 20. # V. only used for few applications. 
 
-NFFT = 2**18
+NFFT = 2**17
 
 startfile = 0
 endfile = -1

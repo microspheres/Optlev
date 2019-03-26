@@ -15,19 +15,19 @@ bins = 15 #hist bins!
 
 order = 2
 
-p = bu.drive
+p = 3
 p1 = bu.xi
 
-v_cali = 0.3
-v_meas = 10.0
-Number_of_e = (7.76*10**14)
+v_cali = 0.6
+v_meas = 2.6
+Number_of_e = (8.4*10**14)
 
 ind = 0
-end = 2**19
+end = -1
 
-path_charge = r"C:\data\20180925\bead1_SiO2_15um_POL_NS\calibration_1e"
+path_charge = r"C:\data\20190322\15um_low532\1\1p_calibration"
 
-path_signal = r"C:\data\20180925\bead1_SiO2_15um_POL_NS\measurement\3"
+path_signal = r"C:\data\20190322\15um_low532\1\charge6"
 
 file_list_signal = glob.glob(path_signal+"\*.h5")
 file_list_charge = glob.glob(path_charge+"\*.h5")
