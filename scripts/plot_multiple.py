@@ -19,7 +19,7 @@ def list_file_time_order(filelist):
 
 savetxt = True
 
-path = r"C:\data\20190326\15um_low532\1\rot2"
+path = r"C:\data\20190326\15um_low532_50x\8\rot6"
 
 file_list = glob.glob(path+"\*.h5")
 
@@ -30,7 +30,7 @@ file_list = file_list[-5:]
 # file_list = file_list[0:30:3]
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**16
+NFFT = 2**17
 
 if single_channel:
     a = 0

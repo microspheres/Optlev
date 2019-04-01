@@ -19,15 +19,15 @@ p = 3
 p1 = bu.xi
 
 v_cali = 0.6
-v_meas = 2.6
+v_meas = 0.3
 Number_of_e = (8.4*10**14)
 
 ind = 0
 end = -1
 
-path_charge = r"C:\data\20190322\15um_low532\1\1p_calibration"
+path_charge = r"C:\data\20190326\15um_low532\1\3x_532nm\1proton"
 
-path_signal = r"C:\data\20190322\15um_low532\1\charge6"
+path_signal = r"C:\data\20190326\15um_low532\1\3x_532nm\1proton"
 
 file_list_signal = glob.glob(path_signal+"\*.h5")
 file_list_charge = glob.glob(path_charge+"\*.h5")
@@ -67,8 +67,8 @@ def getdata_x_d(fname, ind, end):
 	x = dat[ind:end, p1]-numpy.mean(dat[ind:end, p1])
 	drive = dat[ind:end, p] - numpy.mean(dat[ind:end, p])
         
-        x = butter_bandpass_filter(x, 45, 51, Fs, order)
-        drive = butter_bandpass_filter(drive, 45, 51, Fs, order)
+        x = butter_bandpass_filter(x, 25, 36, Fs, order)
+        drive = butter_bandpass_filter(drive, 25, 36, Fs, order)
 	
 	return [x, drive]
 

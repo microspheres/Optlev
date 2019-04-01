@@ -13,16 +13,16 @@ import scipy.optimize as opt
 
 # path_save = r"C:\data\20190202\15um\4\PID"
 
-charge = True
+charge = False
 if charge:
         path_1e = r"C:\data\20190304\15um_low532\6\1electron"
 
-path300k = r"C:\data\20190304\15um_low532\6"
+path300k = r"C:\data\20190326\15um_low532_50x\3"
 name300k = r"2mbar_yzcool.h5"
 
-path_save = r"C:\data\20190304\15um_low532\6\PID"
+path_save = r"C:\data\20190326\15um_low532_50x\3\temp"
 
-no_sphere = True
+no_sphere = False
 if no_sphere:
         pathno = [r"C:\data\20190304\15um_low532\6"]
         fileno = r"nosphere.h5"
@@ -45,7 +45,7 @@ R = 7.5*10**-6
 
 M = (4./3.)*np.pi*(R**3)*rho
 
-press = 200.
+press = 150.
 
 temp = 300
 
@@ -120,7 +120,7 @@ f = np.arange(f_start, f_end, 1e-2)
 
 # path_list = [r"C:\data\20190211\15um\1\lp\1", r"C:\data\20190211\15um\1\lp\2", r"C:\data\20190211\15um\1\lp\3", r"C:\data\20190211\15um\1\lp\4", r"C:\data\20190211\15um\1\lp\5", r"C:\data\20190211\15um\1\lp\6", r"C:\data\20190211\15um\1\lp\7", r"C:\data\20190211\15um\1\lp\8", r"C:\data\20190211\15um\1\lp\9", r"C:\data\20190211\15um\1\lp\10", r"C:\data\20190211\15um\1\lp\11"]
 
-path_list = [r"C:\data\20190304\15um_low532\6\PID\gx1", r"C:\data\20190304\15um_low532\6\PID\gx2", r"C:\data\20190304\15um_low532\6\PID\gx3", r"C:\data\20190304\15um_low532\6\PID\gx4", r"C:\data\20190304\15um_low532\6\PID\gx5", r"C:\data\20190304\15um_low532\6\PID\gx6",]
+path_list = [r"C:\data\20190326\15um_low532_50x\3\temp\1", r"C:\data\20190326\15um_low532_50x\3\temp\2", r"C:\data\20190326\15um_low532_50x\3\temp\3", r"C:\data\20190326\15um_low532_50x\3\temp\4",r"C:\data\20190326\15um_low532_50x\3\temp\5", r"C:\data\20190326\15um_low532_50x\3\temp\6", r"C:\data\20190326\15um_low532_50x\3\temp\7", r"C:\data\20190326\15um_low532_50x\3\temp\8", r"C:\data\20190326\15um_low532_50x\3\temp\9", r"C:\data\20190326\15um_low532_50x\3\temp\10", r"C:\data\20190326\15um_low532_50x\3\temp\11trekoff", r"C:\data\20190326\15um_low532_50x\3\temp\12", r"C:\data\20190326\15um_low532_50x\3\temp\13", r"C:\data\20190326\15um_low532_50x\3\temp\14", r"C:\data\20190326\15um_low532_50x\3\temp\15",r"C:\data\20190326\15um_low532_50x\3\temp\16" ]
 
 
 ######### Gamma low pressure
@@ -141,10 +141,12 @@ def get_data_path(path):
         freq = info[0]
         dgx = info[2][0]
         Xpsd = np.zeros(len(freq))
-        for i in get_files_path(path):
+        aux = get_files_path(path)
+        for i in aux:
                 a = getdata(i)
                 Xpsd += a[1]
                 p = a[3]
+        Xpsd =  Xpsd/len(aux)
         return [Xpsd, dgx, p]
         
 
@@ -164,7 +166,7 @@ def fit_paths(pathlist):
         PX = []
         CX = []
         for i in range(len(A)):
-                px_aux, cx_aux = opt.curve_fit(psd, data[0][fit_points_new], np.sqrt(A[i][fit_points_new]), p0 = [1e6, abs(px[1]), gamma], bounds = ([1e2, abs(px[1])-10., 0.001*gamma], [1e10, abs(px[1])+10., 150.]) )
+                px_aux, cx_aux = opt.curve_fit(psd, data[0][fit_points_new], np.sqrt(A[i][fit_points_new]), p0 = [1e6, abs(px[1]), gamma], bounds = ([1e2, abs(px[1])-20., 0.0001*gamma], [1e13, abs(px[1])+20., 150.]) )
                 CX.append(cx_aux)
                 PX.append(px_aux)
         return [PX, CX]
@@ -189,7 +191,7 @@ def plot_all(pathlist):
         if no_sphere:
                 No = getdata(os.path.join(pathno[0], fileno))
                 plt.loglog(No[0], np.sqrt(No[1])/px[0], label = "No sphere")
-                pno, cno = opt.curve_fit(psd, No[0][fit_points_new], np.sqrt(No[1][fit_points_new]), p0 = [1e6, abs(px[1]), gamma], bounds = ([1e2, abs(px[1])-15., 0.001*gamma], [1e10, abs(px[1])+15., 200.*gamma]) )
+                pno, cno = opt.curve_fit(psd, No[0][fit_points_new], np.sqrt(No[1][fit_points_new]), p0 = [1e6, abs(px[1]), gamma], bounds = ([1e2, abs(px[1])-15., 0.0001*gamma], [1e10, abs(px[1])+15., 200.*gamma]) )
                 plt.loglog(f, psd(f, *pno)/px[0])
                 
         
@@ -221,7 +223,7 @@ def plot_all(pathlist):
                 plt.fill_between(aa, 1e6*tt, facecolor='blue', alpha=0.5)
         plt.xlabel("dgx")
         plt.ylabel("COMx Temp [$\mu$K]")
-        plt.xlim(0.01,1)
+        plt.xlim(0.001,2)
         plt.legend(loc=3)
         plt.grid()
         plt.tight_layout(pad = 0)

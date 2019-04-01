@@ -15,22 +15,34 @@ M = (4./3.)*np.pi*(R**3)*rho
 
 electron = 1.60218e-19
 
-path300k = r"C:\data\20190304\15um_low532\6\2mbar"
+kb = 1.38e-23
+
+acceleration_plot = True
 
 no_sphere = True
 if no_sphere:
-        pathno = [r"C:\data\20190304\15um_low532\6"]
-        fileno = r"nosphere.h5"
+        pathno = [r"C:\data\20190326\15um_low532_50x\8\no_sphere",]
 
-distance = 0.012
-
-f_start = 50. # for the fit
-f_end = 200. # for the fit
+distance = 0.02
 
 NFFT = 2**16
 
-path_list = [r"C:\data\20190304\15um_low532\6\PID\gx1", r"C:\data\20190304\15um_low532\6\PID\gx2", r"C:\data\20190304\15um_low532\6\PID\gx3", r"C:\data\20190304\15um_low532\6\PID\gx4", r"C:\data\20190304\15um_low532\6\PID\gx5", r"C:\data\20190304\15um_low532\6\PID\gx6",]
+path_calibration = r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\5"
 
+# path_list_temp = [r"C:\data\20190326\15um_low532_50x\3\temp\1", r"C:\data\20190326\15um_low532_50x\3\temp\2", r"C:\data\20190326\15um_low532_50x\3\temp\3", r"C:\data\20190326\15um_low532_50x\3\temp\4",r"C:\data\20190326\15um_low532_50x\3\temp\5", r"C:\data\20190326\15um_low532_50x\3\temp\6", r"C:\data\20190326\15um_low532_50x\3\temp\7", r"C:\data\20190326\15um_low532_50x\3\temp\8", r"C:\data\20190326\15um_low532_50x\3\temp\9", r"C:\data\20190326\15um_low532_50x\3\temp\10", r"C:\data\20190326\15um_low532_50x\3\temp\11trekoff", r"C:\data\20190326\15um_low532_50x\3\temp\12", r"C:\data\20190326\15um_low532_50x\3\temp\13", r"C:\data\20190326\15um_low532_50x\3\temp\14", r"C:\data\20190326\15um_low532_50x\3\temp\15", r"C:\data\20190326\15um_low532_50x\3\temp\16", r"C:\data\20190326\15um_low532_50x\3\temp\no_sphere"]
+
+# path_list_temp = [r"C:\data\20190326\15um_low532_50x\4\temp\1", r"C:\data\20190326\15um_low532_50x\4\temp\2", r"C:\data\20190326\15um_low532_50x\4\temp\3", r"C:\data\20190326\15um_low532_50x\4\temp\4", r"C:\data\20190326\15um_low532_50x\4\temp\5", r"C:\data\20190326\15um_low532_50x\4\temp\6", r"C:\data\20190326\15um_low532_50x\4\temp\nosphere"]
+
+path_list_temp = [r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\1", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\2", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\3", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\4", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\5", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\6", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\7", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\8", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\9", ]
+ 
+path_high_pressure_nofb= r"C:\data\20190326\15um_low532_50x\8"
+file_high_pressure_nofb = "2mbar_yzcool.h5"
+
+f_start = 65. # for the fit
+f_end = 130. # for the fit
+
+delta = 1e-2
+fq = np.arange(f_start, f_end, delta)
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -57,6 +69,11 @@ def getdata(fname):
         
 	return [freqs, xpsd, PID, press[0], fieldpsd]
 
+def get_high_pressure_psd(path_hp, file_hp):
+        a = getdata(os.path.join(path_hp, file_hp))
+        freq = a[0]
+        xpsd = a[1]
+        return [freq, xpsd]
 
     
 def get_files_path(path):
@@ -64,17 +81,20 @@ def get_files_path(path):
         return file_list
 
 
-def get_data_path(path):
+def get_data_path(path): # PSD output is unit square, V**2/Hz : it assumes that within the folder, Dgx is the same.
         info = getdata(get_files_path(path)[0])
         freq = info[0]
         dgx = info[2][0]
         Xpsd = np.zeros(len(freq))
         fieldpsd = np.zeros(len(freq))
-        for i in get_files_path(path):
+        aux = get_files_path(path)
+        for i in aux:
                 a = getdata(i)
                 Xpsd += a[1]
                 fieldpsd += a[4]
                 p = a[3]
+        Xpsd = Xpsd/len(aux)
+        fieldpsd = fieldpsd/len(aux)
         return [Xpsd, dgx, p, fieldpsd, freq]
 
 def plot_psd(path):
@@ -109,6 +129,14 @@ def acc(path): # gives the acc of 1e of charge
     acc = F/M
     return acc
 
+def get_sensor_motion_1e(path):
+        pos = findAC_peak(path)[0]
+        a = get_data_path(path)
+        sen = np.sum(a[0][pos-3:pos+3])
+        sen_amp = np.sqrt(sen)/np.pi
+        return sen_amp
+        
+
 def psd(f, A, f0, gamma):
     w0 = 2.*np.pi*f0
     w = 2.*np.pi*f
@@ -117,99 +145,103 @@ def psd(f, A, f0, gamma):
     s = np.sqrt(s1/s2)
     return A*s
 
-def get_resonance_damp_dgx(path, conversion):
-    aux = get_data_path(path)
-    xpsd = np.sqrt(aux[0])
-    freq = aux[4]
-    dgx = aux[1]
-    
-    fit_points1 = np.logical_and(freq > f_start, freq < 59.)
-    fit_points2 = np.logical_and(freq > 61. , freq < 119)
-    fit_points3 = np.logical_and(freq > 121 , freq < f_end)
-    fit_points = fit_points1+fit_points2+fit_points3
+def fit_high_pressure_no_fb(path_hp, file_hp):
+        a = get_high_pressure_psd(path_hp, file_hp)
+        freq = a[0]
+        xpsd = np.sqrt(a[1])
+        fit_points1 = np.logical_and(freq > f_start, freq < 59.0)
+        fit_points2 = np.logical_and(freq > 61.0, freq < 119.0)
+        fit_points3 = np.logical_and(freq > 121.0, freq < 179.0)
+        fit_points4 = np.logical_and(freq > 181.0, freq < f_end)
+        fit_points_new = fit_points1 + fit_points2 + fit_points3 + fit_points4
+        p0 = [0.1, 90, 100.]
+        popt, pcov = opt.curve_fit(psd, freq[fit_points_new], xpsd[fit_points_new], p0 = p0)
+        freqplot = fq
+        # plt.figure()
+        # plt.loglog(freq, xpsd)
+        # plt.loglog(freqplot, psd(freqplot, *popt))
+        return [popt, freq, freqplot, xpsd]
+        
+
+def convert_sensor_meter(path, path_hp, file_hp): # given that the feedback barelly affects the motion due to the ac field
+        sen_amp = get_sensor_motion_1e(path)
+        acc1e = acc(path)
+        f0 = fit_high_pressure_no_fb(path_hp, file_hp)[0][1]
+        motiontheo = 1.0*acc1e/((2.0*np.pi*f0)**2)
+        C = 1.0*motiontheo/sen_amp
+        return C
 
 
-    f = np.arange(f_start, f_end, 1)
-    p0 = [0.1, 80., 160.]
-    px, cx = opt.curve_fit(psd, freq[fit_points], xpsd[fit_points], p0 = p0)
 
-    if True:
+def tempeture_path(path, path_hp, file_hp, pathcharge):
+       a = get_data_path(path)
+       xpsd = np.sqrt(a[0])
+       dgx = a[1]
+       freq = a[4]
+       Conv = convert_sensor_meter(pathcharge, path_hp, file_hp)
+       b = fit_high_pressure_no_fb(path_hp, file_hp)[0]
+       f0 = b[1]
+
+       fit_points1 = np.logical_and(freq > f_start, freq < 59.6)
+       fit_points2 = np.logical_and(freq > 60.6 , freq < 119)
+       fit_points4 = np.logical_and(freq > 121 , freq < f_end)
+       fit_points_new = fit_points1+fit_points2
+       p0 = [1e-1, np.abs(f0), 100.]
+       popt, pcov = opt.curve_fit(psd, freq[fit_points_new], xpsd[fit_points_new], p0 = p0)
+       
+       f = fq
+       aux = (2.*np.pi*np.abs(f0))*Conv*psd(f, *popt)
+       tempaux = np.sum(aux**2)*delta
+       tempaux = 0.5*M*tempaux
+       temp = tempaux/kb
+       return [temp, dgx, popt, freq, xpsd]
+
+
+def temp_path_list(pathlist, path_hp, file_hp, pathcharge, pathno):
+        T = []
+        Dgx = []
+        f = fq
+        hp = fit_high_pressure_no_fb(path_hp, file_hp)
+        Conv = convert_sensor_meter(pathcharge, path_hp, file_hp)
         plt.figure()
-        plt.loglog(freq, conversion*xpsd)
-        plt.loglog(f, conversion*psd(f, *px))
+        plt.xlabel("Frequency [Hz]")
+        plt.ylabel("m/sqrt(Hz)")
+        plt.loglog(hp[1], Conv*hp[3])
+        plt.loglog(hp[2], Conv*psd(hp[2], *hp[0]))
 
-    return [px[1], px[2], dgx]
+        if no_sphere:
+                ns = tempeture_path(pathno[0], path_hp, file_hp, pathcharge)
+                plt.loglog(ns[3], Conv*ns[4], label = "No Sphere")
+                
+        for i in pathlist:
+                a = tempeture_path(i, path_hp, file_hp, pathcharge)
+                dgx = a[1]
+                t = a[0]
+                T.append(t)
+                Dgx.append(dgx)
+                
+                plt.loglog(a[3], Conv*a[4])
+                plt.loglog(f, Conv*psd(f, *a[2]))
+                plt.xlim(1, 500)
+                plt.ylim(1e-13, 1e-7)
+        plt.legend(loc=3)
+        plt.grid()
+        plt.tight_layout(pad = 0)
 
-
-def get_param_lp(file_list, conversion): # file list composed of files with different dgx
-    Damp = []
-    dgx = []
-    f0 = []
-
-    for i in file_list:
-        aux = get_resonance_damp_dgx(i, conversion)
-        Damp.append(aux[1])
-        dgx.append(aux[2])
-        f0.append(aux[0])
-
-    return [Damp, f0, dgx]
+                
+        plt.figure()
+        plt.loglog(Dgx, 1e6*np.array(T), "ro")
+        plt.xlabel("Dgx")
+        plt.ylabel("Temp [uK]")
+        plt.legend(loc=3)
+        plt.grid()
+        plt.tight_layout(pad = 0)
         
-        
-
-f = get_resonance_damp_dgx(path300k, 1.)
-f2 = get_param_lp(path_list, 1.)
-print f
+        return [T, Dgx]
 
 
 
-
-
+t2 = temp_path_list(path_list_temp, path_high_pressure_nofb, file_high_pressure_nofb, path_calibration, pathno)
 
     
-# acc = acc(path_1e)
-# aux = findAC_peak(path_1e)
-# peakpos = aux[0]
-# freq_0 = aux[1]
-# aux2 = get_data_path(path_1e)
-# freq = aux2[4]
-# xpsd_volt = aux2[0]
-# x_amp_volt = np.sum(xpsd_volt[peakpos - 3:peakpos +3])
-# x_amp_volt = np.sqrt(x_amp_volt) # not dividing by pi because I am comparing to the conversion made above.
-
-# print x_amp_volt
-
-# Z = np.sqrt( (630.)**2 + (1/((2.*np.pi*freq_0)**2))*((2.*np.pi*px[1])**2 - (2.*np.pi*freq_0)**2)**2  )
-
-# x_m = acc/(Z*(2.*np.pi*freq_0))
-
-# convertion_v_to_m = x_amp_volt/x_m
-
-# print convertion_v_to_m
-
-# plt.figure()
-# plt.loglog(data[0], np.sqrt(data[1])/px[0], label = "psd conversion")
-# plt.loglog(data[0], np.sqrt(data[1])/convertion_v_to_m, label = "1e conversion")
-# plt.legend()
-
-    
-
-# path_1e = r"C:\data\20190304\15um_low532\6\1electron" 
-# plot_psd(path_1e)
-
-# a = findAC_peak(path_1e)
-# print a
-
-# b = get_field(path_1e)
-# print b
-
-# f = force1e(path_1e)
-# print f
-
-# a = acc(path_1e)
-# print a
-
 plt.show()
-    
-        
-
-    

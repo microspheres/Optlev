@@ -11,10 +11,10 @@ several_DC = False
 do_fit = True
 save_figure = True
 
-path_charge = r"C:\data\20190304\15um_low532\6\1electron"
+path_charge = r"C:\data\20190326\15um_low532_50x\3\calibration_1p"
 file_list_charge = glob.glob(path_charge+"\*.h5")
 
-path_psd = r"C:\data\20190304\15um_low532\6\PID\gx6"
+path_psd = r"C:\data\20190326\15um_low532_50x\3\temp\12"
 file_list_psd = glob.glob(path_psd+"\*.h5")
 
 path_save = path_psd
@@ -27,7 +27,7 @@ mass = (4./3.)*np.pi*(R**3)*rho
 
 Number_of_e = (7.76*10**14)
 
-v_calibration = 1.0 # vpp in the daq
+v_calibration = 0.3 # vpp in the daq
 v_calibration = v_calibration/2.0 # now v is in amplitude
 
 distance = 0.01 #m
@@ -47,6 +47,7 @@ file_list_psd = list_file_time_order(file_list_psd)
 
 file_list_psd = file_list_psd[:]
 
+drive_daq = 3
 p = bu.xi
 label_unit = 'X_signal_units_2.pdf'
 label_save = "f_and_2f_arbunits_X_axis.txt"
@@ -68,8 +69,8 @@ def getdata(fname):
 	else:
 		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
 
-	xpsd, freqs = matplotlib.mlab.psd(dat[:, p]-numpy.mean(dat[:, p]), Fs = Fs, NFFT = NFFT)
-        drivepsd, freqs = matplotlib.mlab.psd(dat[:, bu.drive]-numpy.mean(dat[:, bu.drive]), Fs = Fs, NFFT = NFFT)
+	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT)
+        drivepsd, freqs = matplotlib.mlab.psd(dat[:, drive_daq]-numpy.mean(dat[:, drive_daq]), Fs = Fs, NFFT = NFFT)
         aux = np.argmax(drivepsd)
         freq_drive = freqs[aux]
 	return [freqs, xpsd, drivepsd, freq_drive, aux]
@@ -306,9 +307,9 @@ A = unite_psd(file_list_psd)
 
 
 # plot_sensitivity_force(file_list_psd, file_list_charge)
-# plot_sensitivity_electron(file_list_psd, file_list_charge)
+plot_sensitivity_electron(file_list_psd, file_list_charge)
 plot_in_signal_units(file_list_psd, file_list_charge)
-#plot_sensitivity_g(file_list_psd, file_list_charge)
+plot_sensitivity_g(file_list_psd, file_list_charge)
 # plot_sensitivity_acc(file_list_psd, file_list_charge)
 
 # plt.figure()

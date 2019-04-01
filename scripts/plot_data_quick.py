@@ -8,7 +8,7 @@ import glob
 
 refname = r"2mbar_zcoolweak.h5"
 fname0 = r""
-path = r"C:\data\20190326\15um_low532\1"
+path = r"C:\data\20190326\15um_low532_50x\8"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
@@ -31,7 +31,7 @@ if fname0 == "":
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**13
+NFFT = 2**14
 
 def getdata(fname):
 	print "Opening file: ", fname
