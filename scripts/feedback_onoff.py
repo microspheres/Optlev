@@ -14,9 +14,11 @@ import scipy.optimize as opt
 
 # path_list = [r"C:\data\20190202\15um\4\PID\COMx1", r"C:\data\20190202\15um\4\PID\COMx2", r"C:\data\20190202\15um\4\PID\COMx3", r"C:\data\20190202\15um\4\PID\COMx4", r"C:\data\20190202\15um\4\PID\COMx5", r"C:\data\20190202\15um\4\PID\COMx6", r"C:\data\20190202\15um\4\PID\COMx7", r"C:\data\20190202\15um\4\PID\COMx8", r"C:\data\20190202\15um\4\PID\COMx9", r"C:\data\20190202\15um\4\PID\COMx10", r"C:\data\20190202\15um\4\PID\COMx11"]
 
-path_list = [r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\1", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\2", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\3", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\1", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\2", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\3"]
+# path_list = [r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\1", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\2", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\3", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\1", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\2", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\3"]
 
-path_save = r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X"
+path_list = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X",]
+
+path_save = r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2"
 
 # path_list = [r"C:\data\20190202\15um\4\PID\COMx10"]
 
