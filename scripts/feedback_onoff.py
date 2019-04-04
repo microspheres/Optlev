@@ -12,20 +12,28 @@ import scipy.optimize as opt
 
 ################# Failing fits are NOT included in the final result =D happy face
 
+
+############ input the corrent resonance freq limits at damping fit!!!
+
 # path_list = [r"C:\data\20190202\15um\4\PID\COMx1", r"C:\data\20190202\15um\4\PID\COMx2", r"C:\data\20190202\15um\4\PID\COMx3", r"C:\data\20190202\15um\4\PID\COMx4", r"C:\data\20190202\15um\4\PID\COMx5", r"C:\data\20190202\15um\4\PID\COMx6", r"C:\data\20190202\15um\4\PID\COMx7", r"C:\data\20190202\15um\4\PID\COMx8", r"C:\data\20190202\15um\4\PID\COMx9", r"C:\data\20190202\15um\4\PID\COMx10", r"C:\data\20190202\15um\4\PID\COMx11"]
 
 # path_list = [r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\1", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\2", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\3", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\1", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\2", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\3"]
 
-path_list = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X",]
+path_list = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\1",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\2",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\3", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\4",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\5",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\6",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\7", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\8",]
 
-path_save = r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2"
+path_save = r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X"
 
 # path_list = [r"C:\data\20190202\15um\4\PID\COMx10"]
 
 plot = True
 plot_heat = False
 plot_cool = False
-bins = 13
+bins = 60
+
+f0 = 79. # for the fit, use the fit from the psd with low feedback
+df0 = 2.5 # for the fit
+
+gaussfit = False # use a gaussian to fit the results of each folder (not always work because the shape is far from gaussian)
 
 
 def getdata(fname):
@@ -172,13 +180,24 @@ def plot_PID_on(path): # return xxx[a][b][c] a is the X or Y axis, b is the file
         Yf.append(Y)
     return [Xf,Yf]
 
-def fit_cool(time, A, X, w0, phase):
-    a = 1.0*A*(np.exp(-X*w0*time))*np.sin( np.sqrt(1 - X**2)*w0*time + phase)
-    return a
+def fit_cool(time, A, X, w0, phase, A2): # has to consider more than damping case.
+        if X >= 1:
+                a = 1.0*A*np.exp((-X*w0 - w0*np.sqrt(X**2 - 1.))*time) + 1.0*A2*np.exp((-X*w0 + w0*np.sqrt(X**2 - 1.))*time) 
+        else:
+                a = 1.0*A*(np.exp(-X*w0*time))*(np.sin( np.sqrt(1 - X**2)*w0*time + phase))
+        return a
+
 
 def fit_heat(time, A, X, w0, phase):
     a = 1.0*A*(np.exp(X*w0*time))*np.sin( np.sqrt(1 - X**2)*w0*time + phase)
     return a
+
+def residuals(a,b):
+        R = a - b
+        r = 0
+        for i in R:
+                r = r + i**2
+        return r
 
 def plot_and_fit_cool(path, plot):
     Pf = []
@@ -191,14 +210,34 @@ def plot_and_fit_cool(path, plot):
         D = []
         for i in range(len(a[0][j])):
             c1 = 0
-            p1 = np.array([0.1, 0.3, 2*np.pi*80, np.pi/2])
+            p1 = np.array([0.1, 1.2, 2*np.pi*f0, 0.1, 0.1])
+            p1a = np.array([0.1, 1.5, 2*np.pi*f0, 0.1, 0.1])
+            p1b = np.array([0.1, 0.1, 2*np.pi*f0, 0.1, 0.1])
             notfail = True
             try:
-                p, c = opt.curve_fit(fit_cool, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1, bounds = ((-1,0.00002,2*np.pi*60, 0),(1, 0.99, 2*np.pi*95, np.pi)))
+                try:
+                        p_a, c_a = opt.curve_fit(fit_cool, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1a, bounds = ((-2, 1.0, 2*np.pi*(f0 - df0), 0, -2),(2, 10., 2*np.pi*(f0 + df0), np.pi, 2)))
+                        ra = residuals(a[1][j][i], fit_cool(np.array(a[0][j][i])/fs , *p_a))
+                except:
+                        ra = 1e10
+                        print "FAIL COOL RA"
+                try:
+                        p_b, c_b = opt.curve_fit(fit_cool, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1b, bounds = ((-2, 0.0002, 2*np.pi*(f0 - df0), 0, -2),(2, 0.99, 2*np.pi*(f0 + df0), np.pi, 2)))
+                        rb = residuals(a[1][j][i], fit_cool(np.array(a[0][j][i])/fs , *p_b))
+                except:
+                        rb = 1e10
+                        print "FAIL COOL RB"
+                
+                if ra >= rb:
+                        p = p_b
+                        c = c_b
+                else:
+                        p = p_a
+                        c = c_a
             except RuntimeError:
                 c = 0
                 p = p1
-                print "FIT FAIL"
+                print "FIT FAIL COOL"
                 notfail = False
             if plot:
                 plt.figure()
@@ -225,15 +264,15 @@ def plot_and_fit_heat(path, plot):
         D = []
         for i in range(len(a[0][j])):
             c1 = 0
-            p1 = np.array([0.01, 0.03, 2*np.pi*70, 0.])
+            p1 = np.array([0.01, 0.03, 2*np.pi*f0, 0.1])
             notfail = True
             try:
-                p, c = opt.curve_fit(fit_heat, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1)
+                p, c = opt.curve_fit(fit_heat, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1, bounds = ((-1,0.00002,2*np.pi*(f0 - 5.*df0), 0),(1, 0.99, 2*np.pi*(f0+5.*df0), np.pi)))
             except RuntimeError:
                 c = 0
                 p = p1
                 notfail = False
-                print "FIT FAIL"
+                print "FIT FAIL HEAT"
             if plot:
                 plt.figure()
                 plt.plot(np.array(a[0][0][i])/fs, a[1][0][i])
@@ -287,6 +326,11 @@ def gauss(x,a,b,c):
     g = c*np.exp(-0.5*((x-a)/b)**2)
     return g
 
+def poisson(x,l,c):
+        from scipy.special import factorial
+        g = c*((x**l)*np.exp(-l))/(factorial(x))
+        return g
+
 def plot_all_histogram(pathlist, plot):
     Info = get_from_pathlist(pathlist)
     L = len(pathlist)
@@ -299,52 +343,71 @@ def plot_all_histogram(pathlist, plot):
         dgx = Info[i][2]
         damp = Info[i][1][0]
         heat = Info[i][0][0]
-        
-        #hist for damping
-        h,b = np.histogram(damp, bins = bins)
-        bc = np.diff(b)/2 + b[:-1]
-        p0 = np.array([np.mean(damp), np.std(damp)/5, 15])
-        poptd, pcovd = opt.curve_fit(gauss, bc, h, p0 = p0)
-        label1 = "dgx = " + str("%0.2f" % dgx) + " damping = " + str( "%0.1f" % poptd[0] ) + "$\pm$" + str( "%0.1f" % np.sqrt(pcovd[0][0]) ) + " [Hz]"
-        space = np.arange(np.mean(damp) - 1000, np.mean(damp) + 1000, 0.1)
-        if plot:
-            plt.figure()
-            plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = 'ko')
-            plt.plot(space, gauss(space,*poptd))
-            plt.xlabel("Histogram Damping [Hz]")
-            plt.ylabel("Measurements")
-            plt.legend(loc=3)
-            plt.grid()
-            plt.tight_layout(pad = 0)
 
-        #hist for heating
-        h,b = np.histogram(heat, bins = bins)
-        bc = np.diff(b)/2 + b[:-1]
-        p0 = np.array([np.mean(heat), np.std(heat)/5, 15])
-        popth, pcovh = opt.curve_fit(gauss, bc, h, p0 = p0)
-        label1 = "dgx = " + str("%0.2f" % dgx) + " heating = " + str( "%0.1f" % popth[0] ) + "$\pm$" + str( "%0.1f" % np.sqrt(pcovh[0][0]) ) + " [Hz]"
-        space = np.arange(np.mean(heat) - 1000, np.mean(heat) + 1000, 0.1)
-        if plot:
-            plt.figure()
-            plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = 'ko')
-            plt.plot(space, gauss(space,*popth))
-            plt.xlabel("Histogram Heating [Hz]")
-            plt.ylabel("Measurements")
-            plt.legend(loc=3)
-            plt.grid()
-            plt.tight_layout(pad = 0)
+        if gaussfit:
+                #hist for damping
+                h,b = np.histogram(damp, bins = bins)
+                bc = np.diff(b)/2 + b[:-1]
+                p0 = np.array([np.mean(damp), np.std(damp)/np.sqrt(len(damp)), 10])
+                poptd, pcovd = opt.curve_fit(gauss, bc, h, p0 = p0)
 
+                error_damp = np.sqrt(pcovd[0][0])
+                mean_damp = poptd[0]
+                
+                label1 = "dgx = " + str("%0.2f" % dgx) + " damping = " + str( "%0.1f" % poptd[0] ) + "$\pm$" + str( "%0.1f" % np.sqrt(pcovd[0][0]) ) + " [Hz]"
+                space = np.arange(np.mean(damp) - 1000, np.mean(damp) + 1000, 0.1)
+                if plot:
+                        plt.figure()
+                        plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = 'ko')
+                        plt.plot(space, gauss(space,*poptd))
+                        plt.xlabel("Histogram Damping [Hz]")
+                        plt.ylabel("Measurements")
+                        plt.legend(loc=3)
+                        plt.grid()
+                        plt.tight_layout(pad = 0)
+
+        else:
+                mean_damp = np.mean(damp)
+                error_damp = np.std(damp)/np.sqrt(len(damp))
+                        
+        if gaussfit:
+                #hist for heating
+                h,b = np.histogram(heat, bins = bins)
+                bc = np.diff(b)/2 + b[:-1]
+                p0 = np.array([np.mean(heat), np.std(heat)/np.sqrt(len(heat)), 10])
+                
+                popth, pcovh = opt.curve_fit(gauss, bc, h, p0 = p0)
+                mean_heat = popth[0]
+                error_heat = np.sqrt(pcovh[0][0])
+                
+                label1 = "dgx = " + str("%0.2f" % dgx) + " heating = " + str( "%0.1f" % popth[0] ) + "$\pm$" + str( "%0.1f" % np.sqrt(pcovh[0][0]) ) + " [Hz]"
+                space = np.arange(np.mean(heat) - 1000, np.mean(heat) + 1000, 0.1)
+                if plot:
+                        plt.figure()
+                        plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = 'ko')
+                        plt.plot(space, gauss(space,*popth))
+                        plt.xlabel("Histogram Heating [Hz]")
+                        plt.ylabel("Measurements")
+                        plt.legend(loc=3)
+                        plt.grid()
+                        plt.tight_layout(pad = 0)
+
+        else:
+                mean_heat = np.mean(heat)
+                error_heat = np.std(heat)/np.sqrt(len(heat))
+
+                
         Dx.append(dgx)
-        dmean.append(poptd[0])
-        derror.append(np.sqrt(pcovd[0][0]))
-        hmean.append(popth[0])
-        herror.append(np.sqrt(pcovh[0][0]))
+        dmean.append(mean_damp)
+        derror.append(error_damp)
+        hmean.append(mean_heat)
+        herror.append(error_heat)
 
     return [Dx, dmean, hmean, derror, herror]
 
 
 def final_plot(pathlist):
-    para = plot_all_histogram(pathlist, False)
+    para = plot_all_histogram(pathlist, plot)
     plt.figure()
 
     hm =  np.array(para[2])/(2.*np.pi)
@@ -360,6 +423,7 @@ def final_plot(pathlist):
     plt.xlabel("Derivative gain X axis")
     plt.ylabel("$\Gamma / 2\pi$ [Hz]")
     plt.legend()
+    plt.ylim(-10, 950)
     plt.grid()
     plt.tight_layout(pad = 0)
 

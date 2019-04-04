@@ -19,24 +19,26 @@ kb = 1.38e-23
 
 acceleration_plot = False
 
-no_sphere = True
+no_sphere = False
 pathno = [r"C:\data\20190326\15um_low532_50x\3\temp\no_sphere",]
 
 distance = 0.02
 
 NFFT = 2**16
 
-path_calibration = r"C:\data\20190326\15um_low532_50x\3\calibration_1p"
+path_calibration = r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\1e_calibration"
 
-path_list_temp = [r"C:\data\20190326\15um_low532_50x\3\temp\1", r"C:\data\20190326\15um_low532_50x\3\temp\2", r"C:\data\20190326\15um_low532_50x\3\temp\3", r"C:\data\20190326\15um_low532_50x\3\temp\4",r"C:\data\20190326\15um_low532_50x\3\temp\5", r"C:\data\20190326\15um_low532_50x\3\temp\6", r"C:\data\20190326\15um_low532_50x\3\temp\7", r"C:\data\20190326\15um_low532_50x\3\temp\8", r"C:\data\20190326\15um_low532_50x\3\temp\9", r"C:\data\20190326\15um_low532_50x\3\temp\10", r"C:\data\20190326\15um_low532_50x\3\temp\11trekoff", r"C:\data\20190326\15um_low532_50x\3\temp\12", r"C:\data\20190326\15um_low532_50x\3\temp\13", r"C:\data\20190326\15um_low532_50x\3\temp\14", r"C:\data\20190326\15um_low532_50x\3\temp\15", r"C:\data\20190326\15um_low532_50x\3\temp\16", ]
+# path_list_temp = [r"C:\data\20190326\15um_low532_50x\3\temp\1", r"C:\data\20190326\15um_low532_50x\3\temp\2", r"C:\data\20190326\15um_low532_50x\3\temp\3", r"C:\data\20190326\15um_low532_50x\3\temp\4",r"C:\data\20190326\15um_low532_50x\3\temp\5", r"C:\data\20190326\15um_low532_50x\3\temp\6", r"C:\data\20190326\15um_low532_50x\3\temp\7", r"C:\data\20190326\15um_low532_50x\3\temp\8", r"C:\data\20190326\15um_low532_50x\3\temp\9", r"C:\data\20190326\15um_low532_50x\3\temp\10", r"C:\data\20190326\15um_low532_50x\3\temp\11trekoff", r"C:\data\20190326\15um_low532_50x\3\temp\12", r"C:\data\20190326\15um_low532_50x\3\temp\13", r"C:\data\20190326\15um_low532_50x\3\temp\14", r"C:\data\20190326\15um_low532_50x\3\temp\15", r"C:\data\20190326\15um_low532_50x\3\temp\16", ]
 
 # path_list_temp = [r"C:\data\20190402\Trek_no_sphere_another_table_ON", r"C:\data\20190402\Trek_no_sphere_another_table_OFF"]
 
 # path_list_temp = [r"C:\data\20190326\15um_low532_50x\4\temp\1", r"C:\data\20190326\15um_low532_50x\4\temp\2", r"C:\data\20190326\15um_low532_50x\4\temp\3", r"C:\data\20190326\15um_low532_50x\4\temp\4", r"C:\data\20190326\15um_low532_50x\4\temp\5", r"C:\data\20190326\15um_low532_50x\4\temp\6", r"C:\data\20190326\15um_low532_50x\4\temp\nosphere"]
 
 # path_list_temp = [r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\1", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\2", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\3", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\4", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\5", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\6", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\7", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\8", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\9", ]
+
+path_list_temp = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\1", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\2", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\3", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\4", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\5", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\6", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\7",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\8", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\9"]
  
-path_high_pressure_nofb= r"C:\data\20190326\15um_low532_50x\3"
+path_high_pressure_nofb= r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF"
 file_high_pressure_nofb = "2mbar_yzcool.h5"
 
 f_start = 60. # for the fit
@@ -224,7 +226,7 @@ def temp_path_list(pathlist, path_hp, file_hp, pathcharge, pathno, acc):
                 t = a[0]
                 T.append(t)
                 Dgx.append(dgx)
-
+                print "resonace freq =", a[2][1]
                 label = " $\Gamma/2\Pi$ = " + str("%.1E" % a[2][2]) + " Hz"
                 plt.loglog(a[3], Conv*a[4])
                 plt.loglog(f, Conv*psd(f, *a[2]), label = label)
