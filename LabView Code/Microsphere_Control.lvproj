@@ -1,6 +1,5 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <Project Type="Project" LVVersion="18008000">
-	<Property Name="varPersistentID:{87C2DA27-0E69-4C3C-94E5-78348F444988}" Type="Ref">/My Computer/Dependencies/AFG-2225.lvlib/input 1</Property>
 	<Item Name="My Computer" Type="My Computer">
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="server.control.propertiesEnabled" Type="Bool">true</Property>

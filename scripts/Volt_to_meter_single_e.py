@@ -12,21 +12,24 @@ rho = 1800.0
 R = 7.5*10**-6
 
 M = (4./3.)*np.pi*(R**3)*rho
+dR = (2.7/2)*10**-6
+dM = M*np.sqrt( (dR/R)**2 )
 
 electron = 1.60218e-19
 
 kb = 1.38e-23
 
-acceleration_plot = False
+acceleration_plot = True
 
 no_sphere = False
-pathno = [r"C:\data\20190326\15um_low532_50x\3\temp\no_sphere",]
+pathno = [r"C:\data\20190408\15um\3\temp\no_sphere",]
 
-distance = 0.02
+distance = 0.0105
+distance_error = 1e-4
 
 NFFT = 2**16
 
-path_calibration = r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\1e_calibration"
+path_calibration = r"C:\data\20190408\15um\5\calibration1e"
 
 # path_list_temp = [r"C:\data\20190326\15um_low532_50x\3\temp\1", r"C:\data\20190326\15um_low532_50x\3\temp\2", r"C:\data\20190326\15um_low532_50x\3\temp\3", r"C:\data\20190326\15um_low532_50x\3\temp\4",r"C:\data\20190326\15um_low532_50x\3\temp\5", r"C:\data\20190326\15um_low532_50x\3\temp\6", r"C:\data\20190326\15um_low532_50x\3\temp\7", r"C:\data\20190326\15um_low532_50x\3\temp\8", r"C:\data\20190326\15um_low532_50x\3\temp\9", r"C:\data\20190326\15um_low532_50x\3\temp\10", r"C:\data\20190326\15um_low532_50x\3\temp\11trekoff", r"C:\data\20190326\15um_low532_50x\3\temp\12", r"C:\data\20190326\15um_low532_50x\3\temp\13", r"C:\data\20190326\15um_low532_50x\3\temp\14", r"C:\data\20190326\15um_low532_50x\3\temp\15", r"C:\data\20190326\15um_low532_50x\3\temp\16", ]
 
@@ -36,16 +39,32 @@ path_calibration = r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\1e_calibr
 
 # path_list_temp = [r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\1", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\2", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\3", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\4", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\5", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\6", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\7", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\8", r"C:\data\20190326\15um_low532_50x\8\1e\differentdgx\9", ]
 
-path_list_temp = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\1", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\2", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\3", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\4", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\5", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\6", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\7",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\8", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\9"]
+# path_list_temp = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\1", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\2", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\3", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\4", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\5", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\6", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\7",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\8", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\9", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\10", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\11", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\temp\12"]
+
+path_list_temp = [r"C:\data\20190408\15um\3\temp\1", r"C:\data\20190408\15um\3\temp\2", r"C:\data\20190408\15um\3\temp\3", r"C:\data\20190408\15um\3\temp\4", r"C:\data\20190408\15um\3\temp\5", r"C:\data\20190408\15um\3\temp\6", r"C:\data\20190408\15um\3\temp\7", r"C:\data\20190408\15um\3\temp\8", r"C:\data\20190408\15um\3\temp\9", r"C:\data\20190408\15um\3\temp\10", r"C:\data\20190408\15um\3\temp\11", r"C:\data\20190408\15um\3\temp\12", r"C:\data\20190408\15um\3\temp\13", r"C:\data\20190408\15um\3\temp\14", r"C:\data\20190408\15um\3\temp\HP",]
+
+# path_list_temp = [r"C:\data\20190408\15um\3\temp\HP", r"C:\data\20190408\15um\3\temp\12", r"C:\data\20190408\15um\3\temp\13", r"C:\data\20190408\15um\3\temp\6", r"C:\data\20190408\15um\3\temp\3", r"C:\data\20190408\15um\3\temp\1",]
+
+path_list_temp = [r"C:\data\20190408\15um\5\temp\1",r"C:\data\20190408\15um\5\temp\2", r"C:\data\20190408\15um\5\temp\3", r"C:\data\20190408\15um\5\temp\4", r"C:\data\20190408\15um\5\temp\5", r"C:\data\20190408\15um\5\temp\6", r"C:\data\20190408\15um\5\temp\7", r"C:\data\20190408\15um\5\temp\8", r"C:\data\20190408\15um\5\temp\9", r"C:\data\20190408\15um\5\temp\10", r"C:\data\20190408\15um\5\temp\11", r"C:\data\20190408\15um\5\temp\12", r"C:\data\20190408\15um\5\temp\no_sphere"]
  
-path_high_pressure_nofb= r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF"
+path_high_pressure_nofb= r"C:\data\20190408\15um\5"
 file_high_pressure_nofb = "2mbar_yzcool.h5"
 
 f_start = 60. # for the fit
-f_end = 120. # for the fit
+f_end = 130. # for the fit
+
+f_start = 80. # for the fit
+f_end = 125. # for the fit
+
+f_start = 40. # for the fit
+f_end = 100. # for the fit
 
 delta = 1e-2
 fq = np.arange(f_start, f_end, delta)
+
+nice_plot = False # plot the HP inside the pathlist and Not the one outside
+plot_fit_HP = False
+plot_fit_LP = True
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -87,6 +106,7 @@ def get_files_path(path):
 def get_data_path(path): # PSD output is unit square, V**2/Hz : it assumes that within the folder, Dgx is the same.
         info = getdata(get_files_path(path)[0])
         freq = info[0]
+        dfreq = freq[1] - freq[0]
         dgx = info[2][0]
         Xpsd = np.zeros(len(freq))
         fieldpsd = np.zeros(len(freq))
@@ -98,7 +118,8 @@ def get_data_path(path): # PSD output is unit square, V**2/Hz : it assumes that 
                 p = a[3]
         Xpsd = Xpsd/len(aux)
         fieldpsd = fieldpsd/len(aux)
-        return [Xpsd, dgx, p, fieldpsd, freq]
+        return [Xpsd, dgx, p, fieldpsd, freq, dfreq]
+
 
 def plot_psd(path):
     a = get_data_path(path)
@@ -117,10 +138,12 @@ def findAC_peak(path):
 def get_field(path):
     a = get_data_path(path)
     pos = findAC_peak(path)[0]
-    v = 200.*np.sum(a[3][pos-3:pos+3])
-    v_amp = np.sqrt(v)/np.pi
-    E_amp = v/distance
+    v = np.sum(a[3][pos-3:pos+3])*a[5]
+    v_amp = 200.0*np.sqrt(v)*np.sqrt(2.)
+    E_amp = v_amp/distance
     return [v_amp, E_amp]
+
+
 
 def force1e(path): #gives force of 1e of charge
     E = get_field(path)[1]
@@ -135,16 +158,17 @@ def acc(path): # gives the acc of 1e of charge
 def get_sensor_motion_1e(path):
         pos = findAC_peak(path)[0]
         a = get_data_path(path)
-        sen = np.sum(a[0][pos-3:pos+3])
-        sen_amp = np.sqrt(sen)/np.pi
+        sen = np.sum(a[0][pos-3:pos+3])*a[5]
+        sen_amp = np.sqrt(sen)*np.sqrt(2.)
         return sen_amp
         
 
 def psd(f, A, f0, gamma):
     w0 = 2.*np.pi*f0
     w = 2.*np.pi*f
-    s1 = 2.*A*(gamma*(w0**2))
-    s2 = 1.*(w0**2)*((w0**2 - w**2)**2 + (gamma*w)**2)
+    gamma1 = 2.0*np.pi*gamma
+    s1 = 2.*A*(gamma1*(w0**2))
+    s2 = 1.*(w0**2)*((w0**2 - w**2)**2 + (gamma1*w)**2)
     s = np.sqrt(s1/s2)
     return A*s
 
@@ -154,9 +178,11 @@ def fit_high_pressure_no_fb(path_hp, file_hp):
         xpsd = np.sqrt(a[1])
         fit_points1 = np.logical_and(freq > f_start, freq < 59.0)
         fit_points2 = np.logical_and(freq > 61.0, freq < 119.0)
-        fit_points3 = np.logical_and(freq > 121.0, freq < 179.0)
-        fit_points4 = np.logical_and(freq > 181.0, freq < f_end)
-        fit_points_new = fit_points1 + fit_points2 + fit_points3 + fit_points4
+        fit_points3 = np.logical_and(freq > 121.0, freq < 122.0)
+        fit_points4 = np.logical_and(freq > 123.3, freq < 144.8)
+        fit_points5 = np.logical_and(freq > 145.9, freq < 179.0)
+        fit_points6 = np.logical_and(freq > 181.0, freq < f_end)
+        fit_points_new = fit_points1 + fit_points2 + fit_points3 + fit_points4 + fit_points5
         p0 = [0.1, 90, 100.]
         popt, pcov = opt.curve_fit(psd, freq[fit_points_new], xpsd[fit_points_new], p0 = p0)
         freqplot = fq
@@ -173,7 +199,6 @@ def convert_sensor_meter(path, path_hp, file_hp): # given that the feedback bare
         motiontheo = 1.0*acc1e/((2.0*np.pi*f0)**2)
         C = 1.0*motiontheo/sen_amp
         return C
-
 
 
 def tempeture_path(path, path_hp, file_hp, pathcharge):
@@ -199,39 +224,48 @@ def tempeture_path(path, path_hp, file_hp, pathcharge):
        aux = (2.*np.pi*np.abs(f0))*Conv*psd(f, *popt)
        tempaux = np.sum(aux**2)*delta
        tempaux = 0.5*M*tempaux
-       temp = tempaux/kb
+       temp = 2.*tempaux/kb # factor 2 is to account the spring energy (equipartition theo)
        return [temp, dgx, popt, freq, xpsd]
 
 
 def temp_path_list(pathlist, path_hp, file_hp, pathcharge, pathno, acc):
         T = []
+        dT = []
         Dgx = []
         f = fq
         hp = fit_high_pressure_no_fb(path_hp, file_hp)
         Conv = convert_sensor_meter(pathcharge, path_hp, file_hp)
+        plt.rcParams['xtick.labelsize'] = 15
+        plt.rcParams['ytick.labelsize'] = 15
         plt.figure()
-        plt.xlabel("Frequency [Hz]")
-        plt.ylabel("m/sqrt(Hz)")
-        plt.loglog(hp[1], Conv*hp[3])
-        labelhp = " $\Gamma/2\Pi$ = " + str("%.1E" % hp[0][2]) + " Hz"
-        plt.loglog(hp[2], Conv*psd(hp[2], *hp[0]), "k",label = labelhp)
+        plt.xlabel("Frequency $[Hz]$", fontsize = 15)
+        plt.ylabel(r"$\sqrt{S} \ [ m/\sqrt{Hz}]$", fontsize = 15)
+        if not nice_plot:
+                plt.loglog(hp[1], Conv*hp[3])
+                labelhp = " $\Gamma/2\Pi$ = " + str("%.1E" % hp[0][2]) + " Hz"
+                if plot_fit_HP:
+                        plt.loglog(hp[2], Conv*psd(hp[2], *hp[0]), "--k")
 
         if no_sphere:
                 ns = tempeture_path(pathno[0], path_hp, file_hp, pathcharge)
-                plt.loglog(ns[3], Conv*ns[4], label = "No Sphere")
+                plt.loglog(ns[3], Conv*ns[4], "-r",label = "No Sphere")
                 
         for i in pathlist:
                 a = tempeture_path(i, path_hp, file_hp, pathcharge)
                 dgx = a[1]
                 t = a[0]
+                dt = t*np.sqrt(( (dM/M)**2 + (2.*distance_error/distance)**2 ))
                 T.append(t)
+                dT.append(dt)
                 Dgx.append(dgx)
                 print "resonace freq =", a[2][1]
                 label = " $\Gamma/2\Pi$ = " + str("%.1E" % a[2][2]) + " Hz"
                 plt.loglog(a[3], Conv*a[4])
-                plt.loglog(f, Conv*psd(f, *a[2]), label = label)
-                plt.xlim(1, 900)
-                plt.ylim(1e-13, 1e-7)
+                if plot_fit_LP:
+                        plt.loglog(f, Conv*psd(f, *a[2]), "--k")
+                plt.xlim(10, 2000)
+                plt.ylim(1e-12, 3e-8)
+
         plt.legend(loc=3)
         plt.grid()
         plt.tight_layout(pad = 0)
@@ -259,14 +293,23 @@ def temp_path_list(pathlist, path_hp, file_hp, pathcharge, pathno, acc):
                 
                 
         plt.figure()
-        plt.loglog(Dgx, 1e6*np.array(T), "ro")
-        plt.xlabel("Dgx")
-        plt.ylabel("Temp [uK]")
+        plt.errorbar(Dgx, 1e6*np.array(T), yerr = 1e6*np.array(dT), fmt = "ro")
+        for i in np.array(Dgx):
+                log = True
+                if i == 0:
+                        log = False
+        if log:
+                plt.xscale("log")
+                plt.yscale("log")
+        plt.rcParams['xtick.labelsize'] = 15
+        plt.rcParams['ytick.labelsize'] = 15
+        plt.xlabel("Feedback Gain [Arb. Units]", fontsize = 15)
+        plt.ylabel("COM Temperature [$\mu $K]", fontsize = 15)
         plt.legend(loc=3)
         plt.grid()
         plt.tight_layout(pad = 0)
         
-        return [T, Dgx]
+        return [T, dT, Dgx]
 
 
 

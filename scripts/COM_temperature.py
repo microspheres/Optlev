@@ -17,18 +17,18 @@ charge = False
 if charge:
         path_1e = r"C:\data\20190304\15um_low532\6\1electron"
 
-path300k = r"C:\data\20190326\15um_low532_50x\3"
+path300k = r"C:\data\20190408\15um\3"
 name300k = r"2mbar_yzcool.h5"
 
-path_save = r"C:\data\20190326\15um_low532_50x\3\temp"
+path_save = r"C:\data\20190408\15um\3\temp"
 
 no_sphere = False
 if no_sphere:
-        pathno = [r"C:\data\20190304\15um_low532\6"]
+        pathno = [r"C:\data\20190326\15um_low532_50x\3\temp\no_sphere"]
         fileno = r"nosphere.h5"
 
-f_start = 65. # for the fit
-f_end = 130. # for the fit
+f_start = 60. # for the fit
+f_end = 140. # for the fit
 
 NFFT = 2**16
 
@@ -76,12 +76,21 @@ def getdata(fname):
 
 data = getdata(os.path.join(path300k, name300k))
 
-fit_points = np.logical_and(data[0] > f_start, data[0] < f_end)
+# fit_points1 = np.logical_and(data[0] > f_start, data[0] < 59.6)
+# fit_points2 = np.logical_and(data[0] > 60.6 , data[0] < 65.0)
+# fit_points3 = np.logical_and(data[0] > 65.7 , data[0] < 95.5)
+# fit_points4 = np.logical_and(data[0] > 96.2 , data[0] < 119.0)
 
-fit_points1 = np.logical_and(data[0] > f_start, data[0] < 59.6)
-fit_points2 = np.logical_and(data[0] > 60.6 , data[0] < 119)
-fit_points4 = np.logical_and(data[0] > 121 , data[0] < f_end)
-fit_points_new = fit_points1+fit_points2
+# fit_points5 = np.logical_and(data[0] > 121 , data[0] < f_end)
+# fit_points_new = fit_points1+fit_points2+fit_points3+fit_points4
+
+fit_points1 = np.logical_and(data[0] > f_start, data[0] < 59.0)
+fit_points2 = np.logical_and(data[0] > 61.0, data[0] < 119.0)
+fit_points3 = np.logical_and(data[0] > 121.0, data[0] < 122.0)
+fit_points4 = np.logical_and(data[0] > 123.3, data[0] < 144.8)
+fit_points5 = np.logical_and(data[0] > 145,9, data[0] < 179.0)
+fit_points6 = np.logical_and(data[0] > 181.0, data[0] < f_end)
+fit_points_new = fit_points1 + fit_points2 + fit_points3 + fit_points4 + fit_points5
 
 ####################
 
@@ -111,7 +120,7 @@ def psd(f, A, f0, gammaover2pi):
 
 gamma = Gamma(vis, press, temp, mass, R, M)
 
-px, cx = opt.curve_fit(psd, data[0][fit_points_new], np.sqrt(data[1][fit_points_new]), p0 = [1e6, 100, gamma] )
+px, cx = opt.curve_fit(psd, data[0][fit_points_new], np.sqrt(data[1][fit_points_new]), p0 = [1e6, 80., gamma] )
 
 f = np.arange(f_start, f_end, 1e-2)
 
@@ -120,7 +129,9 @@ f = np.arange(f_start, f_end, 1e-2)
 
 # path_list = [r"C:\data\20190211\15um\1\lp\1", r"C:\data\20190211\15um\1\lp\2", r"C:\data\20190211\15um\1\lp\3", r"C:\data\20190211\15um\1\lp\4", r"C:\data\20190211\15um\1\lp\5", r"C:\data\20190211\15um\1\lp\6", r"C:\data\20190211\15um\1\lp\7", r"C:\data\20190211\15um\1\lp\8", r"C:\data\20190211\15um\1\lp\9", r"C:\data\20190211\15um\1\lp\10", r"C:\data\20190211\15um\1\lp\11"]
 
-path_list = [r"C:\data\20190326\15um_low532_50x\3\temp\1", r"C:\data\20190326\15um_low532_50x\3\temp\2", r"C:\data\20190326\15um_low532_50x\3\temp\3", r"C:\data\20190326\15um_low532_50x\3\temp\4",r"C:\data\20190326\15um_low532_50x\3\temp\5", r"C:\data\20190326\15um_low532_50x\3\temp\6", r"C:\data\20190326\15um_low532_50x\3\temp\7", r"C:\data\20190326\15um_low532_50x\3\temp\8", r"C:\data\20190326\15um_low532_50x\3\temp\9", r"C:\data\20190326\15um_low532_50x\3\temp\10", r"C:\data\20190326\15um_low532_50x\3\temp\11trekoff", r"C:\data\20190326\15um_low532_50x\3\temp\12", r"C:\data\20190326\15um_low532_50x\3\temp\13", r"C:\data\20190326\15um_low532_50x\3\temp\14", r"C:\data\20190326\15um_low532_50x\3\temp\15",r"C:\data\20190326\15um_low532_50x\3\temp\16" ]
+# path_list = [r"C:\data\20190326\15um_low532_50x\3\temp\1", r"C:\data\20190326\15um_low532_50x\3\temp\2", r"C:\data\20190326\15um_low532_50x\3\temp\3", r"C:\data\20190326\15um_low532_50x\3\temp\4",r"C:\data\20190326\15um_low532_50x\3\temp\5", r"C:\data\20190326\15um_low532_50x\3\temp\6", r"C:\data\20190326\15um_low532_50x\3\temp\7", r"C:\data\20190326\15um_low532_50x\3\temp\8", r"C:\data\20190326\15um_low532_50x\3\temp\9", r"C:\data\20190326\15um_low532_50x\3\temp\10", r"C:\data\20190326\15um_low532_50x\3\temp\11trekoff", r"C:\data\20190326\15um_low532_50x\3\temp\12", r"C:\data\20190326\15um_low532_50x\3\temp\13", r"C:\data\20190326\15um_low532_50x\3\temp\14", r"C:\data\20190326\15um_low532_50x\3\temp\15",r"C:\data\20190326\15um_low532_50x\3\temp\16" ]
+
+path_list = [r"C:\data\20190408\15um\3\temp\1", r"C:\data\20190408\15um\3\temp\2", r"C:\data\20190408\15um\3\temp\3", r"C:\data\20190408\15um\3\temp\4", r"C:\data\20190408\15um\3\temp\5", r"C:\data\20190408\15um\3\temp\6", r"C:\data\20190408\15um\3\temp\7", r"C:\data\20190408\15um\3\temp\8", r"C:\data\20190408\15um\3\temp\9", r"C:\data\20190408\15um\3\temp\10", r"C:\data\20190408\15um\3\temp\11", r"C:\data\20190408\15um\3\temp\12", r"C:\data\20190408\15um\3\temp\13", r"C:\data\20190408\15um\3\temp\14"]
 
 
 ######### Gamma low pressure
@@ -166,7 +177,8 @@ def fit_paths(pathlist):
         PX = []
         CX = []
         for i in range(len(A)):
-                px_aux, cx_aux = opt.curve_fit(psd, data[0][fit_points_new], np.sqrt(A[i][fit_points_new]), p0 = [1e6, abs(px[1]), gamma], bounds = ([1e2, abs(px[1])-20., 0.0001*gamma], [1e13, abs(px[1])+20., 150.]) )
+                print px[1]
+                px_aux, cx_aux = opt.curve_fit(psd, data[0][fit_points_new], np.sqrt(A[i][fit_points_new]), p0 = [1e6, abs(px[1]), 100.], bounds = ((0.1, abs(px[1])-10., 0.0001),(1e6, abs(px[1]+30), 100000)) )
                 CX.append(cx_aux)
                 PX.append(px_aux)
         return [PX, CX]
@@ -180,7 +192,7 @@ def plot_all(pathlist):
         aux = psd_paths(pathlist)
         aux2 = fit_paths(pathlist)
         for i in range(len(pathlist)):
-                if i < 7:
+                if i == i:
                         name = "dgx = " + str("%.1E" % aux[1][i]) + " $\Gamma$ = " + str("%.2E" % aux2[0][i][2]) + " Hz" + " $f_0$ = " + str("%.2E" % aux2[0][i][1]) + " $\pm$ " + str("%.0E" % np.sqrt(aux2[1][i][1][1])) + " Hz"
                         plt.loglog(data[0], np.sqrt(aux[0][i])/px[0], label = name)
                         plt.loglog(f, psd(f, *aux2[0][i])/px[0])
@@ -191,7 +203,7 @@ def plot_all(pathlist):
         if no_sphere:
                 No = getdata(os.path.join(pathno[0], fileno))
                 plt.loglog(No[0], np.sqrt(No[1])/px[0], label = "No sphere")
-                pno, cno = opt.curve_fit(psd, No[0][fit_points_new], np.sqrt(No[1][fit_points_new]), p0 = [1e6, abs(px[1]), gamma], bounds = ([1e2, abs(px[1])-15., 0.0001*gamma], [1e10, abs(px[1])+15., 200.*gamma]) )
+                pno, cno = opt.curve_fit(psd, No[0][fit_points_new], np.sqrt(No[1][fit_points_new]), p0 = [1e6, abs(px[1]), gamma], bounds = ([1e2, abs(px[1])-15., 0.0001*gamma], [1e10, abs(px[1])+15., 500.*gamma]) )
                 plt.loglog(f, psd(f, *pno)/px[0])
                 
         

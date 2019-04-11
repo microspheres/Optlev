@@ -6,6 +6,8 @@ import numpy as np
 import bead_util as bu
 import glob
 import scipy.optimize as opt
+import multiprocessing as mp
+from scipy.signal import butter, lfilter, filtfilt
 
 ################# THIS CODE REQUIRES THE TRIGGER AND FEEDBACK ON AND OFF
 
@@ -19,21 +21,40 @@ import scipy.optimize as opt
 
 # path_list = [r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\1", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\2", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\3", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\1", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\2", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\3"]
 
-path_list = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\1",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\2",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\3", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\4",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\5",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\6",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\7", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X\8",]
+path_list = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\1",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\2",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\3",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\4",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\5",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\6",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\7",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\8", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\9",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\10",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\11",]
 
-path_save = r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\3\X"
+# path_list = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\1", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\2",]
+
+
+path_save = r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X"
 
 # path_list = [r"C:\data\20190202\15um\4\PID\COMx10"]
 
 plot = True
 plot_heat = False
 plot_cool = False
-bins = 60
+bins = 30
+initial_threshould = 0.08 # helps the fit of the damping
 
 f0 = 79. # for the fit, use the fit from the psd with low feedback
-df0 = 2.5 # for the fit
+df0 = 3.0 # for the fit
 
-gaussfit = False # use a gaussian to fit the results of each folder (not always work because the shape is far from gaussian)
+gaussfit_heat = False # use a gaussian to fit the results of each folder (not always work because the shape is far from gaussian)
+gaussfit_damp = True
+
+LPfilter = False
+order = 2
+def butter_lowpass(lowcut, fs, order):
+    nyq = 0.5 * fs
+    low = lowcut / nyq
+    b, a = butter(order, low, btype='low')
+    return b, a
+
+
+def butter_lowpass_filter(data, lowcut, fs, order):
+    b, a = butter_lowpass(lowcut, fs, order=order)
+    y = filtfilt(b, a, data)
+    return y
 
 
 def getdata(fname):
@@ -56,6 +77,8 @@ def getdata(fname):
 		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
 
 	x = dat[:, bu.xi]-numpy.mean(dat[:, bu.xi])
+        if LPfilter:
+                x = butter_lowpass_filter(x, 10.*f0, Fs, order)
         trigger = dat[:, 4]
 
 	return [x, trigger, PID, Fs]
@@ -180,16 +203,16 @@ def plot_PID_on(path): # return xxx[a][b][c] a is the X or Y axis, b is the file
         Yf.append(Y)
     return [Xf,Yf]
 
-def fit_cool(time, A, X, w0, phase, A2): # has to consider more than damping case.
+def fit_cool(time, A, X, w0, phase, A2, c): # has to consider more than damping case.
         if X >= 1:
-                a = 1.0*A*np.exp((-X*w0 - w0*np.sqrt(X**2 - 1.))*time) + 1.0*A2*np.exp((-X*w0 + w0*np.sqrt(X**2 - 1.))*time) 
+                a = 1.0*A*np.exp((-X*w0 - w0*np.sqrt(X**2 - 1.))*time) + 1.0*A2*np.exp((-X*w0 + w0*np.sqrt(X**2 - 1.))*time) + c
         else:
-                a = 1.0*A*(np.exp(-X*w0*time))*(np.sin( np.sqrt(1 - X**2)*w0*time + phase))
+                a = 1.0*A*(np.exp(-X*w0*time))*(np.sin( np.sqrt(1 - X**2)*w0*time + phase)) + c
         return a
 
 
-def fit_heat(time, A, X, w0, phase):
-    a = 1.0*A*(np.exp(X*w0*time))*np.sin( np.sqrt(1 - X**2)*w0*time + phase)
+def fit_heat(time, A, X, w0, phase, c):
+    a = 1.0*A*(np.exp(X*w0*time))*np.sin( np.sqrt(1 - X**2)*w0*time + phase) + c
     return a
 
 def residuals(a,b):
@@ -210,40 +233,48 @@ def plot_and_fit_cool(path, plot):
         D = []
         for i in range(len(a[0][j])):
             c1 = 0
-            p1 = np.array([0.1, 1.2, 2*np.pi*f0, 0.1, 0.1])
-            p1a = np.array([0.1, 1.5, 2*np.pi*f0, 0.1, 0.1])
-            p1b = np.array([0.1, 0.1, 2*np.pi*f0, 0.1, 0.1])
+            p1 = np.array([0.1, 1.2, 2*np.pi*f0, 0.1, 0.1, 0])
+            p1a = np.array([0.1, 1.7, 2*np.pi*f0, 0.1, 0.1, 0])
+            p1b = np.array([0.1, 0.01, 2*np.pi*f0, 0.1, 0.1, 0])
             notfail = True
-            try:
+            aux_a = False
+            aux_b = False
+            if np.abs(np.mean(a[1][j][i][0:10])) < initial_threshould:
+                    notfail = False
+                    print "initial fail"
+            else:
                 try:
-                        p_a, c_a = opt.curve_fit(fit_cool, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1a, bounds = ((-2, 1.0, 2*np.pi*(f0 - df0), 0, -2),(2, 10., 2*np.pi*(f0 + df0), np.pi, 2)))
+                        p_a, c_a = opt.curve_fit(fit_cool, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1a, bounds = ((-2, 1.0, 2*np.pi*(f0 - 5*df0), 0, -2, -0.5),(2, 6., 2*np.pi*(f0 + 5*df0), np.pi, 2, 0.5)))
                         ra = residuals(a[1][j][i], fit_cool(np.array(a[0][j][i])/fs , *p_a))
                 except:
-                        ra = 1e10
+                        ra = 1e13
                         print "FAIL COOL RA"
+                        aux_a = True
                 try:
-                        p_b, c_b = opt.curve_fit(fit_cool, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1b, bounds = ((-2, 0.0002, 2*np.pi*(f0 - df0), 0, -2),(2, 0.99, 2*np.pi*(f0 + df0), np.pi, 2)))
+                        p_b, c_b = opt.curve_fit(fit_cool, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1b, bounds = ((-2, 0.0002, 2*np.pi*(f0 - 5*df0), 0, -2, -0.5),(2, 0.99, 2*np.pi*(f0 + 5*df0), np.pi, 2, 0.5)))
                         rb = residuals(a[1][j][i], fit_cool(np.array(a[0][j][i])/fs , *p_b))
                 except:
-                        rb = 1e10
+                        rb = 1e13
                         print "FAIL COOL RB"
-                
+                        aux_b = True
+
+                if aux_a and aux_b:
+                        notfail = False
+                        print "double_fail_cool"
                 if ra >= rb:
                         p = p_b
                         c = c_b
                 else:
                         p = p_a
                         c = c_a
-            except RuntimeError:
-                c = 0
-                p = p1
-                print "FIT FAIL COOL"
-                notfail = False
-            if plot:
-                plt.figure()
-                plt.plot(np.array(a[0][0][i])/fs, a[1][0][i])
-                plt.plot(np.array(a[0][0][i])/fs, fit_cool(np.array(a[0][0][i]/fs), *p), "k--")
+
             if notfail:
+                if plot:
+                        plt.figure()
+                        label = "gamma(rad/s) =" + str(2.*p[1]*p[2])
+                        plt.plot(np.array(a[0][0][i])/fs, a[1][0][i])
+                        plt.plot(np.array(a[0][0][i])/fs, fit_cool(np.array(a[0][0][i]/fs), *p), "k--", label = label)
+                        plt.legend()
                 P.append(p)
                 C.append(c)
                 damp = 2.*p[1]*p[2]
@@ -264,10 +295,10 @@ def plot_and_fit_heat(path, plot):
         D = []
         for i in range(len(a[0][j])):
             c1 = 0
-            p1 = np.array([0.01, 0.03, 2*np.pi*f0, 0.1])
+            p1 = np.array([0.01, 0.03, 2*np.pi*f0, 0.1, 0])
             notfail = True
             try:
-                p, c = opt.curve_fit(fit_heat, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1, bounds = ((-1,0.00002,2*np.pi*(f0 - 5.*df0), 0),(1, 0.99, 2*np.pi*(f0+5.*df0), np.pi)))
+                p, c = opt.curve_fit(fit_heat, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1, bounds = ((-1,0.00002,2*np.pi*(f0 - 5.*df0), 0, -0.5),(1, 0.99, 2*np.pi*(f0+5.*df0), np.pi, 0.5)))
             except RuntimeError:
                 c = 0
                 p = p1
@@ -339,59 +370,82 @@ def plot_all_histogram(pathlist, plot):
     derror = []
     hmean = []
     herror = []
+    list_damp_fail = []
     for i in range(L):
         dgx = Info[i][2]
         damp = Info[i][1][0]
         heat = Info[i][0][0]
 
-        if gaussfit:
-                #hist for damping
-                h,b = np.histogram(damp, bins = bins)
-                bc = np.diff(b)/2 + b[:-1]
-                p0 = np.array([np.mean(damp), np.std(damp)/np.sqrt(len(damp)), 10])
-                poptd, pcovd = opt.curve_fit(gauss, bc, h, p0 = p0)
+        if gaussfit_damp:
+                try:
+                        #hist for damping
+                        h,b = np.histogram(damp, bins = bins)
+                        bc = np.diff(b)/2 + b[:-1]
+                        p0 = np.array([np.mean(damp), np.std(damp)/np.sqrt(len(damp)), 10])
+                        poptd, pcovd = opt.curve_fit(gauss, bc, h, p0 = p0)
 
-                error_damp = np.sqrt(pcovd[0][0])
-                mean_damp = poptd[0]
+
+                        mean_damp = np.mean(damp)
+                        error_damp = np.std(damp)/np.sqrt(len(damp))
+                        print "gauss_fit_damp_failed", pathlist[i]
+                        
+                        if np.abs((poptd[0] - np.mean(damp))) < 3.*poptd[1]:
+                                error_damp = np.sqrt(pcovd[0][0])
+                                mean_damp = poptd[0]
+                                
                 
-                label1 = "dgx = " + str("%0.2f" % dgx) + " damping = " + str( "%0.1f" % poptd[0] ) + "$\pm$" + str( "%0.1f" % np.sqrt(pcovd[0][0]) ) + " [Hz]"
-                space = np.arange(np.mean(damp) - 1000, np.mean(damp) + 1000, 0.1)
-                if plot:
-                        plt.figure()
-                        plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = 'ko')
-                        plt.plot(space, gauss(space,*poptd))
-                        plt.xlabel("Histogram Damping [Hz]")
-                        plt.ylabel("Measurements")
-                        plt.legend(loc=3)
-                        plt.grid()
-                        plt.tight_layout(pad = 0)
-
+                                label1 = "dgx = " + str("%0.2f" % dgx) + " damping = " + str( "%0.1f" % poptd[0] ) + "$\pm$" + str( "%0.1f" % np.sqrt(pcovd[0][0]) ) + " [Hz]"
+                                space = np.arange(np.mean(damp) - 1000, np.mean(damp) + 1000, 0.1)
+                                if plot:
+                                        plt.figure()
+                                        plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = 'ko')
+                                        plt.plot(space, gauss(space,*poptd))
+                                        plt.xlabel("Histogram Damping [Hz]")
+                                        plt.ylabel("Measurements")
+                                        plt.legend(loc=3)
+                                        plt.grid()
+                                        plt.tight_layout(pad = 0)
+                except:
+                        mean_damp = np.mean(damp)
+                        error_damp = np.std(damp)/np.sqrt(len(damp))
+                        print "gauss_fit_damp_failed", pathlist[i]
         else:
                 mean_damp = np.mean(damp)
                 error_damp = np.std(damp)/np.sqrt(len(damp))
                         
-        if gaussfit:
-                #hist for heating
-                h,b = np.histogram(heat, bins = bins)
-                bc = np.diff(b)/2 + b[:-1]
-                p0 = np.array([np.mean(heat), np.std(heat)/np.sqrt(len(heat)), 10])
+        if gaussfit_heat:
+                try:
+                        #hist for heating
+                        h,b = np.histogram(heat, bins = bins)
+                        bc = np.diff(b)/2 + b[:-1]
+                        p0 = np.array([np.mean(heat), np.std(heat)/np.sqrt(len(heat)), 10])
                 
-                popth, pcovh = opt.curve_fit(gauss, bc, h, p0 = p0)
-                mean_heat = popth[0]
-                error_heat = np.sqrt(pcovh[0][0])
-                
-                label1 = "dgx = " + str("%0.2f" % dgx) + " heating = " + str( "%0.1f" % popth[0] ) + "$\pm$" + str( "%0.1f" % np.sqrt(pcovh[0][0]) ) + " [Hz]"
-                space = np.arange(np.mean(heat) - 1000, np.mean(heat) + 1000, 0.1)
-                if plot:
-                        plt.figure()
-                        plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = 'ko')
-                        plt.plot(space, gauss(space,*popth))
-                        plt.xlabel("Histogram Heating [Hz]")
-                        plt.ylabel("Measurements")
-                        plt.legend(loc=3)
-                        plt.grid()
-                        plt.tight_layout(pad = 0)
+                        popth, pcovh = opt.curve_fit(gauss, bc, h, p0 = p0)
 
+                        mean_heat = np.mean(heat)
+                        error_heat = np.std(heat)/np.sqrt(len(heat))
+                        print "gauss_fit_heat_failed"
+
+                        if np.abs((popth[0] - np.mean(heat))) < 3.*popth[1]:
+                                mean_heat = popth[0]
+                                error_heat = np.sqrt(pcovh[0][0])
+                                
+                
+                                label1 = "dgx = " + str("%0.2f" % dgx) + " heating = " + str( "%0.1f" % popth[0] ) + "$\pm$" + str( "%0.1f" % np.sqrt(pcovh[0][0]) ) + " [Hz]"
+                                space = np.arange(np.mean(heat) - 1000, np.mean(heat) + 1000, 0.1)
+                                if plot:
+                                        plt.figure()
+                                        plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = 'ko')
+                                        plt.plot(space, gauss(space,*popth))
+                                        plt.xlabel("Histogram Heating [Hz]")
+                                        plt.ylabel("Measurements")
+                                        plt.legend(loc=3)
+                                        plt.grid()
+                                        plt.tight_layout(pad = 0)
+                except:
+                        mean_heat = np.mean(heat)
+                        error_heat = np.std(heat)/np.sqrt(len(heat))
+                        print "gauss_fit_heat_failed"
         else:
                 mean_heat = np.mean(heat)
                 error_heat = np.std(heat)/np.sqrt(len(heat))
@@ -406,7 +460,7 @@ def plot_all_histogram(pathlist, plot):
     return [Dx, dmean, hmean, derror, herror]
 
 
-def final_plot(pathlist):
+def final_plot(pathlist, plot):
     para = plot_all_histogram(pathlist, plot)
     plt.figure()
 
@@ -433,34 +487,56 @@ def final_plot(pathlist):
     np.save(name , a)
     
     return a
+
+# def final_plot_multiprocessing(pathlist):
+
+#     para = plot_all_histogram(pathlist, plot)
+
+
+#     hm =  np.array(para[2])/(2.*np.pi)
+#     her = np.array(para[4])/(2.*np.pi)
+
+#     # careful for the damping: the measurement gives an effective damping. The real one has to consider the heating.
+
+#     dm = np.array(para[2])/(2.*np.pi) + np.array(para[1])/(2.*np.pi)
+#     der =  np.sqrt((np.array(para[3])/(2.*np.pi))**2 + (np.array(para[4])/(2.*np.pi))**2)
+
+#     a = np.array([para[0], hm, her, dm, der])
+#     name = str(path_save) + "\output_from_feed_backonoff.npy"
+#     np.save(name , a)
+    
+#     return a
     
 
-final_plot(path_list)
+# def creat_list_multiprocessing(pathlist, plot):
+#         A = []
+#         for i in pathlist:
+#                 a = [i, plot]
+#                 A.append(a)
+#         return A
+
+
+
+# def main():
+#         # AA = creat_list_multiprocessing(path_list, plot)
+#         # print AA
+#         pool = mp.Pool(processes = 1)
+#         # print path_list
+#         pool.map(final_plot_multiprocessing, path_list)
+
+
+# if __name__ == "__main__":
+#         mp.freeze_support()
+#         main()
+        
+# if True:
+#         plt.legend(loc=3)
+# plt.show()
 
 
 
 
-
-# A = get_from_pathlist(path_list)
-# plt.figure()
-# plt.plot(A[0][0][0])
-# plt.figure()
-# plt.plot(A[0][1][0])
-# print A[0][2]
-    
-# damp = plot_and_fit_cool(path_list[0], True)[2]
-# plt.figure()
-# plt.plot(damp)
-# print "damp =", damp
-
-
-
-# antidamp = plot_and_fit_heat(path_list[0], plot)[2][0]
-# plt.figure()
-# plt.plot(antidamp)
-# print "antidamp =", np.mean(antidamp)
-
-
+final_plot(path_list, plot)
 if plot:
-    plt.legend(loc=3)
+        plt.legend(loc=3)
 plt.show()
