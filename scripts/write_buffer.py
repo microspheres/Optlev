@@ -3,7 +3,7 @@ import scipy.stats as sp
 import scipy.signal as ss
 import matplotlib.pyplot as plt
 
-out_path = r"C:\Users\yalem\GitHub\Documents\Optlev"
+out_path = r"C:\Users\yalem\GitHub\Documents\Optlev\scripts"
 frequency = 500.
 
 half_length = 8192
@@ -19,18 +19,34 @@ dtot = np.transpose( np.vstack( (xtot, ytot) ) )
 
 np.savetxt(out_path + "triangle_buffer.txt", dtot, delimiter=",",fmt="%d")
 
-## square
-xvals = np.arange(-half_length/4,half_length/4)
-yvals = np.arange(-half_length/4,half_length/4)
+## square wave
+#xvals = np.hstack( (-1*np.ones(half_length), np.ones(half_length)) )
+xvals = np.array([])
+step = 100
+for i in range(1,(2*half_length)/step):
+    if (i%4==0):
+        xx = np.linspace(-1,1,step)
+    elif (i%4==1):
+        xx = np.ones(step)
+    elif( i%4 == 2):
+        xx = np.linspace(1,-1,step)
+    else:
+        xx = -1*np.ones(step)
+    xvals = np.hstack( (xvals, xx) )
+yvals = 1.0*xvals #np.zeros(len(xvals)) #np.arange(-half_length/4,half_length/4)
 
-xtot = np.hstack( (xvals, xvals[-1]*np.ones(half_length/2),
-                   xvals[::-1], xvals[0]*np.ones(half_length/2)) )
-ytot = np.hstack( (yvals[0]*np.ones(half_length/2),yvals,
-                   yvals[-1]*np.ones(half_length/2),yvals[::-1]) )
+plt.figure()
+plt.plot(xvals)
+plt.show()
 
-dtot = np.transpose( np.vstack( (xtot*0.2, ytot) ) )
+#xtot = np.hstack( (xvals, xvals[-1]*np.ones(half_length/2),
+#                   xvals[::-1], xvals[0]*np.ones(half_length/2)) )
+#ytot = np.hstack( (yvals[0]*np.ones(half_length/2),yvals,
+#                   yvals[-1]*np.ones(half_length/2),yvals[::-1]) )
+
+dtot = np.transpose( np.vstack( (xvals, yvals) ) )
 dtot = 1.0*max_val*dtot/np.max(dtot)
-np.savetxt(out_path + "square_buffer.txt", dtot, delimiter=",",fmt="%d")
+np.savetxt(out_path + "square_wave_buffer.txt", dtot, delimiter=",",fmt="%d")
 
 ## circle
 t = np.linspace(0,2*np.pi,half_length*2)

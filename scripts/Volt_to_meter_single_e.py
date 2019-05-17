@@ -6,6 +6,20 @@ import numpy as np
 import bead_util as bu
 import glob
 import scipy.optimize as opt
+from scipy.signal import butter, lfilter, filtfilt
+
+order = 2
+def butter_lowpass(lowcut, fs, order):
+    nyq = 0.5 * fs
+    low = lowcut / nyq
+    b, a = butter(order, low, btype='low')
+    return b, a
+
+
+def butter_lowpass_filter(data, lowcut, fs, order):
+    b, a = butter_lowpass(lowcut, fs, order)
+    y = filtfilt(b, a, data)
+    return y
 
 rho = 1800.0
 
@@ -19,7 +33,7 @@ electron = 1.60218e-19
 
 kb = 1.38e-23
 
-acceleration_plot = True
+acceleration_plot = False
 
 no_sphere = False
 pathno = [r"C:\data\20190408\15um\3\temp\no_sphere",]
@@ -27,9 +41,9 @@ pathno = [r"C:\data\20190408\15um\3\temp\no_sphere",]
 distance = 0.0105
 distance_error = 1e-4
 
-NFFT = 2**16
+NFFT = 2**15
 
-path_calibration = r"C:\data\20190408\15um\5\calibration1e"
+path_calibration = r"C:\data\201904011\15um\beforeFB\6\calibration1e"
 
 # path_list_temp = [r"C:\data\20190326\15um_low532_50x\3\temp\1", r"C:\data\20190326\15um_low532_50x\3\temp\2", r"C:\data\20190326\15um_low532_50x\3\temp\3", r"C:\data\20190326\15um_low532_50x\3\temp\4",r"C:\data\20190326\15um_low532_50x\3\temp\5", r"C:\data\20190326\15um_low532_50x\3\temp\6", r"C:\data\20190326\15um_low532_50x\3\temp\7", r"C:\data\20190326\15um_low532_50x\3\temp\8", r"C:\data\20190326\15um_low532_50x\3\temp\9", r"C:\data\20190326\15um_low532_50x\3\temp\10", r"C:\data\20190326\15um_low532_50x\3\temp\11trekoff", r"C:\data\20190326\15um_low532_50x\3\temp\12", r"C:\data\20190326\15um_low532_50x\3\temp\13", r"C:\data\20190326\15um_low532_50x\3\temp\14", r"C:\data\20190326\15um_low532_50x\3\temp\15", r"C:\data\20190326\15um_low532_50x\3\temp\16", ]
 
@@ -46,25 +60,37 @@ path_list_temp = [r"C:\data\20190408\15um\3\temp\1", r"C:\data\20190408\15um\3\t
 # path_list_temp = [r"C:\data\20190408\15um\3\temp\HP", r"C:\data\20190408\15um\3\temp\12", r"C:\data\20190408\15um\3\temp\13", r"C:\data\20190408\15um\3\temp\6", r"C:\data\20190408\15um\3\temp\3", r"C:\data\20190408\15um\3\temp\1",]
 
 path_list_temp = [r"C:\data\20190408\15um\5\temp\1",r"C:\data\20190408\15um\5\temp\2", r"C:\data\20190408\15um\5\temp\3", r"C:\data\20190408\15um\5\temp\4", r"C:\data\20190408\15um\5\temp\5", r"C:\data\20190408\15um\5\temp\6", r"C:\data\20190408\15um\5\temp\7", r"C:\data\20190408\15um\5\temp\8", r"C:\data\20190408\15um\5\temp\9", r"C:\data\20190408\15um\5\temp\10", r"C:\data\20190408\15um\5\temp\11", r"C:\data\20190408\15um\5\temp\12", r"C:\data\20190408\15um\5\temp\no_sphere"]
- 
-path_high_pressure_nofb= r"C:\data\20190408\15um\5"
+
+path_list_temp = [r"C:\data\201904011\15um\beforeFB\5\temp\HP", r"C:\data\201904011\15um\beforeFB\5\temp\1", r"C:\data\201904011\15um\beforeFB\5\temp\2", r"C:\data\201904011\15um\beforeFB\5\temp\8", r"C:\data\201904011\15um\beforeFB\5\temp\10", r"C:\data\201904011\15um\beforeFB\5\temp\16", r"C:\data\201904011\15um\beforeFB\5\temp\tranfer_BF",]
+
+path_list_temp = [r"C:\data\201904011\15um\beforeFB\5\temp\tranfer_BF", ]
+
+path_list_temp = [r"C:\data\201904011\15um\beforeFB\6\temp\samegain\deflection2"]
+
+path_list_temp = [r"C:\data\20190509_electricbackground"]
+
+path_high_pressure_nofb= r"C:\data\201904011\15um\beforeFB\6"
 file_high_pressure_nofb = "2mbar_yzcool.h5"
 
 f_start = 60. # for the fit
 f_end = 130. # for the fit
 
-f_start = 80. # for the fit
-f_end = 125. # for the fit
-
 f_start = 40. # for the fit
 f_end = 100. # for the fit
+
+f_start = 50. # for the fit
+f_end = 120. # for the fit
 
 delta = 1e-2
 fq = np.arange(f_start, f_end, delta)
 
+csd_boolean = True 
+
 nice_plot = False # plot the HP inside the pathlist and Not the one outside
 plot_fit_HP = False
 plot_fit_LP = True
+
+
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -86,10 +112,27 @@ def getdata(fname):
 	else:
 		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
 
-	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT)
+        # d = butter_lowpass_filter(dat[:,4], 20., Fs, 4)
+	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi] - numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT)
         fieldpsd, freqs = matplotlib.mlab.psd((dat[:, 3]-numpy.mean(dat[:, 3])), Fs = Fs, NFFT = NFFT)
-        
-	return [freqs, xpsd, PID, press[0], fieldpsd]
+        if csd_boolean:
+                x = dat[:, bu.xi]-numpy.mean(dat[:, bu.xi])
+                xb = dat[:, 4]/(dat[:, 6]+1) - numpy.mean(dat[:, 4]/(dat[:, 6]+1))
+                bfpsd, freqs = matplotlib.mlab.psd(xb, Fs = Fs, NFFT = NFFT)
+
+                mean = 0
+                std = 1e-6
+                num_samples = len(dat[:,4])
+                samples = np.array(numpy.random.normal(mean, std, size=num_samples))
+
+                freq, csd = sp.csd(xb, x, fs = Fs, nperseg = NFFT)
+
+
+                # csd, freqs = matplotlib.mlab.cohere(x, xb, Fs = Fs, NFFT = NFFT)
+
+                return [freqs, xpsd, PID, press[0], fieldpsd, csd, bfpsd]
+        else:
+                return [freqs, xpsd, PID, press[0], fieldpsd]
 
 def get_high_pressure_psd(path_hp, file_hp):
         a = getdata(os.path.join(path_hp, file_hp))
@@ -111,14 +154,21 @@ def get_data_path(path): # PSD output is unit square, V**2/Hz : it assumes that 
         Xpsd = np.zeros(len(freq))
         fieldpsd = np.zeros(len(freq))
         aux = get_files_path(path)
+        csd = np.zeros(len(freq), dtype=complex)
+        bfpsd = np.zeros(len(freq))
         for i in aux:
                 a = getdata(i)
                 Xpsd += a[1]
                 fieldpsd += a[4]
                 p = a[3]
+                if csd_boolean:
+                        csd += a[5]
+                        bfpsd += a[6]
         Xpsd = Xpsd/len(aux)
         fieldpsd = fieldpsd/len(aux)
-        return [Xpsd, dgx, p, fieldpsd, freq, dfreq]
+        csd = np.abs(csd)/len(aux)
+        bfpsd = bfpsd/len(aux)
+        return [Xpsd, dgx, p, fieldpsd, freq, dfreq, csd, bfpsd]
 
 
 def plot_psd(path):
@@ -225,7 +275,13 @@ def tempeture_path(path, path_hp, file_hp, pathcharge):
        tempaux = np.sum(aux**2)*delta
        tempaux = 0.5*M*tempaux
        temp = 2.*tempaux/kb # factor 2 is to account the spring energy (equipartition theo)
-       return [temp, dgx, popt, freq, xpsd]
+
+       if csd_boolean:
+               csd = np.sqrt(a[6])
+               bfpsd = np.sqrt(a[7])
+               return [temp, dgx, popt, freq, xpsd, csd, bfpsd]
+       else:
+               return [temp, dgx, popt, freq, xpsd]
 
 
 def temp_path_list(pathlist, path_hp, file_hp, pathcharge, pathno, acc):
@@ -235,20 +291,21 @@ def temp_path_list(pathlist, path_hp, file_hp, pathcharge, pathno, acc):
         f = fq
         hp = fit_high_pressure_no_fb(path_hp, file_hp)
         Conv = convert_sensor_meter(pathcharge, path_hp, file_hp)
+        print Conv
         plt.rcParams['xtick.labelsize'] = 15
         plt.rcParams['ytick.labelsize'] = 15
         plt.figure()
         plt.xlabel("Frequency $[Hz]$", fontsize = 15)
         plt.ylabel(r"$\sqrt{S} \ [ m/\sqrt{Hz}]$", fontsize = 15)
         if not nice_plot:
-                plt.loglog(hp[1], Conv*hp[3])
+                plt.plot(hp[1], Conv*hp[3])
                 labelhp = " $\Gamma/2\Pi$ = " + str("%.1E" % hp[0][2]) + " Hz"
                 if plot_fit_HP:
-                        plt.loglog(hp[2], Conv*psd(hp[2], *hp[0]), "--k")
+                        plt.plot(hp[2], Conv*psd(hp[2], *hp[0]), "--k")
 
         if no_sphere:
                 ns = tempeture_path(pathno[0], path_hp, file_hp, pathcharge)
-                plt.loglog(ns[3], Conv*ns[4], "-r",label = "No Sphere")
+                plt.plot(ns[3], Conv*ns[4], "-r",label = "No Sphere")
                 
         for i in pathlist:
                 a = tempeture_path(i, path_hp, file_hp, pathcharge)
@@ -260,10 +317,10 @@ def temp_path_list(pathlist, path_hp, file_hp, pathcharge, pathno, acc):
                 Dgx.append(dgx)
                 print "resonace freq =", a[2][1]
                 label = " $\Gamma/2\Pi$ = " + str("%.1E" % a[2][2]) + " Hz"
-                plt.loglog(a[3], Conv*a[4])
+                plt.plot(a[3], Conv*a[4])
                 if plot_fit_LP:
                         plt.loglog(f, Conv*psd(f, *a[2]), "--k")
-                plt.xlim(10, 2000)
+                plt.xlim(1, 2000)
                 plt.ylim(1e-12, 3e-8)
 
         plt.legend(loc=3)
@@ -311,9 +368,30 @@ def temp_path_list(pathlist, path_hp, file_hp, pathcharge, pathno, acc):
         
         return [T, dT, Dgx]
 
+def plot_csd(pathlist, path_hp, file_hp, pathcharge):
+        plt.figure()
+        for i in pathlist:
+                a = tempeture_path(i, path_hp, file_hp, pathcharge)
+                xpsd = a[4]
+                freqs = a[3]
+                csd = a[5]
+                bfpsd = a[6]
+                plt.loglog(freqs, xpsd, label = "Xpsd")
+                plt.loglog(freqs, csd, "--", label = "CSD")
+                plt.loglog(freqs, bfpsd, label = "BF_psd")
+                norm = (csd**2)/(xpsd*bfpsd)
+                plt.loglog(freqs, np.sqrt(norm), label = "Norm CSD")
+                plt.xlim(1, 200)
+                plt.legend(loc=3)
+                plt.grid()
+                plt.tight_layout(pad = 0)
+        return [freqs, xpsd, csd]
+
 
 
 t2 = temp_path_list(path_list_temp, path_high_pressure_nofb, file_high_pressure_nofb, path_calibration, pathno, acceleration_plot)
 
+if csd_boolean:
+        plot_csd(path_list_temp, path_high_pressure_nofb, file_high_pressure_nofb, path_calibration)
     
 plt.show()

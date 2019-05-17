@@ -14,7 +14,7 @@ save_figure = True
 path_charge = r"C:\data\20190326\15um_low532_50x\3\calibration_1p"
 file_list_charge = glob.glob(path_charge+"\*.h5")
 
-path_psd = r"C:\data\20190326\15um_low532_50x\3\temp\12"
+path_psd = r"C:\data\20190509_electricbackground"
 file_list_psd = glob.glob(path_psd+"\*.h5")
 
 path_save = path_psd
