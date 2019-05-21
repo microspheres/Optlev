@@ -7,11 +7,11 @@ import numpy as np
 import numpy
 
 
-path = r"C:\data\20190517\dropplets\3"
+path = r"C:\data\20190517\dropplets\11"
 
-pathframe = r"C:\data\20190517\dropplets\3\frames"
+pathframe = r"C:\data\20190517\dropplets\11\frames_120Hz"
 
-fname = "data1.avi"
+fname = "data.avi"
 
 
 
@@ -22,17 +22,20 @@ def from_video_to_image(name): # fix the path in which is saved, name is the pat
     count = 0
     success = True
     while success:
-        cv2.imwrite("frame%d.jpg" % count, image)   # save frame as JPEG file
+
+        cv2.imwrite(r'C:\data\20190517\dropplets\11\frames_120Hz\\' + "frame%d.jpg" % count, image)   # save frame as JPEG file
         success,image = cap.read()
         print 'Read a new frame: ', success
         count += 1
 
+# from_video_to_image(r"C:\data\20190517\dropplets\11\flow_120Hz_(300_-900)mbar.avi")
+
 def get_image_file(name):
     im = Image.open(name)
-    # plt.imshow(im)
+    plt.imshow(im)
     return im
 
-# get_image_file(r"C:\data\20190517\dropplets\3\frames\frame63.jpg")
+# get_image_file(r"C:\data\20190517\dropplets\11\frames_120Hz\frame927.jpg")
 
 def get_pixel_file(name):
     image = get_image_file(name)
@@ -44,7 +47,9 @@ def get_pixel_file(name):
         for j in range(height):
             pixel[i,j] = px[i,j][0]
 
-    pixel = np.sum(pixel[30:37,56:61])
+    pixel_signal = np.sum(pixel[384,14:24])
+    pixel_noise = np.sum(pixel[384,0:10])
+    pixel = pixel_signal - pixel_noise
     return pixel
 
 def get_files_path(path):
@@ -81,21 +86,21 @@ def getdata(fname):
 	x = dat[:, 0]
 	return x
 
-name = os.path.join(path, r"data1.h5")
+# name = os.path.join(path, r"data1.h5")
 
-daq = getdata(name)
+# daq = getdata(name)
+
+# x = np.array(range(len(daq)))*0.001
 
 file_list = get_files_path(pathframe)
 
 a = get_all(file_list)
 
-x = np.array(range(len(daq)))*0.001
-
 xframe = np.array(range(len(a)))*(1/120.)
 
 plt.figure()
 plt.plot(xframe,a-np.mean(a))
-plt.plot(x,100*daq-np.mean(100*daq))
+# plt.plot(x,500*daq-np.mean(500*daq))
 
 
 plt.show()
