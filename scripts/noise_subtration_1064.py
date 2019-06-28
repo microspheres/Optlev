@@ -45,20 +45,22 @@ def getdata(fname):
 
         freq, csd = sp.csd(xb, x, fs = Fs, nperseg = NFFT)
         freq, xbpsd = sp.csd(xb, xb, fs = Fs, nperseg = NFFT)
+        
+        freq, coherence = sp.coherence(x, xb, fs = Fs, nperseg = NFFT)
 
         proj = (xbfft/xbpsd)*csd
 
         x_subfft = xfft - proj
         
-        # plt.figure()
+        #plt.figure()
         # plt.loglog(freqs, np.abs(xfft), label = "x")
         # plt.loglog(freqs, np.abs(xbfft), label = "xb")
         # plt.loglog(freqs, np.abs(x_subfft), label = "x_sub")
         # plt.xlim(1, 2000)
         # plt.legend()
-        # plt.show()
+        #plt.show()
 
-        return [freq, xfft, xbfft, x_subfft]
+        return [freq, xfft, xbfft, x_subfft, coherence]
 
 
     
@@ -73,6 +75,7 @@ def get_data_path(path): # PSD output is unit square, V**2/Hz : it assumes that 
     Xfft = np.zeros(len(freq), dtype=complex)
     Xbfft = np.zeros(len(freq), dtype=complex)
     X_subfft = np.zeros(len(freq), dtype=complex)
+    Coh = np.zeros(len(freq))
     aux = get_files_path(path)
     for i in aux:
         print i
@@ -80,11 +83,13 @@ def get_data_path(path): # PSD output is unit square, V**2/Hz : it assumes that 
         Xfft += a[1]
         Xbfft += a[2]
         X_subfft += a[3]
+        Coh += a[4]
         
     Xfft = Xfft/len(aux)
     Xbfft = Xbfft/len(aux)
     X_subfft = X_subfft/len(aux)
-    return [freq, Xfft, Xbfft, X_subfft]
+    Coh = Coh/len(aux)
+    return [freq, Xfft, Xbfft, X_subfft, Coh]
 
 
 
@@ -94,5 +99,8 @@ plt.figure()
 plt.loglog(a[0], np.sqrt(np.abs(a[1])), label = "X")
 plt.loglog(a[0], np.sqrt(np.abs(a[2])), label = "Xb")
 plt.loglog(a[0], np.sqrt(np.abs(a[3])), label = "Xsub")
+
+plt.loglog(a[0], np.sqrt(np.abs(a[4])), label = "Coherence")
+
 plt.legend()    
 plt.show()

@@ -17,30 +17,33 @@ from scipy.signal import butter, lfilter, filtfilt
 
 ############ input the corrent resonance freq limits at damping fit!!!
 
+#path_list = [r"C:\data\20190202\15um\4\PID\COMx1"]
+
 # path_list = [r"C:\data\20190202\15um\4\PID\COMx1", r"C:\data\20190202\15um\4\PID\COMx2", r"C:\data\20190202\15um\4\PID\COMx3", r"C:\data\20190202\15um\4\PID\COMx4", r"C:\data\20190202\15um\4\PID\COMx5", r"C:\data\20190202\15um\4\PID\COMx6", r"C:\data\20190202\15um\4\PID\COMx7", r"C:\data\20190202\15um\4\PID\COMx8", r"C:\data\20190202\15um\4\PID\COMx9", r"C:\data\20190202\15um\4\PID\COMx10", r"C:\data\20190202\15um\4\PID\COMx11"]
 
 # path_list = [r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\1", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\2", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\X\3", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\1", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\2", r"C:\data\20190326\15um_low532_50x\8\pid_onoff\XY\3"]
 
-path_list = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\1",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\2",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\3",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\4",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\5",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\6",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\7",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\8", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\9",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\10",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\11",]
+#path_list = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\1",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\2",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\3",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\4",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\5",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\6",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\7",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\8", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\9",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\10",r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\11",]
 
 # path_list = [r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\1", r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X\2",]
 
+path_list = [r"C:\data\20190619\15um\3\feedback_onoff\1xy", ]
 
-path_save = r"C:\data\20190326\15um_low532_50x\10_2th_orderLPFF\PID_ONOFF\2\X"
+path_save = r"C:\data\20190619\15um\3\feedback_onoff\1xy"
 
 # path_list = [r"C:\data\20190202\15um\4\PID\COMx10"]
 
-plot = True
+plot = False
 plot_heat = False
 plot_cool = False
-bins = 30
+bins = 15
 initial_threshould = 0.08 # helps the fit of the damping
 
-f0 = 79. # for the fit, use the fit from the psd with low feedback
+f0 = 85. # for the fit, use the fit from the psd with low feedback
 df0 = 3.0 # for the fit
 
 gaussfit_heat = False # use a gaussian to fit the results of each folder (not always work because the shape is far from gaussian)
-gaussfit_damp = True
+gaussfit_damp = False
 
 LPfilter = False
 order = 2
@@ -68,7 +71,8 @@ def getdata(fname):
 		#max_volt = dset.attrs['max_volt']
 		#nbit = dset.attrs['nbit']
 		Fs = dset.attrs['Fsamp']
-		
+		# Press = dset.attrs['pressures'][0]
+                # print Press
 		#dat = 1.0*dat*max_volt/nbit
                 dat = dat * 10./(2**15 - 1)
                 PID = dset.attrs['PID']
@@ -81,13 +85,19 @@ def getdata(fname):
                 x = butter_lowpass_filter(x, 10.*f0, Fs, order)
         trigger = dat[:, 4]
 
+
 	return [x, trigger, PID, Fs]
 
 Q = getdata(glob.glob((path_list[0]+"\*.h5"))[0])
 fs = Q[3]
 # plt.figure()
-# plt.plot(Q[1])
-# plt.plot(Q[0])
+# t = np.array(range(len(Q[0])))/fs
+# plt.plot(t,0.1*Q[1], label = "Trigger")
+# plt.plot(t,Q[0], label = "Signal X direction")
+# plt.xlabel("Time [s]")
+# plt.ylabel("Signal [V]")
+# plt.legend(loc=3)
+# plt.tight_layout(pad = 0)
 # plt.show()
 
 def get_files_path(path):
@@ -177,6 +187,7 @@ def plot_PID_off(path): # return xxx[a][b][c] a is the X or Y axis, b is the fil
         x = get_data_path(path)[j]
         for i in range(len(ff)): # a plot for every trigger off
             y = D[j][0][int(ff[i]):int(oo[i])]
+            y = y -np.mean(y)
             t = range(len(y))
             Y.append(y)
             X.append(t)
@@ -196,6 +207,7 @@ def plot_PID_on(path): # return xxx[a][b][c] a is the X or Y axis, b is the file
         x = get_data_path(path)[j]
         for i in range(len(oo)-1): # a plot for every trigger on
             y = D[j][0][int(oo[i]):int(ff[i+1])]
+            y = y - np.mean(y)
             t = range(len(y))
             Y.append(y)
             X.append(t)
@@ -295,10 +307,10 @@ def plot_and_fit_heat(path, plot):
         D = []
         for i in range(len(a[0][j])):
             c1 = 0
-            p1 = np.array([0.01, 0.03, 2*np.pi*f0, 0.1, 0])
+            p1 = np.array([0.03, 0.02, 2*np.pi*f0, 0.01, 0.])
             notfail = True
             try:
-                p, c = opt.curve_fit(fit_heat, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1, bounds = ((-1,0.00002,2*np.pi*(f0 - 5.*df0), 0, -0.5),(1, 0.99, 2*np.pi*(f0+5.*df0), np.pi, 0.5)))
+                p, c = opt.curve_fit(fit_heat, np.array(a[0][j][i])/fs, a[1][j][i], p0 = p1)
             except RuntimeError:
                 c = 0
                 p = p1
@@ -466,6 +478,7 @@ def final_plot(pathlist, plot):
 
     hm =  np.array(para[2])/(2.*np.pi)
     her = np.array(para[4])/(2.*np.pi)
+
     plt.errorbar(para[0], hm, yerr = her, fmt = "bo", label = "Heating")
 
     # careful for the damping: the measurement gives an effective damping. The real one has to consider the heating.
