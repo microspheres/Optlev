@@ -5,7 +5,7 @@ import h5py
 
 """"""""""""""""""""" Inputs """""""""""""""""""""
 use_as_script = False # run this file
-plotting = False # do we want to see plots at all?
+plotting = True # do we want to see plots at all?
 make_calibration_plot = False # do we want to see the step plot?
 plot_fft = False # do we want to see the fft of the correlation plots?
 # in terminal, type 'python -m pdb correlation.py'
@@ -13,6 +13,7 @@ debugging = False # are we in debugging mode?
 
 """"""""""""""""""""" Code """""""""""""""""""""""
 # Calculate # electrons
+<<<<<<< HEAD
 sphere_diameter = 18.2 # micron
 sphere_radius = sphere_diameter/2000000. # meters
 sphere_volume = (4./3.)*np.pi*sphere_radius**3 # m^3
@@ -23,6 +24,25 @@ num_electrons = 30 # electrons/molecule
 num_electrons_in_sphere = num_electrons*sphere_mass/molecular_mass # electrons
 #                       = ~1E-15
 fdrive = 41. # Hz; wavelength = Fs/fdrive because Fs = samples/second
+=======
+def get_sphere_mass(sphere_diameter_in_micron):
+    sphere_radius = sphere_diameter_in_micron/2000000. # meters
+    sphere_volume = (4./3.)*np.pi*sphere_radius**3 # m^3
+    density = 2196. # kg/m^3
+    sphere_mass = sphere_volume*density # kg
+    return sphere_mass
+
+def get_num_electrons(sphere_diameter_in_micron):
+    sphere_mass = get_sphere_mass(sphere_diameter_in_micron)
+    molecular_mass = 9.9772E-26 # kg/molecule
+    num_electrons = 30 # electrons/molecule
+    num_electrons_in_sphere = num_electrons*sphere_mass/molecular_mass # electrons
+    return num_electrons_in_sphere
+
+num_electrons_in_sphere = get_num_electrons(18.2)# = ~1E-15
+charge_of_electron = 1.6021766e-19 # m N/V (meter newtons per volt)
+
+>>>>>>> 792e13b52326be6af9b53d8702278fd9b3ea9b55
 if debugging: print "debugging turned on: prepare for spam \n"
 
 def basic_plot(x, of_corr, tf_tcorr, use_theta = False, modifier = '', last_plot = False):
@@ -83,18 +103,22 @@ def outputThetaPosition(f, y_or_z):
         if debugging: print "           thetaZ = ", z
         return z, "z"
 
-def getGainAndACamp(fname):
+def getGainAndACamp(fname, need_ACamp=True):
     i = fname.rfind('cool_G') + 6
     j = fname.find('_', i)
-    k = fname.rfind('synth') + 5
-    l = fname.find('mV', k)
     gain = float(fname[i:j])
-    ACamp = float(fname[k:l])/1000. # Volts
+    if need_ACamp:
+        k = fname.rfind('synth') + 5
+        l = fname.find('mV', k)
+        ACamp = float(fname[k:l])/1000. # Volts
+    else: ACamp = 0.
     return gain, ACamp
 
 def getFDrive(fname):
+    fname = fname[fname.rfind('/'):]
     i = fname.find('mV')+2
-    j = fname.find('Hz')
+    j = fname.rfind('Hz')
+    #print fname[i:j]
     return float(fname[i:j])
 
 def getData(fname, get_drive = False, need_time = False, truncate_x = True, just_x = False, use_theta = False, y_or_z = ""):
@@ -110,9 +134,11 @@ def getData(fname, get_drive = False, need_time = False, truncate_x = True, just
     f = h5py.File(fname, 'r')
     dset = f['beads/data/pos_data']
     dat = np.transpose(dset) # all this data is in volts
+    dat = dat * 10./(2**15 - 1)
     x = dat[:,bu.xi]
     if (truncate_x and (not use_theta)):
         Fs = dset.attrs['Fsamp']
+        fdrive = getFDrive(fname)
         half_wavelength = int((Fs/fdrive)/2.)
         if debugging: print '           half_wavelength of ', debug_file, ' is ', half_wavelength
         x = x[:-half_wavelength]
@@ -216,7 +242,7 @@ def getResponseArray(file_list):
         print "           getResponseArray() worked!\n"
     return x_arr, t_arr
 
-def corrWithDrive(data_path, calib_path, use_theta = False, last_plot = False, fft = plot_fft):
+def corrWithDrive(data_path, calib_path, use_theta = False):
     x, of, tf = ([] for i in range(3))
     i, c = calibrate(calib_path, need_drive=False)
     if use_theta:
@@ -238,12 +264,10 @@ def corrWithDrive(data_path, calib_path, use_theta = False, last_plot = False, f
         tf.append(correlate(x_data, twice_drive_data, i, c))
     print "average correlation at drive frequency: ", np.average(of)
     print "average correlation at twice drive frequency: ", np.average(tf)
-    if plotting:
-        basic_plot(x, of, tf, use_theta=use_theta, last_plot = ((not fft) and last_plot))
-        if fft: fft_plot(x, of, last_plot=last_plot)
     if debugging: print ""
+    return x, of, tf
 
-def corrWithoutDrive(data_path, drive, twice_drive, index = 0, c = 1., last_plot = False, fft = plot_fft):
+def corrWithoutDrive(data_path, drive, twice_drive, index = 0, c = 1.):
     """ takes in a measurement's data array and the phase shift
         returns a plot of the correlation """
     file_list = bu.time_ordered_file_list(data_path)
@@ -260,10 +284,8 @@ def corrWithoutDrive(data_path, drive, twice_drive, index = 0, c = 1., last_plot
         tf.append(correlate(x, twice_drive, index, c))
     print "average correlation at drive frequency: ", np.average(of)
     print "average correlation at twice drive frequency: ", np.average(tf)
-    if plotting:
-        basic_plot(t_arr, of, tf, last_plot = ((not fft) and last_plot))
-        if fft: fft_plot(t_arr, of, last_plot=last_plot)
     if debugging: print ""
+    return t_arr, of, tf
 
 def full_correlation_plots(calib_path, data_path, drive_on = False, use_theta = False, last_plot = False, fft = plot_fft):
     """ does everything: calibrates and makes correlation plots at 
@@ -272,11 +294,13 @@ def full_correlation_plots(calib_path, data_path, drive_on = False, use_theta = 
     print "\ncalibration from ", calib_path
     print "data from ", data_path
     if debugging: print "\nDEBUGGING: full_correlation_plots"
-    if drive_on:
-        corrWithDrive(data_path, calib_path, use_theta=use_theta, last_plot=last_plot, fft=fft)
+    if drive_on or use_theta:
+        x, of, tf = corrWithDrive(data_path, calib_path, use_theta=use_theta)
     else:
         i, c, drive, twice_drive = calibrate(calib_path)
-        corrWithoutDrive(data_path, drive, twice_drive, i, c, last_plot=last_plot, fft=fft)
+        x, of, tf = corrWithoutDrive(data_path, drive, twice_drive, i, c)
+    basic_plot(x, of, tf, use_theta=use_theta, last_plot = ((not fft) and last_plot))
+    if fft: fft_plot(x, of, last_plot=last_plot)
     if debugging: print "           plotted f and 2f in full_correlation_plots\n"
 
 """ Now we plot """
@@ -290,7 +314,7 @@ if use_as_script:
     path2 = "/data/20170622/bead4_15um_QWP/reality_test3"
     w_path = "/data/20170622/bead4_15um_QWP/dipole27_Y" # this has the W
 
-    full_correlation_plots(calib1, path1, drive_on=True, last_plot=True)
+    full_correlation_plots(calib1, w_path, use_theta=True, last_plot=True)
 
 """
 FIRST
