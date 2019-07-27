@@ -6,7 +6,7 @@ import matplotlib.cm as cmx
 import matplotlib.colors as colors
 
 """Files"""
-path = r'C:\data\20170511\bead2_15um_QWP\new_sensor_feedback\charge43_whole_points'
+path = r'/data/20170511/bead2_15um_QWP/new_sensor_feedback/charge43_whole_points'
 file_name = 'ACamplitudes.txt'
 
 """Constants"""
@@ -114,8 +114,8 @@ def loglog_force_W_2W(path, file_name):
     plt.title(path[path.rfind('\\'):])
     plt.show()
 
-def get_stuff_for_2W(path, file_name):
-    F = np.loadtxt(os.path.join(path, file_name))
+def get_stuff_for_2W(file_name):
+    F = np.loadtxt(file_name)
     Ea = trek * Vpp_to_Vamp * F[0] / distance
     Ea_order, force_W_order, force_2W_order = order(Ea, F[1], F[2])
     alpha0 = np.ones(len(Ea)) * alpha_0(7.5)
@@ -131,12 +131,14 @@ def plot_2W_curves(path, file_name):
     plt.figure()
     for name, color in zip(file_list, colormap):
         file_label = name[len(path):name.rfind(file_name)]
+        print file_label
         Ea_order, force_2W_order, popt_2W, alpha0 = get_stuff_for_2W(name)
         plt.plot(Ea_order, force_2W_order, ".", color = color, label = file_label)
         plt.plot(Ea_order, F2w((np.array(Ea_order), np.array(alpha0)), *popt_2W), color = color)
     plt.ylabel("Force (N)")
     plt.xlabel("AC field amplitude (N/e)")
     plt.title(path[path.rfind('\\'):])
+    plt.legend()
     plt.show()
 
 plot_2W_curves(path, file_name)

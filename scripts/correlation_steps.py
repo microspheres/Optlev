@@ -9,8 +9,8 @@ use_as_script = False
 
 
 def getBackgroundDC(fname):
-    i = fname.rfind('mVdc_') + 5
     j = fname.rfind('VDCbg')
+    i = fname.rfind('_',j) + 1
     if 'mVDCbg' in fname:
         j = fname.rfind('mVDCbg')
         return float(fname[i:j]) / 1000.
@@ -19,15 +19,17 @@ def getBackgroundDC(fname):
 
 def getData(fname, calib=False):
     """ assumes fname ends with a '.h5' """
-    gain, ACamp = correlation.getGainAndACamp(fname)  # unitless, V
+    #print 'getting data from ', fname
     fdrive = correlation.getFDrive(fname)  # Hz
     f = h5py.File(fname, 'r')
     dset = f['beads/data/pos_data']
     dat = np.transpose(dset)  # all this data is in volts
+    dat = dat * 10./(2**15 - 1)
     x = dat[:, bu.xi]  # V
     Fs = dset.attrs['Fsamp']
     half_wavelength = int((Fs / fdrive) / 2.)  # bins
     x = x[:-half_wavelength]  # V
+    gain, ACamp = correlation.getGainAndACamp(fname)  # unitless, V
     x_data = ((x - np.average(x)) / float(len(x))) / (gain * ACamp)  # unitless
     if calib:
         drive0 = dat[:, bu.drive]  # V
@@ -40,15 +42,16 @@ def getData(fname, calib=False):
         return x_data, bgDC, time
 
 
-def calibrate(calibration_path, need_drive=True):
+def calibrate(calibration_path):
     """ goes through the x and drive data of each file (inputs)
         returns the index of the phase shift, the drive vector,
                 and the normalization value of one electron """
     calibration_list = glob.glob(os.path.join(calibration_path + "*.h5"))
     N = float(len(calibration_list))
     phase_array, corr, drive = ([] for i in range(3))
-    print "finding phase shift"
+    #print "finding phase shift"
     for f in calibration_list:
+        #print f
         x_data, drive_data = getData(f, calib=True)
         # measure the correlation for normalization purposes
         corr_array = correlation.getCorrArray(x_data, drive_data)
@@ -64,15 +67,17 @@ def calibrate(calibration_path, need_drive=True):
     m, c = mode(phase_array)
     index = int(m[0])
     print "phase shift is ", index
-    c = corr[index] * correlation.num_electrons_in_sphere  # V^2/electron
+    c = corr[index] * 2 * correlation.num_electrons_in_sphere  # V^2/electron
     print "calibrating constant c = ", c
     return index, c, np.array(drive)
 
 
-def formData(mpath, cpath):
-    index, c, drive_data = calibrate(cpath, need_drive=True)
+def formData(mpath, cpath, change_c=0):
+    index, c, drive_data = calibrate(cpath)
+    if change_c != 0:c = change_c
     corr, dc, t = ([] for i in range(3))
     for f in glob.glob(os.path.join(mpath, "*.h5")):
+        #print f
         x_data, bgDC, time = getData(f)
         corr.append(correlation.correlate(x_data, drive_data, index, c))
         dc.append(bgDC)
@@ -91,7 +96,7 @@ def formAveragedData(corr, dc):
         j = max(loc for loc, val in enumerate(dc) if val == dcoff) + 1
         curr_ave_corr = np.average(corr[i:j])
         if dcoff == -1.*curr_dc_offset: dc_corr_dict[abs(dcoff)]+=curr_ave_corr
-        else: dc_corr_dict[dcoff].append(curr_ave_corr)
+        else: dc_corr_dict[abs(dcoff)].append(curr_ave_corr)
         curr_dc_offset = dcoff
         i = j
     return dc_corr_dict
@@ -101,38 +106,41 @@ def gaussian_distribution(x, A, u, sigma):
     return A * np.exp(-(x - u) ** 2 / (2 * sigma ** 2))
 
 
-def plotGaussFit(data, make_plot=False):
+def plotGaussFit(data, make_comparisons=False):
     # get parameters
     n, bins = np.histogram(data, bins='auto')
     cfx = (bins[1:] + bins[:-1]) / 2.
     roughA = float(max(n))  # this is where I hard-code some rough estimates
-    lbound = [roughA - 2., -5.e-18, 0.]
-    ubound = [roughA + 2., 5.e-18, 5.e-18]
+    lbound = [0.8*roughA, -5.e-18, 0.]
+    ubound = [1.2*roughA, 5.e-18, 5.e-16]
     popt, pcov = curve_fit(gaussian_distribution, cfx, n, bounds=(lbound, ubound))
-    if not make_plot: return popt[1]
-    perr = np.sqrt(np.diag(pcov))
-    fitted_data = gaussian_distribution(cfx, *popt)
-    mu, std = norm.fit(data)
-    # print parameters
-    print 'fitting to gaussian gives:'
-    print '    mean = ', popt[1], ' with error ', perr[1]
-    print '    standard deviation = ', popt[2], ' with error ', perr[2]
-    print 'actual mean = ', mu
-    print 'actual standard deviation = ', std
-    # plot the figure
-    plt.figure()
-    plt.plot(cfx, fitted_data)
-    plt.errorbar(cfx, n, yerr=np.sqrt(n), fmt='o')
-    plt.show()
+    if make_comparisons: 
+        perr = np.sqrt(np.diag(pcov))
+        fitted_data = gaussian_distribution(cfx, *popt)
+        mu, std = norm.fit(data)
+        # print parameters
+        print 'fitting to gaussian gives:'
+        print '    mean = ', popt[1], ' with error ', perr[1]
+        print '    standard deviation = ', popt[2], ' with error ', perr[2]
+        print 'actual mean = ', mu
+        print 'actual standard deviation = ', std
+        # plot the figure
+        plt.figure()
+        plt.plot(cfx, fitted_data)
+        plt.errorbar(cfx, n, yerr=np.sqrt(n), fmt='o')
+        plt.show()
+    return popt[1] # returns gaussian fit mean
 
 
 def plotGaussMean(dc_corr_dict):
     x, y = ([] for i in range(2))
     for v in dc_corr_dict.keys():
         x.append(v)
-        y.append(plotGaussFit(dc_corr_dict[v]))
+        corr_ave = plotGaussFit(dc_corr_dict[v])
+        print 'correlation at voltage ', v, ' is ', corr_ave
+        y.append(corr_ave)
     plt.figure()
-    plt.plot(x,y)
+    plt.plot(x, y, 'o')
     plt.xlabel('DC offset voltages [V]')
     plt.ylabel('Mean correlation values [e]')
     plt.title('Mean correlation values vs DC offset')

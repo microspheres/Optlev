@@ -14,9 +14,9 @@ import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.mlab as mlab
 
-path = r''
+path = r'/data/20170530/bead7_15um_QWP/dipole_integralXY/'
 
-file_name = 'amplitudes.txt'
+file_name = 'ACandDCamplitudes.txt'
 
 distance = 0.002 #m
 
