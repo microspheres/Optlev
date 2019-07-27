@@ -13,6 +13,18 @@ debugging = False # are we in debugging mode?
 
 """"""""""""""""""""" Code """""""""""""""""""""""
 # Calculate # electrons
+<<<<<<< HEAD
+sphere_diameter = 18.2 # micron
+sphere_radius = sphere_diameter/2000000. # meters
+sphere_volume = (4./3.)*np.pi*sphere_radius**3 # m^3
+density = 1850. # kg/m^3 for SiO2
+sphere_mass = sphere_volume*density # kg
+molecular_mass = 9.9772E-26 # kg/molecule
+num_electrons = 30 # electrons/molecule
+num_electrons_in_sphere = num_electrons*sphere_mass/molecular_mass # electrons
+#                       = ~1E-15
+fdrive = 41. # Hz; wavelength = Fs/fdrive because Fs = samples/second
+=======
 def get_sphere_mass(sphere_diameter_in_micron):
     sphere_radius = sphere_diameter_in_micron/2000000. # meters
     sphere_volume = (4./3.)*np.pi*sphere_radius**3 # m^3
@@ -30,6 +42,7 @@ def get_num_electrons(sphere_diameter_in_micron):
 num_electrons_in_sphere = get_num_electrons(18.2)# = ~1E-15
 charge_of_electron = 1.6021766e-19 # m N/V (meter newtons per volt)
 
+>>>>>>> 792e13b52326be6af9b53d8702278fd9b3ea9b55
 if debugging: print "debugging turned on: prepare for spam \n"
 
 def basic_plot(x, of_corr, tf_tcorr, use_theta = False, modifier = '', last_plot = False):
