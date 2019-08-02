@@ -96,9 +96,9 @@ def get_data_path(path): # PSD output is unit square, V**2/Hz : it assumes that 
 a = get_data_path(path_list[0])
 
 plt.figure()
-plt.loglog(a[0], np.sqrt(np.abs(a[1])), label = "X")
-plt.loglog(a[0], np.sqrt(np.abs(a[2])), label = "Xb")
-plt.loglog(a[0], np.sqrt(np.abs(a[3])), label = "Xsub")
+# plt.loglog(a[0], np.sqrt(np.abs(a[1])), label = "X")
+# plt.loglog(a[0], np.sqrt(np.abs(a[2])), label = "Xb")
+# plt.loglog(a[0], np.sqrt(np.abs(a[3])), label = "Xsub")
 
 plt.loglog(a[0], np.sqrt(np.abs(a[4])), label = "Coherence")
 
