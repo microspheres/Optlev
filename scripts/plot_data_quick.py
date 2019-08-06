@@ -6,9 +6,9 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"tongue_lowpress_xyzcool_intoff.h5"
+refname = r"1mbar_zcool.h5"
 fname0 = r""
-path = r"C:\data\20190731\15um_SiO2\2\distances\6"
+path = r"C:\data\20190806\15um_SiO2\2"
 # refname = r"C:\data\20170403\bead6_15um"
 # fname0 = r"xout_100Hz_1.h5"
 # path = r"C:\Data\20170224\xy_test\feedback_test"
