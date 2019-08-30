@@ -39,8 +39,8 @@ def getdata(fname):
 
         xb = dat[:, 4] - numpy.mean(dat[:, 4])
 
-        xfft = np.fft.rfft(x, n = NFFT)
-        xbfft = np.fft.rfft(xb, n = NFFT)
+        xfft = np.fft.rfft(x, n = NFFT)/np.sqrt(len(x)*Fs)
+        xbfft = np.fft.rfft(xb, n = NFFT)/np.sqrt(len(x)*Fs)
         freqs = Fs*np.fft.rfftfreq(n = NFFT)
 
         freq, csd = sp.csd(xb, x, fs = Fs, nperseg = NFFT)
@@ -52,13 +52,13 @@ def getdata(fname):
 
         x_subfft = xfft - proj
         
-        #plt.figure()
+        # plt.figure()
         # plt.loglog(freqs, np.abs(xfft), label = "x")
         # plt.loglog(freqs, np.abs(xbfft), label = "xb")
         # plt.loglog(freqs, np.abs(x_subfft), label = "x_sub")
         # plt.xlim(1, 2000)
         # plt.legend()
-        #plt.show()
+        # plt.show()
 
         return [freq, xfft, xbfft, x_subfft, coherence]
 
@@ -80,9 +80,9 @@ def get_data_path(path): # PSD output is unit square, V**2/Hz : it assumes that 
     for i in aux:
         print i
         a = getdata(i)
-        Xfft += a[1]
-        Xbfft += a[2]
-        X_subfft += a[3]
+        Xfft += np.abs(a[1])**2
+        Xbfft += np.abs(a[2])**2
+        X_subfft += np.abs(a[3])**2
         Coh += a[4]
         
     Xfft = Xfft/len(aux)
@@ -96,11 +96,17 @@ def get_data_path(path): # PSD output is unit square, V**2/Hz : it assumes that 
 a = get_data_path(path_list[0])
 
 plt.figure()
+axis_font = {'size':'20'}
+plt.rc('xtick', labelsize=13) 
+plt.rc('ytick', labelsize=13) 
 # plt.loglog(a[0], np.sqrt(np.abs(a[1])), label = "X")
 # plt.loglog(a[0], np.sqrt(np.abs(a[2])), label = "Xb")
 # plt.loglog(a[0], np.sqrt(np.abs(a[3])), label = "Xsub")
 
-plt.loglog(a[0], np.sqrt(np.abs(a[4])), label = "Coherence")
-
-plt.legend()    
+plt.loglog(a[0], np.abs(a[4]), label = "Coherence")
+plt.ylabel("Coherence", fontsize = "16")
+plt.xlabel("Frequency [Hz]", fontsize = "16")
+plt.grid()
+plt.legend()
+plt.tight_layout(pad = 0)
 plt.show()

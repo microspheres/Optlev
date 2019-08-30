@@ -33,7 +33,7 @@ path_save = r"C:\data\20190619\15um\3\feedback_onoff\1xy"
 
 # path_list = [r"C:\data\20190202\15um\4\PID\COMx10"]
 
-plot = False
+plot = True
 plot_heat = False
 plot_cool = False
 bins = 15
@@ -88,7 +88,7 @@ def getdata(fname):
 
 	return [x, trigger, PID, Fs]
 
-Q = getdata(glob.glob((path_list[0]+"\*.h5"))[0])
+Q = getdata(glob.glob((path_list[0]+"\*.h5"))[1])
 fs = Q[3]
 # plt.figure()
 # t = np.array(range(len(Q[0])))/fs
@@ -194,6 +194,54 @@ def plot_PID_off(path): # return xxx[a][b][c] a is the X or Y axis, b is the fil
         Xf.append(X)
         Yf.append(Y)
     return [Xf,Yf]
+
+def accumulator_off(path_list): # the 2400 is to ensure that all trigger has the same lenght
+
+    y = np.zeros(2400)
+    y2 = y
+    for i in path_list: # for folder in path list
+        file_list = glob.glob(i+"\*.h5")
+        a = plot_PID_off(i)
+        t = a[0][0][0][0:2400]
+        for j in range(len(file_list)): # for every h5 file inside the folder
+            for k in range(len(a[0][j])): # for every trigger fb off
+                y2 = (a[1][j][k][0:2400]**2  + y2)
+                y = a[1][j][k][0:2400] + y
+
+    def func_exp(t, A, B):
+        return A*np.exp(t*B)
+
+    t = t/fs
+
+    popt, pcov = opt.curve_fit(func_exp, t, y2)
+    print popt
+    
+    plt.figure()
+    plt.semilogy(t, y2)
+    plt.semilogy(t, func_exp(t, *popt))
+
+    print "Gamma_heat[Hz] = ", popt[1]/2.
+
+
+accumulator_off(path_list)
+plt.show()
+
+# a = plot_PID_off(path_list[0])
+# plt.figure()
+# print len(a[0][2])
+# aaa = np.zeros(len(a[0][2][30][0:2400]))
+# aaa2 = aaa
+# for i in range(len(a[0][2])):
+#     aaa2 = (a[1][2][i][0:2400]**2  + aaa2)
+#     aaa = a[1][2][i][0:2400]
+
+
+# aaa = aaa**2
+# aaa = aaa2 - aaa
+    
+# plt.semilogy(a[0][2][30][0:2400], aaa)
+# # plt.plot(a[0][2][30][0:2400], a[1][2][30][0:2400])
+# plt.show()
 
 def plot_PID_on(path): # return xxx[a][b][c] a is the X or Y axis, b is the file inside the folder and c is the next trigger
     X = []

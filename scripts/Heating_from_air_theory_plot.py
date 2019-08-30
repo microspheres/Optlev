@@ -14,7 +14,9 @@ vis_H2 = 1.37e-5 # Pa*s, see https://www.engineeringtoolbox.com/gases-absolute-d
 
 rho = 1800.0 #kg/m^3
 
-R = 7.5e-6 #m
+D = 15.0e-6 #m
+
+R = D/2.
 
 M = (4./3.)*np.pi*(R**3)*rho
 
@@ -47,6 +49,36 @@ Pmbar_N2 = P_N2/100.
 
 Gamma_H2 =  Gamma(vis_H2, P_H2, temp, mass_H2, R, M)
 Gamma_N2 =  Gamma(vis_N2, P_N2, temp, mass_N2, R, M)
+
+
+def find_loose_pressure(vis, press_array, temp, m, diameter_array, Gamma_heat):
+    LPmbar = []
+    for i in diameter_array:
+        M = (4./3.)*np.pi*((i/2.)**3)*rho
+        G = Gamma(vis, press_array, temp, m, i/2., M)
+        Delta = abs(G - 2.*np.pi*Gamma_heat)
+        index = np.argmin(Delta)
+        loose_pressure = press_array[index]
+        lp_mbar = loose_pressure/100.
+        LPmbar.append(lp_mbar)
+    return [1.e6*diameter_array, LPmbar]
+
+LP = find_loose_pressure(vis_N2, P_N2, temp, mass_N2, (1e-6)*np.array([5., 10., 15., 23., 32.]), 2.6)
+
+# dia = (1.e-6)*np.arange(0.005, 500)
+
+# LP = find_loose_pressure(vis_N2, P_N2, temp, mass_N2, dia, 2.6)
+
+plt.figure()
+axis_font = {'size':'16'}
+plt.rc('xtick', labelsize=14) 
+plt.rc('ytick', labelsize=14) 
+plt.plot(LP[1], LP[0], "ro")
+plt.xlabel("Minimal Pressure [mbar]", **axis_font)
+plt.ylabel("Diameter [$\mu$m]", **axis_font)
+plt.legend()
+plt.tight_layout(pad = 0)
+plt.grid()
 
 plt.figure()
 axis_font = {'size':'16'}

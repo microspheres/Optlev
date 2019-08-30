@@ -19,8 +19,9 @@ def list_file_time_order(filelist):
     filelist.sort(key=os.path.getmtime)
     return filelist
 
-#path = r"C:\data\20190211\15um\2\rot4"
-path = r"C:\data\20190725\15um_SiO2\4\pressures\daq"
+
+#path = r"C:\data\20190725\15um_SiO2\4\pressures\daq"
+path = r"C:\data\20190806\15um_SiO2\6\pressures4\daq\sine2"
 
 #path = r"C:\data\20190725\15um_SiO2\4\pressures\daq\KEYSIGHT_362337Hz"
 
@@ -70,7 +71,7 @@ def getdata(fname):
 	return [freqs, 0, 0, 0, rot, xpsd_old, Press, Volt, Time, Fs]
 
 
-order = 2
+order = 3
 def butter_bandpass(lowcut, highcut, fs, order):
     nyq = 0.5 * fs
     low = lowcut / nyq
@@ -92,13 +93,14 @@ def funcfit(t, f0, phase, A):
 
 data = getdata(file_list[0])
 
-# x = butter_bandpass_filter(data[4], 280000., 370000., data[9], order)
-# x = butter_bandpass_filter(data[4], 118500., 120500., data[9], order)
-x = butter_bandpass_filter(data[4], 363000 - 100000., 363000 + 100000., data[9], order)
+
+# x = butter_bandpass_filter(data[4], 363000 - 100000., 363000 + 100000., data[9], order)
+
+x = butter_bandpass_filter(data[4], 880000 - 100000., 880000 + 100000., data[9], order)
 
 
 # xfft, f = matplotlib.mlab.psd(data[4], Fs = data[9], NFFT = NFFT)
-# xfftf, f1 = matplotlib.mlab.psd(x[len(x)/2:len(x)/2 + 1000], Fs = data[9], NFFT = NFFT)
+# xfftf, f1 = matplotlib.mlab.psd(x[0:2**13], Fs = data[9], NFFT = NFFT)
 
 # plt.figure()
 # plt.loglog(f, xfft)
@@ -126,14 +128,15 @@ def freq_fit(x, Fs, time_fit):
     number = 0
     Resi = []
 
-    f0 = 362337.
-    p0 = np.array([f0, 0.04, 0.17])
+    f0 = 362337
+    f0 = 880000
+    p0 = np.array([f0, 0.05, 0.17])
     bounds = ([f0 - 0.5*f0, 0.0, 0.0], [f0 + 0.5*f0, 2.*np.pi, 5.])
     for i in range(int(div)):
 
         try:
             p, c = opt.curve_fit(funcfit, time[0:0+b], x[a:a+b], p0 = p0)
-            # print c
+            print c
             p0 = p
             aaa = True
         except:
@@ -152,7 +155,7 @@ def freq_fit(x, Fs, time_fit):
             dF.append(c[0][0])
             T.append(t)
             Resi.append(resi)
-            if (number % 16409 == 0):
+            if (number % 13409 == 0):
                 plt.figure()
                 plt.plot(time[a:a+b], x[a:a+b])
                 plt.plot(time[a:a+b], funcfit(time[0:0+b], *p))
@@ -161,7 +164,7 @@ def freq_fit(x, Fs, time_fit):
     t2 = len(x)/Fs
     Fs2 = len(F)/t2
     print len(F)
-    psd, freq = matplotlib.mlab.psd(F - np.mean(F), Fs = Fs2, NFFT = 2**13)
+    psd, freq = matplotlib.mlab.psd(F - np.mean(F), Fs = Fs2, NFFT = 2**11)
 
     return [F, dF, T, freq, psd, Resi]
 

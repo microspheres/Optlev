@@ -19,14 +19,14 @@ def list_file_time_order(filelist):
 
 savetxt = True
 
-path = r"C:\data\20190806\15um_SiO2\2\pressures"
+path = r"C:\data\201908020\22um_SiO2_pinhole\4\pressures"
 
 file_list = glob.glob(path+"\*.h5")
 
 file_list = list_file_time_order(file_list)
 
 # file_list = file_list[0:30:4]
-file_list = file_list[-5:]
+file_list = file_list[-3:]
 # file_list = file_list[0:30:3]
 
 Fs = 10e3  ## this is ignored with HDF5 files
