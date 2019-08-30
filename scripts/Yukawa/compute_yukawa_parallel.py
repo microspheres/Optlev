@@ -3,6 +3,10 @@ import force as fo
 import multiprocessing as mp
 import os
 
+# X true calculates in x direction and Y true calculates in y direction. They can NOT be true at the same time.
+X = True
+Y = False
+
 
 path_save = r"C:\Users\yalem\GitHub\Documents\Optlev\scripts\Yukawa\results"
 
@@ -12,7 +16,7 @@ Sph_diam = 22e-6
 
 Drop_rad = 45.0e-6
 
-Drop_len = 200.0e-6
+Drop_len = 50.0e-6
 
 Drop_x0 = -1.0*Drop_len/2.0
 
@@ -34,15 +38,20 @@ alpha = 1.0
 
 print (lam_array)
 
-
-file_name = "sphere_dia_" + str(1.0e6*Sph_diam) + "um_dist_" + str(1.0e6*dist) + "um_drop_rad_" + str(1.0e6*Drop_rad)+ "um_wall_thickness_" + str(1.0e6*wall) + "um_drop_len_" + str(1.0e6*Drop_len) + "um.npy"
+if X:
+    file_name = "sphere_dia_" + str(1.0e6*Sph_diam) + "um_dist_" + str(1.0e6*dist) + "um_drop_rad_" + str(1.0e6*Drop_rad)+ "um_wall_thickness_" + str(1.0e6*wall) + "um_drop_len_" + str(1.0e6*Drop_len) + "um_X_direction.npy"
+if Y:
+    file_name = "sphere_dia_" + str(1.0e6*Sph_diam) + "um_dist_" + str(1.0e6*dist) + "um_drop_rad_" + str(1.0e6*Drop_rad)+ "um_wall_thickness_" + str(1.0e6*wall) + "um_drop_len_" + str(1.0e6*Drop_len) + "um_Y_direction.npy"
 
 pathname = os.path.join(path_save, file_name)
 
 
-def calculatex(i):
-    
-    a = fo.Forcex(rho_drop, rho_sphe, alpha, i, Sph_diam, Drop_rad, Drop_len, center_center_distance, Drop_x0)[0]/((9.8e-9)*mass_sph)
+def calculate(i):
+
+    if X:
+        a = fo.Forcex(rho_drop, rho_sphe, alpha, i, Sph_diam, Drop_rad, Drop_len, center_center_distance, Drop_x0)[0]/((9.8e-9)*mass_sph)
+    if Y:
+        a = fo.Forcey(rho_drop, rho_sphe, alpha, i, Sph_diam, Drop_rad, Drop_len, center_center_distance, Drop_x0)[0]/((9.8e-9)*mass_sph)
 
     return a
     
@@ -51,7 +60,7 @@ if __name__ == '__main__':
     mp.freeze_support()
     pool = mp.Pool(processes=8)
     
-    k = pool.map(calculatex, lam_array)
+    k = pool.map(calculate, lam_array)
     
     np.save(pathname, [lam_array, k])
 

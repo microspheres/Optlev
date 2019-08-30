@@ -22,11 +22,9 @@ plot = True
 #             "sphere_dia_22.0um_dist_5.0um_drop_rad_25.0um_drop_len_50.0um.npy",
 #             "sphere_dia_22.0um_dist_5.0um_drop_rad_40.0um_drop_len_50.0um.npy"]
 
-path_load = r"C:\Users\yalem\OneDrive\Desktop\CL_droplets\Yukawa"
+path_load = r"C:\Users\yalem\GitHub\Documents\Optlev\scripts\Yukawa\results_fixed_droplet_position"
 
-file_list = [r"sphere_dia_15.0um_dist_2.0um_drop_rad_45.0um_wall_thickness_5.0um_drop_len_200.0um.npy",
-             r"sphere_dia_22.0um_dist_2.0um_drop_rad_45.0um_wall_thickness_5.0um_drop_len_200.0um.npy"]
-             #r"sphere_dia_15.0um_dist_2.0um_drop_rad_25.0um_wall_thickness_3.0um_drop_len_200.0um.npy"]
+file_list = []
 
 
 FL = []
@@ -104,7 +102,7 @@ if plot:
 
 if plot_current_limit:
 
-    LL = np.genfromtxt(os.path.join(r"C:\Users\yalem\OneDrive\Desktop\CL_droplets\Calculations", "master_new.txt"), delimiter = " ")
+    LL = np.genfromtxt(os.path.join(r"C:\Users\yalem\GitHub\Documents\Optlev\scripts\Yukawa", "master_new.txt"), delimiter = " ")
 
 
     #plt.figure()
