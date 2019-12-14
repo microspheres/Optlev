@@ -6,12 +6,12 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"LPmbar_xyzcool_1.h5"
-fname0 = r""
-path = r"C:\data\201908020\22um_SiO2_pinhole\5\COM_TEMP\10"
-# refname = r"C:\data\20170403\bead6_15um"
-# fname0 = r"xout_100Hz_1.h5"
-# path = r"C:\Data\20170224\xy_test\feedback_test"
+refname = r"LPmbar_xyzcool_843.h5"
+fname0 = r"LPmbar_xyzcool_842.h5"
+path = r"C:\data\20191210\10um\3\newpinhole\acceleration2"
+
+coherence = True
+
 make_plot_vs_time = True
 conv_fac = 4.4e-14
 if fname0 == "":
@@ -48,6 +48,7 @@ def getdata(fname):
 		
 		#dat = 1.0*dat*max_volt/nbit
                 dat = dat * 10./(2**15 - 1)
+                Press = dset.attrs['pressures'][0]
                 
 	else:
 		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )
@@ -55,13 +56,25 @@ def getdata(fname):
 	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT) 
 	ypsd, freqs = matplotlib.mlab.psd(dat[:, bu.yi]-numpy.mean(dat[:, bu.yi]), Fs = Fs, NFFT = NFFT)
         zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
+
+        xpsd_outloop, freqs = matplotlib.mlab.psd(dat[:, 4]-numpy.mean(dat[:, 4]), Fs = Fs, NFFT = NFFT)
         # Ddrive = dat[:, bu.drive]*np.gradient(dat[:,bu.drive])
         # DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT))
         print pid
-	norm = numpy.median(dat[:, bu.zi])
-        #for h in [xpsd, ypsd, zpsd]:
-        #        h /= numpy.median(dat[:,bu.zi])**2
-	return [freqs, xpsd, ypsd, dat, zpsd]
+
+
+        # f, Pxy = sp.csd(dat[:, 0]-numpy.mean(dat[:, 0]), dat[:, 4] - numpy.mean(dat[:, 4]), Fs, nperseg=NFFT)
+        # plt.figure()
+        # plt.loglog(f, np.sqrt(np.abs(np.real(Pxy))))
+	# norm = numpy.median(dat[:, bu.zi])
+        if coherence:
+                f, Pxy = np.abs(np.real(sp.csd(dat[:, 0]-numpy.mean(dat[:, 0]), dat[:, 4] - numpy.mean(dat[:, 4]), Fs, nperseg=NFFT)))
+                f, Pxx = sp.csd(dat[:, 0]-numpy.mean(dat[:, 0]), dat[:, 0]-numpy.mean(dat[:, 0]), Fs, nperseg=NFFT)
+                f, Pyy = sp.csd(dat[:, 4]-numpy.mean(dat[:, 4]), dat[:, 4]-numpy.mean(dat[:, 4]), Fs, nperseg=NFFT)
+                Cxy = (Pxy**2)/(Pxx*Pyy)
+        
+	        return [freqs, xpsd, ypsd, dat, zpsd, xpsd_outloop, f, Cxy]
+        return [freqs, xpsd, ypsd, dat, zpsd, xpsd_outloop]
 
 data0 = getdata(os.path.join(path, fname0))
 
@@ -79,40 +92,62 @@ b, a = sp.butter(1, [2*5./Fs, 2*10./Fs], btype = 'bandpass')
 if make_plot_vs_time:	
 
         fig = plt.figure()
-        plt.subplot(3, 1, 1)
+        plt.subplot(4, 1, 1)
 
         plt.plot(data0[3][:,bu.xi] - np.mean(data0[3][:, bu.xi]) )
         if(refname):
                 plt.plot(data1[3][:, bu.xi] - np.mean(data1[3][:, bu.xi]) )
 
-        plt.subplot(3, 1, 2)
+        plt.subplot(4, 1, 2)
         plt.plot(data0[3][:, bu.yi] - np.mean(data0[3][:, bu.yi]) )
         if(refname):
                 plt.plot(data1[3][:, bu.yi] - np.mean(data1[3][:, bu.yi]) )
 
-        plt.subplot(3, 1, 3)
+        plt.subplot(4, 1, 3)
         plt.plot(data0[3][:, bu.zi] - np.mean(data0[3][:, bu.zi]) )
         if(refname):
                 plt.plot(data1[3][:, bu.zi] - np.mean(data1[3][:, bu.zi]) )
+
+        plt.subplot(4, 1, 4)
+        plt.plot(data0[3][:, 4] - np.mean(data0[3][:, 4]) )
+        if(refname):
+                plt.plot(data1[3][:, 4] - np.mean(data1[3][:, 4]) )
        
 
 fig = plt.figure()
-plt.subplot(3, 1, 1)
+plt.subplot(4, 1, 1)
 plt.loglog(data0[0], np.sqrt(data0[1]),label="test")
 if refname:
 	plt.loglog(data1[0], np.sqrt(data1[1]),label="ref")
 plt.ylabel("V/rtHz")
 plt.legend(loc=3)
-plt.subplot(3, 1, 2)
+plt.subplot(4, 1, 2)
 plt.loglog(data0[0], np.sqrt(data0[2]))
 if refname:
 	plt.loglog(data1[0], np.sqrt(data1[2]))
-plt.subplot(3, 1, 3)
+plt.subplot(4, 1, 3)
 plt.loglog(data0[0],  np.sqrt(data0[4]))
 if refname:
 	plt.loglog(data1[0], np.sqrt(data1[4]))
 plt.ylabel("V/rtHz")
 plt.xlabel("Frequency[Hz]")
+
+plt.subplot(4, 1, 4)
+plt.loglog(data0[0],  np.sqrt(data0[5]))
+if refname:
+	plt.loglog(data1[0], np.sqrt(data1[5]) )
+plt.ylabel("V/rtHz")
+plt.xlabel("Frequency[Hz]")
+
+
+if refname and coherence:
+        plt.figure()
+        plt.plot(data0[6], np.sqrt(data0[7]))
+        plt.plot(data1[6], np.sqrt(data1[7]))
+        plt.grid()
+        plt.ylim(0., 1.01)
+        plt.xlim(1, 120)
+
 plt.show()
 
 # fig = plt.figure

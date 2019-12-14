@@ -8,11 +8,14 @@ import glob
 import scipy.optimize as opt
 
 folder_calibration = r"C:\data\201908020\22um_SiO2_pinhole\5\calibration1p"
+folder_calibration = r"C:\data\20190912\prechamber\2\new_FB\calibration1e"
 
 folder_meas = folder_calibration
+# folder_meas = r"C:\data\20190912\prechamber\2\new_FB\meas_no_field"
 
 folder_hp = r"C:\data\201908020\22um_SiO2_pinhole\5"
-file_high_pressure = r"5mbar_zcool.h5"
+folder_hp = r"C:\data\20190912\prechamber\2\HP"
+file_high_pressure = r"5mbar_zcool_0.h5"
 
 file_list = glob.glob(folder_calibration+"\*.h5")
 
@@ -20,13 +23,16 @@ NFFT = 2**16
 
 drive_col = 3
 
-Diameter = 23.e-6 # meters
+Diameter = 22.8e-6 # meters
 
 rho = 1800
 
-d = 0.01
+d = 0.0097
+#d = 0.005
 
-elec_charge = 1.60218e-19
+number_of_charge = 1.0
+
+elec_charge = number_of_charge*(1.60218e-19)
 
 def mass(Diameter, rho):
     m = (4/3.)*(np.pi)*((Diameter/2)**3)*rho
@@ -60,6 +66,7 @@ def getdata(fname):
 	xpsd, freqs = matplotlib.mlab.psd(dat[:, bu.xi]-numpy.mean(dat[:, bu.xi]), Fs = Fs, NFFT = NFFT)
         drivepsd, freqs = matplotlib.mlab.psd(dat[:, drive_col]-numpy.mean(dat[:, drive_col]), Fs = Fs, NFFT = NFFT)
 
+
 	return [freqs, xpsd, drivepsd]
 
 def psd(f, A, f0, gamma):
@@ -75,9 +82,9 @@ def find_resonance(folder_hp, file_high_pressure):
     a = getdata(os.path.join(folder_hp, file_high_pressure))
     freq = a[0]
     xpsd = np.sqrt(a[1])
-    popt, pcov = opt.curve_fit(psd, freq, xpsd, p0 = [0.01, 70, 100])
+    popt, pcov = opt.curve_fit(psd, freq[60:1000], xpsd[60:1000], p0 = [0.01, 85, 10])
     # plt.figure()
-    # plt.loglog(freq, xpsd)
+    # plt.loglog(freq[60:1000], xpsd[60:1000])
     # plt.loglog(freq, psd(freq, *popt))
     # plt.show()
     return [popt[1], freq, xpsd]
@@ -109,7 +116,6 @@ def get_drive_and_motion(folder_calibration): # return freq, freq_arg, amplitude
     # plt.loglog(freq, drivepsd2)
     # plt.loglog(freq[f0arg], drivepsd2[f0arg], "ro")
     # plt.show()
-    # print V
     return [f0, f0arg, V, X, np.sqrt(xpsd2), freq]
 
 
@@ -124,7 +130,7 @@ def calibration(folder_calibration, folder_hp, file_high_pressure):# gives conve
     field_amp = 200.*V/d
     force_amp = (elec_charge)*field_amp
     acc_amp = force_amp/mass
-    x_amp = acc_amp/( (2.*np.pi*f_resonance)**2 -  (2.*np.pi*f_field)**2  )
+    x_amp = acc_amp/( (2.*np.pi*f_resonance)**2 - (2.*np.pi*f_field)**2  )
 
     X = a[3]
 
@@ -176,8 +182,8 @@ def plot_psd_acc(folder_meas, folder_hp, file_high_pressure, fmin, fmax):
 
     f0 = find_resonance(folder_hp, file_high_pressure)[0]
     f = calibration(folder_calibration, folder_hp, file_high_pressure)[1]
-    
-    b = (2.*np.pi*f0)**2 - (2.*np.pi*f)**2
+
+    b = (2.*np.pi*f)**2
 
     acc_hp = b*a[2]
     acc_meas = b*a[3]

@@ -11,10 +11,10 @@ several_DC = False
 do_fit = True
 save_figure = True
 
-path_charge = r"C:\data\20190812\22um_SiO2\4\calibration1e"
+path_charge = r"C:\data\20190912\prechamber\2\new_FB\calibration1e"
 file_list_charge = glob.glob(path_charge+"\*.h5")
 
-path_psd = r"C:\data\20190812\22um_SiO2\4\calibration1e"
+path_psd = r"C:\data\20190912\prechamber\2\new_FB\calibration1e"
 file_list_psd = glob.glob(path_psd+"\*.h5")
 
 path_save = path_psd
@@ -27,14 +27,14 @@ mass = (4./3.)*np.pi*(R**3)*rho
 
 Number_of_e = (7.76*10**14)
 
-v_calibration = 0.9 # vpp in the daq
+v_calibration = 0.2 # vpp in the daq
 v_calibration = v_calibration/2.0 # now v is in amplitude
 
 distance = 0.01 #m
 
 VAC = 20. # V. only used for few applications. 
 
-NFFT = 2**17
+NFFT = 2**16
 
 startfile = 0
 endfile = -1

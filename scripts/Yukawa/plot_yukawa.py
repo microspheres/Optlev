@@ -6,7 +6,7 @@ plot_current_limit = True
 
 time_1week = 24.*3600.*7
 
-acc22 = 500./np.sqrt(time_1week) # in nano-g
+acc22 = 100./np.sqrt(time_1week) # in nano-g
 
 acc15 = 1000./np.sqrt(time_1week) # in nano-g
 
@@ -24,7 +24,11 @@ plot = True
 
 path_load = r"C:\Users\yalem\GitHub\Documents\Optlev\scripts\Yukawa\results_fixed_droplet_position"
 
-file_list = []
+path_load = r"C:\Users\yalem\GitHub\Documents\Optlev\scripts\Yukawa\results_20191014"
+
+
+
+file_list = [r"sphere_dia_22.0um_dist_2.0um_drop_rad_70.0um_wall_thickness_10.0um_drop_len_50.0um_X_direction.npy", r"sphere_dia_22.0um_dist_4.0um_drop_rad_70.0um_wall_thickness_10.0um_drop_len_50.0um_X_direction.npy"]
 
 
 FL = []

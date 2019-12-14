@@ -9,6 +9,12 @@ import glob
 
 folder_list = [r"C:\Users\yalem\GitHub\Documents\Optlev\scripts\Yukawa\results_Variable_droplet_position\lambda_100.0um", r"C:\Users\yalem\GitHub\Documents\Optlev\scripts\Yukawa\results_Variable_droplet_position\lambda_10.0um"]
 
+drop_speed = 1. # m/s
+
+Aaccx = []
+Aaccy = []
+Apos = []
+
 plt.figure()
 for i in folder_list:
     
@@ -17,6 +23,7 @@ for i in folder_list:
     accx = []
     accy = []
     pos = []
+    time = []
     # there is only one file per folder
     L = np.load(file[0])
     for j in L:
@@ -29,8 +36,14 @@ for i in folder_list:
         accx.append(ax)
         accy.append(ay)
         pos.append(p)
+        time.append(p/drop_speed)
+        
     plt.plot(np.array(pos)*1e5 + 2.5, -1.*np.array(accx), label = "X direction $\lambda$ = " + str(1e6 * lam) + " $\mu$m")
     plt.plot(np.array(pos)*1e5 + 2.5, -1.*np.array(accy), label = "Y direction $\lambda$ = " + str(1e6 * lam) + " $\mu$m")
+    Aaccx.append(accx)
+    Aaccy.append(accy)
+    Apos.append(pos)
+    
             
 
 plt.xlabel("Position inside capillary ($\mu$m)")

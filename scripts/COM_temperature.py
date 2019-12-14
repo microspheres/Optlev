@@ -13,14 +13,18 @@ import scipy.optimize as opt
 
 # path_save = r"C:\data\20190202\15um\4\PID"
 
-charge = False
+charge = True
 if charge:
         path_1e = r"C:\data\20190304\15um_low532\6\1electron"
+        path_ee = r"C:\data\20191014\22um\prechamber_LP\5\calibration1e"
 
 path300k = r"C:\data\20190408\15um\3"
 name300k = r"2mbar_yzcool.h5"
 
-path_save = r"C:\data\20190408\15um\3\temp"
+path300k = r"C:\data\20191014\22um\prechamber_LP\5"
+name300k = r"2mbar_zcool.h5"
+
+path_save = r"C:\data\20191014\22um\prechamber_LP\5\Temperature_X"
 
 no_sphere = False
 if no_sphere:
@@ -132,6 +136,8 @@ f = np.arange(f_start, f_end, 1e-2)
 # path_list = [r"C:\data\20190326\15um_low532_50x\3\temp\1", r"C:\data\20190326\15um_low532_50x\3\temp\2", r"C:\data\20190326\15um_low532_50x\3\temp\3", r"C:\data\20190326\15um_low532_50x\3\temp\4",r"C:\data\20190326\15um_low532_50x\3\temp\5", r"C:\data\20190326\15um_low532_50x\3\temp\6", r"C:\data\20190326\15um_low532_50x\3\temp\7", r"C:\data\20190326\15um_low532_50x\3\temp\8", r"C:\data\20190326\15um_low532_50x\3\temp\9", r"C:\data\20190326\15um_low532_50x\3\temp\10", r"C:\data\20190326\15um_low532_50x\3\temp\11trekoff", r"C:\data\20190326\15um_low532_50x\3\temp\12", r"C:\data\20190326\15um_low532_50x\3\temp\13", r"C:\data\20190326\15um_low532_50x\3\temp\14", r"C:\data\20190326\15um_low532_50x\3\temp\15",r"C:\data\20190326\15um_low532_50x\3\temp\16" ]
 
 path_list = [r"C:\data\20190408\15um\3\temp\1", r"C:\data\20190408\15um\3\temp\2", r"C:\data\20190408\15um\3\temp\3", r"C:\data\20190408\15um\3\temp\4", r"C:\data\20190408\15um\3\temp\5", r"C:\data\20190408\15um\3\temp\6", r"C:\data\20190408\15um\3\temp\7", r"C:\data\20190408\15um\3\temp\8", r"C:\data\20190408\15um\3\temp\9", r"C:\data\20190408\15um\3\temp\10", r"C:\data\20190408\15um\3\temp\11", r"C:\data\20190408\15um\3\temp\12", r"C:\data\20190408\15um\3\temp\13", r"C:\data\20190408\15um\3\temp\14"]
+
+path_list = [r"C:\data\20191014\22um\prechamber_LP\5\Temperature_X\1", r"C:\data\20191014\22um\prechamber_LP\5\Temperature_X\2", r"C:\data\20191014\22um\prechamber_LP\5\Temperature_X\3",r"C:\data\20191014\22um\prechamber_LP\5\Temperature_X\4",r"C:\data\20191014\22um\prechamber_LP\5\Temperature_X\5",r"C:\data\20191014\22um\prechamber_LP\5\Temperature_X\6", r"C:\data\20191014\22um\prechamber_LP\5\Temperature_X\6",r"C:\data\20191014\22um\prechamber_LP\5\Temperature_X\8", ]
 
 
 ######### Gamma low pressure

@@ -31,10 +31,18 @@ path_list = [r"C:\data\20190619\15um\3\feedback_onoff\1xy", ]
 
 path_save = r"C:\data\20190619\15um\3\feedback_onoff\1xy"
 
+path_list = [r"C:\data\201908020\22um_SiO2_pinhole\5\ONOFF\3", ]
+
+path_save = r"C:\data\201908020\22um_SiO2_pinhole\5\ONOFF\3"
+
+path_list = [r"C:\data\20190912\prechamber\7\feedbackonoff", ]
+
+path_save = r"C:\data\20190912\prechamber\7\feedbackonoff"
+
 # path_list = [r"C:\data\20190202\15um\4\PID\COMx10"]
 
 plot = True
-plot_heat = False
+plot_heat = True
 plot_cool = False
 bins = 15
 initial_threshould = 0.08 # helps the fit of the damping
@@ -90,15 +98,15 @@ def getdata(fname):
 
 Q = getdata(glob.glob((path_list[0]+"\*.h5"))[1])
 fs = Q[3]
-# plt.figure()
-# t = np.array(range(len(Q[0])))/fs
-# plt.plot(t,0.1*Q[1], label = "Trigger")
-# plt.plot(t,Q[0], label = "Signal X direction")
-# plt.xlabel("Time [s]")
-# plt.ylabel("Signal [V]")
-# plt.legend(loc=3)
-# plt.tight_layout(pad = 0)
-# plt.show()
+plt.figure()
+t = np.array(range(len(Q[0])))/fs
+plt.plot(t,0.1*Q[1], label = "Trigger")
+plt.plot(t,Q[0], label = "Signal X direction")
+plt.xlabel("Time [s]")
+plt.ylabel("Signal [V]")
+plt.legend(loc=3)
+plt.tight_layout(pad = 0)
+plt.show()
 
 def get_files_path(path):
     file_list = glob.glob(path+"\*.h5")
@@ -187,7 +195,7 @@ def plot_PID_off(path): # return xxx[a][b][c] a is the X or Y axis, b is the fil
         x = get_data_path(path)[j]
         for i in range(len(ff)): # a plot for every trigger off
             y = D[j][0][int(ff[i]):int(oo[i])]
-            y = y -np.mean(y)
+            y = y - np.mean(y)
             t = range(len(y))
             Y.append(y)
             X.append(t)
@@ -223,8 +231,8 @@ def accumulator_off(path_list): # the 2400 is to ensure that all trigger has the
     print "Gamma_heat[Hz] = ", popt[1]/2.
 
 
-accumulator_off(path_list)
-plt.show()
+# accumulator_off(path_list)
+# plt.show()
 
 # a = plot_PID_off(path_list[0])
 # plt.figure()
@@ -367,7 +375,8 @@ def plot_and_fit_heat(path, plot):
             if plot:
                 plt.figure()
                 plt.plot(np.array(a[0][0][i])/fs, a[1][0][i])
-                plt.plot(np.array(a[0][0][i])/fs, fit_heat(np.array(a[0][0][i]/fs), *p), "k--")
+                plt.plot(np.array(a[0][0][i])/fs, fit_heat(np.array(a[0][0][i]/fs), *p), "k--", label = p[1]/(2.*np.pi))
+                plt.legend()
             if notfail:
                 P.append(p)
                 C.append(c)

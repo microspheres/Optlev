@@ -11,10 +11,10 @@ import scipy.signal as sp
 import scipy.optimize as opt
 import cPickle as pickle
 
-path = r"C:\data\201908020\22um_SiO2_pinhole\5\charge2"
+path = r"C:\data\20191210\10um\3\newpinhole\charge"
 ts = 1.
 
-fdrive = 31. #31.
+fdrive = 35. #31.
 make_plot = True
 
 data_columns = [0, bu.xi] # column to calculate the correlation against
@@ -25,9 +25,10 @@ def getphase(fname):
         dat, attribs, cf = bu.getdata(os.path.join(path, fname))
         fsamp = attribs["Fsamp"]
         xdat = dat[:,data_columns[1]]
+        xdat = xdat - np.mean(xdat)
 
         xdat = np.append(xdat, np.zeros( int(fsamp/fdrive) ))
-        corr2 = np.correlate(xdat,dat[:,drive_column])
+        corr2 = np.correlate(xdat,dat[:,drive_column] - np.mean(dat[:,drive_column]))
         maxv = np.argmax(corr2) 
 
         cf.close()
