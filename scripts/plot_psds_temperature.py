@@ -154,6 +154,8 @@ def selected_plot(folder_list, folder_nosphere, list_of_plots):
     poptN, pcovN = opt.curve_fit(lambda f, T:  harmonic(f, fmax, T, gmax), freqLP[fit_points], (xpsd_nosphereout**2)[fit_points]/(2*pi))
     poptN = [fmax, poptN[0], gmax]
     toutN = ((fmax*2.*np.pi)**2)*mass*( np.sum(2.*np.pi*harmonic(freqLP, *poptN))*(freqLP[1] - freqLP[0])/(pi*kb) )/1e-6
+
+    savenosphereout = harmonic(freqLP, *poptN)
     
     for i in range(len(folder_list)):
         if True:
@@ -239,6 +241,8 @@ def selected_plot(folder_list, folder_nosphere, list_of_plots):
     poptN = [fmax, poptN[0], gmax]
     tinN = ((fmax*2.*np.pi)**2)*mass*( np.sum(2.*np.pi*harmonic(freqLP, *poptN))*(freqLP[1] - freqLP[0])/(pi*kb) )/1e-6
 
+    savenospherein = harmonic(freqLP, *poptN)
+
     for i in range(len(folder_list)):
        if True:
             name_load = str(folder_list[i]) + "\info_inloop.npy"
@@ -289,10 +293,9 @@ def selected_plot(folder_list, folder_nosphere, list_of_plots):
     name = "inloop_" + ".pdf"
     name = os.path.join(folder_save, name)
 
-            
-    return [temp_out, temp_in, Dout, gammaout, fresout, toutN, tinN]
+    return [temp_out, temp_in, Dout, gammaout, fresout, toutN, tinN, savenosphereout, savenospherein, freqLP, fit_points]
 
-tout, tin, D, g, f, toutN, tinN = selected_plot(folder_list, folder_nosphere, list_of_plots)
+tout, tin, D, g, f, toutN, tinN, psdnosphereout, psdnospherein, freq, fit_points = selected_plot(folder_list, folder_nosphere, list_of_plots)
 
 
 space = np.linspace(0, 1.8, 100)
@@ -317,30 +320,100 @@ plt.legend()
 plt.grid()
 plt.tight_layout(pad = 0)
 
+D = np.abs(np.array(D))
+g = np.abs(np.array(g))
+
+fit_points = np.logical_and(np.abs(D) > 0, np.abs(D) < 0.35)
+
+pg = np.polyfit(D[fit_points], g[fit_points], 1)
+
+print "k =", pg
+
+
+plt.figure()
+plt.plot(D, g, ".")
+plt.plot(D[fit_points], g[fit_points], "x")
+plt.plot(space, space*pg[0] + pg[1])
+
 # D = np.abs(np.array(D))
-# g = np.abs(np.array(g))
+f = np.abs(np.array(f))
+fit_points = np.logical_and(np.abs(D) > 0, np.abs(D) < 0.35)
 
-# fit_points = np.logical_and(np.abs(D) > 0, np.abs(D) < 0.35)
+pf = np.polyfit(D[fit_points], f[fit_points], 1)
+space = np.linspace(0, 1.8, 100)
+print "H =", pf
 
-# pg = np.polyfit(D[fit_points], g[fit_points], 1)
+plt.figure()
+plt.plot(np.abs(D), np.abs(f), "x")
+plt.plot(space, space*pf[0] + pf[1])
 
-# print "k =", pg
 
 
-# plt.figure()
-# plt.plot(D, g, ".")
-# plt.plot(D[fit_points], g[fit_points], "x")
-# plt.plot(space, space*pg[0] + pg[1])
 
-# D = np.abs(np.array(D))
-# f = np.abs(np.array(f))
-# fit_points = np.logical_and(np.abs(D) > 0, np.abs(D) < 0.35)
+############################## fit model:
 
-# pf = np.polyfit(D[fit_points], f[fit_points], 1)
-# space = np.linspace(0, 1.8, 100)
-# print "H =", pf
+def Sc(freq, fres, L, Dg, gain, Gamma, nosphere_psd_out, TIME):
+    
+    freq = 2.*pi*freq
+    fres = 2.*pi*fres
+    Gamma = 2.*pi*Gamma
+    nosphere_psd_out = 1.*nosphere_psd_out/(2.*pi)
+    nosphere_spectrum = nosphere_psd_out*((freq[1] - freq[0])*2.*pi) # not density anymore
 
-# plt.figure()
-# plt.plot(np.abs(D), np.abs(f), "x")
-# plt.plot(space, space*pf[0] + pf[1])
+    H = -1j*(2.*pi)*freq
+
+    S = []
+
+    for i in range(len(Dg)):
+            Dg = 1.*Dg*gain
+    
+            aux1 = 1.*L**2 + 2.*L*(fres[i]**2)*Dg[i]*np.real(H)*nosphere_spectrum + (fres[i]**4)*(Dg[i]**2)*(np.abs(H)**2)*(nosphere_spectrum**2)
+            
+            aux2 = 1.*(freq**2 - fres[i]**2)**2 - 2.*(freq**2 - fres[i]**2)*Dg[i]*np.real(H) - 2.*Gamma[i]*freq*(fres[i]**2)*Dg[i]*np.imag(H) + 1.*(fres[i]**4)*(Dg[i]**2)*(np.abs(H))**2 + 1.*(Gamma[i]*freq)**2
+    
+            s = (1./TIME)*(aux1/aux2)
+            s = np.sum(s)*((freq[1] - freq[0])*2.*pi)
+            S.append(s)
+
+    return np.array(S)
+
+
+
+
+
+def Tc(freq, fres, L, Dg, Gamma, TIME, nosphere_psd_out, mass, kb, gain):
+    S = Sc(freq, fres, L, Dg, gain, Gamma, nosphere_psd_out, TIME)
+
+    Tc = ((fres*2.*np.pi)**2)*mass*S/(kb*pi)
+
+    Tc = Tc/1e6
+
+    return Tc
+
+name = "squasing_info.npy"
+name = os.path.join(folder_save, name)
+np.save(name, [freq, f, 2., D, g, 2**19/1e4, psdnosphereout, mass, kb, 3., tout, toutN, tin, tinN, psdnospherein])
+    
+print Tc(freq, f, 2., D, g, 2**19/1e4, psdnosphereout, mass, kb, 3.)
+
+def test(D, L, gain):
+    return Tc(freq, f, L, D, g, 2**19/1e4, psdnosphereout, mass, kb, gain)
+
+popt, pcov = opt.curve_fit(test, D, tout, p0 = [2 ,0.000001])
+
+
+plt.figure(figsize=(5,3))
+plt.rcParams.update({'font.size': 14})
+plt.errorbar(100*D, tout, yerr = touterr, fmt = "o", label = "Outloop")
+plt.errorbar(100*D, tin, yerr = tinerr, fmt = "o", label = "Inloop")
+plt.plot(100.*D, test(D, *popt), "k--")
+plt.xlabel("Derivative Gain [Arb. Units]")
+plt.ylabel("Temperature [$\mu$K]")
+plt.yscale('log')
+plt.xscale('log')
+plt.legend()
+plt.grid()
+plt.tight_layout(pad = 0)
+
+
 plt.show()

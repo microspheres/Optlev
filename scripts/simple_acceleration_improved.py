@@ -8,14 +8,14 @@ import glob
 import scipy.optimize as opt
 
 plot = True
-several_folders = False
+several_folders = True
 if several_folders:
-    folder_temp = r"C:\data\20191122\10um\2\temp_x9"
+    folder_temp = r"C:\data\20191122\10um\2\temp_x4"
     plot = False
 
 folder_calibration = r"C:\data\20191122\10um\2\calibration1p"
 
-folder_meas = r"C:\data\20191122\10um\2\calibration1p"
+folder_meas = r"C:\data\20191122\10um\2\temp_x4\1"
 
 folder_hp = r"C:\data\20191122\10um\2\1mbar"
 file_high_pressure = r"1mbar_zcool.h5"
@@ -165,10 +165,10 @@ def calibration(folder_calibration, folder_hp, file_high_pressure, channelX, NFF
     gamma_cali = np.abs(popt_g[2])
 
     print "gamma", gamma_cali
-    plt.figure()
-    plt.loglog(freq[1200:2000], xpsd[1200:2000])
-    plt.loglog(freq, psdLP(freq, *popt_g))
-    plt.show()
+    # plt.figure()
+    # plt.loglog(freq[1200:2000], xpsd[1200:2000])
+    # plt.loglog(freq, psdLP(freq, *popt_g))
+    # plt.show()
 
     V = np.sqrt(a[2])
     print "voltage for calibration Vpp = ", 2*V
