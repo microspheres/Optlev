@@ -12,9 +12,9 @@ def list_file_time_order(filelist):
     return filelist
 
 
-folder_calibration = r"C:\data\20191107\22um\5\calibration1p"
+folder_calibration = r"C:\data\20191210\10um\3\newpinhole\calibration1e"
 
-folder_meas = r"C:\data\20191107\22um\5\temp_x\17"
+folder_meas = r"C:\data\20191210\10um\3\newpinhole\acceleration2"
 
 file_list_meas = glob.glob(folder_meas+"\*.h5")
 file_list_meas = list_file_time_order(file_list_meas)[0:840]
@@ -28,7 +28,7 @@ use_drive_freq = False # allow any choice of freq for correlation, if false the 
 
 drive_col = 3
 
-NFFT = 2**16
+NFFT = 2**18
 
 def get_v_to_m_and_fressonance(folder_meas):
     namein = str(folder_meas) + r"\v2tom2_in.npy"
@@ -249,102 +249,102 @@ cross = cross[0]
 
 bins = 30
 
-# for i in range(1):
-#     cin, cout, cross, psd, psdin, psdout = gauss_filter(cin, cout, 3, cross, Psd, Psdin, Psdout)
-# #####
+for i in range(1):
+    cin, cout, cross, psd, psdin, psdout = gauss_filter(cin, cout, 3, cross, psd, psdin, psdout)
+#####
 
-# hin, bcin = histo(cin, bins)
-# hout, bcout = histo(cout, bins)
+hin, bcin = histo(cin, bins)
+hout, bcout = histo(cout, bins)
 
-# sigmain = np.sqrt(hin)
-# for i in range(len(sigmain)):
-#     if sigmain[i] == 0:
-#         sigmain[i] = 1.
-# sigmaout = np.sqrt(hout)
-# for i in range(len(sigmaout)):
-#     if sigmaout[i] == 0:
-#         sigmaout[i] = 1.
+sigmain = np.sqrt(hin)
+for i in range(len(sigmain)):
+    if sigmain[i] == 0:
+        sigmain[i] = 1.
+sigmaout = np.sqrt(hout)
+for i in range(len(sigmaout)):
+    if sigmaout[i] == 0:
+        sigmaout[i] = 1.
 
-# poptin, pcovin = opt.curve_fit(gauss, bcin, hin, sigma = sigmain)
-# poptout, pcovout = opt.curve_fit(gauss, bcout, hout, sigma = sigmaout)
-
-
-# vin = np.abs(poptin[1])**2
-# vout = np.abs(poptout[2])**2
+poptin, pcovin = opt.curve_fit(gauss, bcin, hin, sigma = sigmain)
+poptout, pcovout = opt.curve_fit(gauss, bcout, hout, sigma = sigmaout)
 
 
-# v_combined = 1./(1./vin + 1./vout)
-
-# c = (1.*cin/vin + 1.*cout/vout)*v_combined
-
-# h, bc = histo(c, bins)
-# sigma = np.sqrt(h)
-# for i in range(len(sigma)):
-#     if sigma[i] == 0:
-#         sigma[i] = 1.
-# popt, pcov = opt.curve_fit(gauss, bc, h, sigma = sigma)
+vin = np.abs(poptin[1])**2
+vout = np.abs(poptout[2])**2
 
 
-# space = np.linspace(2*np.min(bc),2*np.max(bc), 1000)
+v_combined = 1./(1./vin + 1./vout)
 
-# acin = str(poptin[0]) + r"$\pm$" + str(np.sqrt(pcovin[0][0]))
-# acout = str(poptout[0]) + r"$\pm$" + str(np.sqrt(pcovout[0][0]))
-# ac = str(popt[0]) + r"$\pm$" + str(np.sqrt(pcov[0][0]))
+c = (1.*cin/vin + 1.*cout/vout)*v_combined
 
-# print "acc in nano-g:"
-# print "accin =", acin
-# print "accout =", acout
-# print "acc =", ac
+h, bc = histo(c, bins)
+sigma = np.sqrt(h)
+for i in range(len(sigma)):
+    if sigma[i] == 0:
+        sigma[i] = 1.
+popt, pcov = opt.curve_fit(gauss, bc, h, sigma = sigma)
 
-# print poptin[1]
-# print poptout[1]
-# print popt[1]
+
+space = np.linspace(2*np.min(bc),2*np.max(bc), 1000)
+
+acin = str(poptin[0]) + r"$\pm$" + str(np.sqrt(pcovin[0][0]))
+acout = str(poptout[0]) + r"$\pm$" + str(np.sqrt(pcovout[0][0]))
+ac = str(popt[0]) + r"$\pm$" + str(np.sqrt(pcov[0][0]))
+
+print "acc in nano-g:"
+print "accin =", acin
+print "accout =", acout
+print "acc =", ac
+
+print poptin[1]
+print poptout[1]
+print popt[1]
 
 colors = ['#1f78b4', '#e66101', '#33a02c', '#984ea3', '#F27781', '#18298C', '#04BF8A', '#F2CF1D', '#F29F05', '#7155D9', '#8D07F6', '#9E91F2', '#F29B9B', '#F25764', '#6FB7BF', '#B6ECF2', '#5D1314', '#B3640F']
 
-# plt.figure()
-# plt.plot(bcin, hin, "r.")
-# plt.plot(bcout, hout, "b.")
-# plt.plot(bc, h, "g.")
-# plt.plot(space, gauss(space, *poptin), "r-", label = "inloop")
-# plt.plot(space, gauss(space, *poptout), "b-", label = "outloop")
-# plt.plot(space, gauss(space, *popt), "g-", label = "combined")
-# plt.legend()
-# plt.tight_layout(pad = 0)
+plt.figure()
+plt.plot(bcin, hin, "r.")
+plt.plot(bcout, hout, "b.")
+plt.plot(bc, h, "g.")
+plt.plot(space, gauss(space, *poptin), "r-", label = "inloop")
+plt.plot(space, gauss(space, *poptout), "b-", label = "outloop")
+plt.plot(space, gauss(space, *popt), "g-", label = "combined")
+plt.legend()
+plt.tight_layout(pad = 0)
 
-# plt.figure(figsize=(5,3))
-# plt.rcParams.update({'font.size': 14})
-# plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = "o", color = colors[0])
-# plt.plot(space, gauss(space, *popt), "-", color = colors[1])
-# plt.xlabel("Acceleration [ng]")
-# plt.ylabel("Number of measurements")
-# plt.xlim(-30, 30)
-# plt.grid()
-# plt.tight_layout(pad = 0)
+plt.figure(figsize=(5,3))
+plt.rcParams.update({'font.size': 14})
+plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = "o", color = colors[0])
+plt.plot(space, gauss(space, *popt), "-", color = colors[1])
+plt.xlabel("Acceleration [ng]")
+plt.ylabel("Number of measurements")
+plt.xlim(-30, 30)
+plt.grid()
+plt.tight_layout(pad = 0)
 
 x = range(len(cin))
 import matplotlib.cm as cm
-# plt.figure()
-# plt.subplot(3, 1, 1)
-# plt.plot(x, cin, "r.", label = "inloop")
-# plt.subplot(3, 1, 2)
-# plt.plot(x, cout, "b.", label = "outloop")
-# plt.subplot(3, 1, 3)
-# plt.plot(x, c, "g.", label = "combined")
-# plt.tight_layout(pad = 0)
+plt.figure()
+plt.subplot(3, 1, 1)
+plt.plot(x, cin, "r.", label = "inloop")
+plt.subplot(3, 1, 2)
+plt.plot(x, cout, "b.", label = "outloop")
+plt.subplot(3, 1, 3)
+plt.plot(x, c, "g.", label = "combined")
+plt.tight_layout(pad = 0)
 
-# space = np.linspace(np.min(cin), np.max(cin), 1000)
-# poptL, pcovL = opt.curve_fit(linefit, cin, cout)
+space = np.linspace(np.min(cin), np.max(cin), 1000)
+poptL, pcovL = opt.curve_fit(linefit, cin, cout)
 
-# plt.figure()
-# plt.plot(space, space, "k--")
-# plt.scatter(cin, cout, c = x, cmap = cm.viridis)
-# plt.plot(space, linefit(space, *poptL), "r-", label = "fit")
-# plt.xlabel("inloop [ng]")
-# plt.ylabel("outloop [ng]")
-# plt.colorbar()
-# plt.legend()
-# plt.tight_layout(pad = 0)
+plt.figure()
+plt.plot(space, space, "k--")
+plt.scatter(cin, cout, c = x, cmap = cm.viridis)
+plt.plot(space, linefit(space, *poptL), "r-", label = "fit")
+plt.xlabel("inloop [ng]")
+plt.ylabel("outloop [ng]")
+plt.colorbar()
+plt.legend()
+plt.tight_layout(pad = 0)
 
 
 nc = np.zeros(len(cross[0]))
@@ -387,17 +387,32 @@ plt.legend()
 plt.xlim(1,100)
 plt.tight_layout(pad = 0)
 
+rho = 1800
+diameter = 10.3e-6
+def mass(Diameter, rho):
+    m = (4/3.)*(np.pi)*((Diameter/2)**3)*rho
+    return m
+
+# n-g to atto-N (1e-18 N)
+conversion_force = 1.*mass(diameter, rho)*(9.8e-9)*(1e18)
+print "ng_to_aN conversion", conversion_force
+
 plt.figure(figsize=(5,5))
 plt.rcParams.update({'font.size': 14})
-plt.subplot(2,1,1)
-plt.semilogy(frequency, 1000.*np.sqrt(npsd))
-plt.xlabel("Frequency [Hz]")
-plt.ylabel("Sensitivity [ng$/\sqrt{Hz}$]")
-plt.xlim(1,100)
-plt.ylim(1e2,1e4)
+ax1 = plt.subplot(2,1,1)
+ax1.semilogy(frequency, 1000.*np.sqrt(npsd))
+ax1.set_xlabel("Frequency [Hz]")
+ax1.set_ylabel("Sensitivity [ng$/\sqrt{Hz}$]")
+ax1.set_xlim(1,100)
+ax1.set_ylim(1e2,1e4)
+ax2 = ax1.twinx()
+mn, mx = ax1.get_ylim()
+ax2.set_ylim(mn*conversion_force, mx*conversion_force) # this only changes the scale of the new y axis. Does not change the data.
+ax2.set_ylabel('Sensitivity [aN$/\sqrt{Hz}$]')
+ax2.set_yscale("log")
 plt.subplot(2,1,2)
-# plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = "o", color = colors[0])
-# plt.plot(space, gauss(space, *popt), "-", color = colors[1])
+plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = "o", color = colors[0])
+plt.plot(space, gauss(space, *popt), "-", color = colors[1])
 plt.xlabel("Acceleration [ng]")
 plt.ylabel("Number of measurements")
 plt.xlim(-30, 30)

@@ -16,7 +16,7 @@ folder_meas = r"C:\data\20191122\10um\2\charge_plot"
 file_list_meas = glob.glob(folder_meas+"\*.h5")
 file_list_meas = list_file_time_order(file_list_meas)
 
-distance = 0.0021
+distance = 0.0029
 
 drive_col = 3
 
@@ -68,7 +68,10 @@ def plot_charge(folder_meas): # return freq, freq_arg, amplitude of the drive an
     print f0
 
     E = np.sum(drive_psd[f0arg-1: f0arg+1])
-    E = np.sqrt(2.*E)/distance
+    print "synth volt amplitude = ", np.sqrt(2.*E)
+    E = 200.*np.sqrt(2.*E)/distance
+
+    print "step force in N (amplitude)= ", E*1.602e-19
 
     # plt.figure()
     # plt.loglog(freq, drive_psd)
@@ -86,6 +89,13 @@ def plot_charge(folder_meas): # return freq, freq_arg, amplitude of the drive an
         Fs = a[3]
         xin = a[0]
         xout = a[1]
+
+        # freq, test = sp.csd(xin, xin, Fs, nperseg=NFFT)
+        # test = np.sqrt(test)
+        # plt.loglog(freq, test)
+        # plt.loglog(freq[f0arg], test[f0arg], "ro")
+
+        
         
         freq, charge = sp.csd(xin, drive, Fs, nperseg=NFFT)
         freq, V2 = sp.csd(drive, drive, Fs, nperseg=NFFT)
@@ -111,7 +121,7 @@ def plot_charge(folder_meas): # return freq, freq_arg, amplitude of the drive an
     plt.plot(Time[index:] - Time[index:][0], Charge[index:]/p1, "r.")
     plt.xlabel("Time [S]")
     plt.ylabel("Charge [e$^-$]")
-    plt.title(title)
+    # plt.title(title)
     plt.grid(which='both')
     plt.tight_layout(pad = 0)
     return [f0, f0arg, drive, xin, xout, Fs, freq]

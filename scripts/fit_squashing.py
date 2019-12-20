@@ -54,7 +54,7 @@ freq_coef = [14.62066104, 63.1201561] # this is the estimation for the res freq 
 
 ### Sc calculates the temp for the outloop
 ### Ss calculates the temp for the inloop
-def Sc(freq, L, Dg, Gamma, nosphere_psd_out, TIME, gain, mass):
+def Sc(freq, L, Dg, nosphere_psd_out, TIME, gain, mass):
     
     freq = 2.*pi*freq
     nosphere_psd_out = 1.*nosphere_psd_out**2
@@ -85,7 +85,7 @@ def Sc(freq, L, Dg, Gamma, nosphere_psd_out, TIME, gain, mass):
     return np.array(T)
 
 
-def Ss(freq, L, Dg, Gamma, nosphere_psd_in, TIME, gain, mass):
+def Ss(freq, L, Dg, nosphere_psd_in, TIME, gain, mass):
     
     freq = 2.*pi*freq
     nosphere_psd_in = 1.*nosphere_psd_in**2
@@ -131,18 +131,36 @@ tin = tin[ind]
 touterr = 0.4*tout
 tinerr = 0.4*tin
 
-popt, pcov = opt.curve_fit(lambda D, L, gain: Sc(freq, L, D, g, psdnosphereout, 2**19/1e4, gain, mass), D, tout, sigma = touterr)
+popt, pcov = opt.curve_fit(lambda D, L, gain: Sc(freq, L, D, psdnosphereout, 2**19/1e4, gain, mass), D, tout, sigma = touterr)
 print popt
 
 
-popts, pcovs = opt.curve_fit(lambda D, L, gain: Ss(freq, L, D, g, psdnospherein, 2**19/1e4, gain, mass), D, tin, sigma = tinerr)
+popts, pcovs = opt.curve_fit(lambda D, L, gain: Ss(freq, L, D, psdnospherein, 2**19/1e4, gain, mass), D, tin, sigma = tinerr)
 print popts
 
+
+
+# def ST(freq, L, Dg, nosphere_psd_in, nosphere_psd_out, TIME, gain, mass):
+#     return -Ss(freq, L, Dg, nosphere_psd_in, TIME, gain, mass) + Sc(freq, L, Dg, nosphere_psd_out, TIME, gain, mass)
+
+# poptn, pcovn = opt.curve_fit(lambda D, L, gain: ST(freq, L, D, psdnospherein, psdnosphereout, 2**19/1e4, gain, mass), D, -tin+tout, sigma = tinerr)
+# print poptn
+
+# def testST(D, L, gain): # not the best procedure but works
+#     return ST(freq, L, D,  psdnospherein, psdnosphereout, 2**19/1e4, gain, mass)
+
+# plt.figure()
+# plt.loglog(D, np.abs(-tin+tout))
+# plt.loglog(D, np.abs(testST(D, *poptn)))
+# plt.show()
+
+
+
 def test(D, L, gain): # not the best procedure but works
-    return Sc(freq, L, D, g, psdnosphereout, 2**19/1e4, gain, mass)
+    return Sc(freq, L, D, psdnosphereout, 2**19/1e4, gain, mass)
 
 def test_s(D, L, gain):
-    return Ss(freq, L, D, g, psdnospherein, 2**19/1e4, gain, mass)
+    return Ss(freq, L, D, psdnospherein, 2**19/1e4, gain, mass)
 
 Dlist = 3.*np.logspace(-3, 0, 100)
 

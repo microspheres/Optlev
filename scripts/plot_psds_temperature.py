@@ -350,6 +350,13 @@ plt.plot(space, space*pf[0] + pf[1])
 
 
 
+
+
+
+
+
+
+
 ############################## fit model:
 
 def Sc(freq, fres, L, Dg, gain, Gamma, nosphere_psd_out, TIME):
