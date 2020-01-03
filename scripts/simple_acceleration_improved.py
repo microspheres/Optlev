@@ -8,14 +8,14 @@ import glob
 import scipy.optimize as opt
 
 plot = True
-several_folders = True
+several_folders = False
 if several_folders:
     folder_temp = r"C:\data\20191122\10um\2\temp_x4"
     plot = False
 
 folder_calibration = r"C:\data\20191122\10um\2\calibration1p"
 
-folder_meas = r"C:\data\20191122\10um\2\temp_x4\1"
+folder_meas = r"C:\data\20191122\10um\2\nofeedback6"
 
 folder_hp = r"C:\data\20191122\10um\2\1mbar"
 file_high_pressure = r"1mbar_zcool.h5"

@@ -164,7 +164,7 @@ def test_s(D, L, gain):
 
 Dlist = 3.*np.logspace(-3, 0, 100)
 
-plt.figure(figsize=(4,3))
+plt.figure(figsize=(5,3))
 plt.rcParams.update({'font.size': 14})
 plt.errorbar(D, tout, yerr = touterr, fmt = "o", label = "Outloop", color = "C0")
 plt.errorbar(D, tin, yerr = tinerr, fmt = "o", label = "Inloop",  color = "C1")

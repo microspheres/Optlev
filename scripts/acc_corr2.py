@@ -277,6 +277,10 @@ v_combined = 1./(1./vin + 1./vout)
 
 c = (1.*cin/vin + 1.*cout/vout)*v_combined
 
+
+# namesave_corr = str(folder_meas) + r"\corr_combined.npy"
+# np.save(namesave_corr, c)
+
 h, bc = histo(c, bins)
 sigma = np.sqrt(h)
 for i in range(len(sigma)):
