@@ -7,10 +7,10 @@ import bead_util as bu
 import glob
 import scipy.optimize as opt
 from scipy.signal import butter, lfilter, filtfilt
+
 def list_file_time_order(filelist):
     filelist.sort(key=os.path.getmtime)
     return filelist
-
 
 folder_calibration = r"C:\data\20191210\10um\3\newpinhole\calibration1e"
 
@@ -18,7 +18,7 @@ folder_meas = r"C:\data\20191210\10um\3\newpinhole\acceleration2"
 
 file_list_meas = glob.glob(folder_meas+"\*.h5")
 file_list_meas = list_file_time_order(file_list_meas)[0:840]
-#file_list_meas = list_file_time_order(file_list_meas)[0:50]
+#file_list_meas = list_file_time_order(file_list_meas)[0:20]
 
 use_transfer_gammas = True
 if use_transfer_gammas:
@@ -28,7 +28,7 @@ use_drive_freq = False # allow any choice of freq for correlation, if false the 
 
 drive_col = 3
 
-NFFT = 2**18
+NFFT = 2**19
 
 def get_v_to_m_and_fressonance(folder_meas):
     namein = str(folder_meas) + r"\v2tom2_in.npy"
@@ -90,7 +90,11 @@ def get_drive_frequency_timestream(folder_calibration): # return freq, freq_arg,
         f0 = freq[f0arg]
     else:
         time = range(0, 2**19)/Fs
-        new = np.sin(time*2.*np.pi*2422*Fs/2**19) # f0 = N*Fs/2**19
+        #new = np.sin(time*2.*np.pi*2422*Fs/2**19) # f0 = N*Fs/2**19
+        #new = np.sin(time*2.*np.pi*2582*Fs/2**19) # f0 = N*Fs/2**19
+        #new = np.sin(time*2.*np.pi*2912*Fs/2**19) # f0 = N*Fs/2**19
+        #new = np.sin(time*2.*np.pi*2650*Fs/2**19) # f0 = N*Fs/2**19
+        new = np.sin(time*2.*np.pi*2925*Fs/2**19) # f0 = N*Fs/2**19
         new = new - np.mean(new)
         freq, drive_psd = sp.csd(new, new, Fs, nperseg=NFFT)
         f0arg = np.argmax(drive_psd)
@@ -249,7 +253,10 @@ cross = cross[0]
 
 bins = 30
 
-for i in range(1):
+cin_total = cin # will have outliars
+cout_total = cout # will have outliars
+
+for i in range(2):
     cin, cout, cross, psd, psdin, psdout = gauss_filter(cin, cout, 3, cross, psd, psdin, psdout)
 #####
 
@@ -277,6 +284,9 @@ v_combined = 1./(1./vin + 1./vout)
 
 c = (1.*cin/vin + 1.*cout/vout)*v_combined
 
+c_total = (1.*cin_total/vin + 1.*cout_total/vout)*v_combined # will have outliars
+c_outliar = np.setxor1d(c, c_total)
+print c_outliar
 
 # namesave_corr = str(folder_meas) + r"\corr_combined.npy"
 # np.save(namesave_corr, c)
@@ -287,6 +297,11 @@ for i in range(len(sigma)):
     if sigma[i] == 0:
         sigma[i] = 1.
 popt, pcov = opt.curve_fit(gauss, bc, h, sigma = sigma)
+
+h_total, bc_total = histo(c_total, bins)
+sigma_total = np.sqrt(h_total)
+h_outliar, bc_outliar = histo(c_outliar, bins)
+sigma_outliar = np.sqrt(h_outliar)
 
 
 space = np.linspace(2*np.min(bc),2*np.max(bc), 1000)
@@ -337,7 +352,7 @@ plt.subplot(3, 1, 3)
 plt.plot(x, c, "g.", label = "combined")
 plt.tight_layout(pad = 0)
 
-space = np.linspace(np.min(cin), np.max(cin), 1000)
+space = np.linspace(np.min(cin)-3, np.max(cin)+3, 1000)
 poptL, pcovL = opt.curve_fit(linefit, cin, cout)
 
 plt.figure()
@@ -401,26 +416,55 @@ def mass(Diameter, rho):
 conversion_force = 1.*mass(diameter, rho)*(9.8e-9)*(1e18)
 print "ng_to_aN conversion", conversion_force
 
-plt.figure(figsize=(5,5))
-plt.rcParams.update({'font.size': 14})
-ax1 = plt.subplot(2,1,1)
-ax1.semilogy(frequency, 1000.*np.sqrt(npsd))
+###################plot for paper
+aax = 43
+bbx = 57
+from mpl_toolkits.axes_grid1.inset_locator import mark_inset
+aaa = np.where(frequency > aax)[0][0]
+bbb = np.where(frequency > bbx)[0][0]
+aay = 50
+bby = 250
+
+fig = plt.figure()
+plt.rcParams.update({'font.size': 10})
+ax1 = plt.subplot(3,1,(1,2))
+ax1.semilogy(frequency, 1000.*np.sqrt(npsd), linewidth = 0.5)
 ax1.set_xlabel("Frequency [Hz]")
 ax1.set_ylabel("Sensitivity [ng$/\sqrt{Hz}$]")
 ax1.set_xlim(1,100)
-ax1.set_ylim(1e2,1e4)
+ax1.set_ylim(8e1,1e5)
 ax2 = ax1.twinx()
 mn, mx = ax1.get_ylim()
 ax2.set_ylim(mn*conversion_force, mx*conversion_force) # this only changes the scale of the new y axis. Does not change the data.
 ax2.set_ylabel('Sensitivity [aN$/\sqrt{Hz}$]')
 ax2.set_yscale("log")
-plt.subplot(2,1,2)
+
+left, bottom, width, height = [0.35, 0.84, 0.465, 0.13]
+ax3 = fig.add_axes([left, bottom, width, height])
+# ax3.set_yscale("linear")
+ax3.plot(frequency[aaa:bbb], 1000.*np.sqrt(npsd[aaa:bbb]), linewidth = 0.5)
+ax3.set_ylim(aay, bby)
+ax3.set_xticks([45, 50, 55])
+ax3.set_yticks([50,100,150,200,250])
+ax3.set_yticklabels(["",100,"",200,""])
+ax3.set_xticklabels([45, "", 55])
+
+# ax3.xaxis.set_ticks_position('none')
+# ax3.yaxis.set_ticks_position('none')
+
+# ax3.set_xlim(aax, bbx)
+# ax3.set_ylim(aay, bby)
+# mark_inset(ax1, ax3, loc1=3, loc2=4, fc="C1", color = "C1", ec = "C1")
+
+plt.subplot(3,1,3)
 plt.errorbar(bc, h, yerr = np.sqrt(h), fmt = "o", color = colors[0])
+#plt.errorbar(bc_outliar, h_outliar, yerr = np.sqrt(h_outliar), fmt = "o", color = colors[2]) # with outliars
 plt.plot(space, gauss(space, *popt), "-", color = colors[1])
 plt.xlabel("Acceleration [ng]")
-plt.ylabel("Number of measurements")
-plt.xlim(-30, 30)
+plt.ylabel("Counts")
+plt.xlim(-31, 31)
 plt.grid()
+fig.set_size_inches(4,4.5)
 plt.tight_layout(pad = 0)
 
 

@@ -10,14 +10,14 @@ import scipy.optimize as opt
 plot = True
 several_folders = False
 if several_folders:
-    folder_temp = r"C:\data\20191122\10um\2\temp_x4"
+    folder_temp = r"C:\data\20191122\10um\2\temp_x9"
     plot = False
 
-folder_calibration = r"C:\data\20191122\10um\2\calibration1p"
+folder_calibration = r"C:\data\20191210\10um\3\newpinhole\calibration1e"
 
-folder_meas = r"C:\data\20191122\10um\2\nofeedback6"
+folder_meas = r"C:\data\20191210\10um\3\newpinhole\acceleration2"
 
-folder_hp = r"C:\data\20191122\10um\2\1mbar"
+folder_hp = r"C:\data\20191210\10um\3\1mbar"
 file_high_pressure = r"1mbar_zcool.h5"
 
 file_list = glob.glob(folder_calibration+"\*.h5")
@@ -27,10 +27,10 @@ NFFT = 2**18
 drive_col = 3
 
 #Diameter = 22.6e-6 #meters
-Diameter = 10.0e-6
+Diameter = 10.3e-6
 rho = 1800
 
-d = 0.0029
+d = 0.0033
 #d = 0.002
 
 number_of_charge = 1.0

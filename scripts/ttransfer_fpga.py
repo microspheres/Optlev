@@ -75,7 +75,7 @@ for i in filelist:
     plt.ylabel("Angle [rad]")
     plt.xlabel("freq [Hz]")
     plt.ylim(-np.pi, np.pi)
-    plt.xlim(10, 1500)
+    plt.xlim(10, 3500)
     plt.grid()
     name1 = "transfer_function_" + str(i[42:-3]) + ".pdf"
     name1 = os.path.join(folder, name1)

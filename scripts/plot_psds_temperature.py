@@ -25,7 +25,7 @@ freq_fit_min = 40.
 freq_fit_max = 90.
 
 
-Diameter = 10.0e-6
+Diameter = 10.3e-6
 rho = 1800
 
 kb = 1.380e-23
@@ -91,7 +91,8 @@ def mass(Diameter, rho):
 mass = mass(Diameter, rho)
 
 list_of_plots = [1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0]
-#list_of_plots = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+#list_of_plots = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+
 
 import matplotlib.cm as cm
 # Dark2 =  cm.get_cmap('viridis', len(np.logical_and(np.array(list_of_plots) > 0.9, np.array(list_of_plots) < 1.1)))
@@ -140,8 +141,8 @@ def selected_plot(folder_list, folder_nosphere, list_of_plots):
     fit_points = fit_points1 + fit_points2 + fit_points3 + fit_points4 + fit_points5 + fit_points6 + fit_points7 + fit_points8 + fit_points9 + fit_points10 + fit_points11 + fit_points12 + fit_points13 + fit_points14 + fit_points15 + fit_points16 + fit_points17 + fit_points18 + fit_points19 + fit_points20 + fit_points21 + fit_points22 + fit_points23 + fit_points24
     not_fit_points =  np.logical_not(fit_points)
     
-    plt.figure(figsize=(5.5,5))
-    plt.rcParams.update({'font.size': 14})
+    fig  = plt.figure()
+    plt.rcParams.update({'font.size': 10})
     plt.subplot(2, 1, 1)
     plt.xlim(freq_fit_min, freq_fit_max)
 
@@ -174,6 +175,7 @@ def selected_plot(folder_list, folder_nosphere, list_of_plots):
                 poptQ, pcovQ = opt.curve_fit(psd3, freqLP[fit_points], np.sqrt(dataout[3][fit_points])/(2*pi), p0 = [2.42100889e-12, 6.32709456e+01 ,1.79414730e-02, 6.99109858e+02], sigma = 0.1*np.sqrt(dataout[3][fit_points])/(2*pi))
                 tout = ((poptQ[1]*2.*np.pi)**2)*mass*( 2.*pi*np.sum((psd3(freqLP, *poptQ))**2)*(freqLP[1] - freqLP[0])/(pi*kb) )/1e-6
                 g = poptQ[2]
+                # print "g = ", g
                 f = poptQ[1]
                 if list_of_plots[i] == 1:
                     plt.semilogy(freqLP[index0:index1], 2.*np.pi*psd3(freqLP[index0:index1], *poptQ ), color = colors[i], linewidth=LT)
@@ -183,31 +185,31 @@ def selected_plot(folder_list, folder_nosphere, list_of_plots):
                     popt, pcov = opt.curve_fit(harmonic, freqLP[fit_points], dataout[3][fit_points]/(2*pi), p0 = [64, 0.7e-12, 3])
                     g = popt[2]
                     f = popt[0]
-                    if list_of_plots[i] == 1:
-                        plt.semilogy(freqLP[index0:index1], np.sqrt( 2.*np.pi*harmonic(freqLP[index0:index1], *popt)) , color = colors[i], linewidth=LT)
-                    tout = ((popt[0]*2.*np.pi)**2)*mass*( np.sum(2.*np.pi*harmonic(freqLP, *popt))*(freqLP[1] - freqLP[0])/(pi*kb) )/1e-6
-
                     if np.abs(f) - f_ex > 0.05*f_ex or np.abs(g) - g_ex > 0.05*g_ex:
                         print "raising exception due to a bad fit OUT"
                         raise Exception("raising exception due to a bad fit")
                     
+                    if list_of_plots[i] == 1:
+                        plt.semilogy(freqLP[index0:index1], np.sqrt( 2.*np.pi*harmonic(freqLP[index0:index1], *popt)) , color = colors[i], linewidth=LT)
+                    tout = ((popt[0]*2.*np.pi)**2)*mass*( np.sum(2.*np.pi*harmonic(freqLP, *popt))*(freqLP[1] - freqLP[0])/(pi*kb) )/1e-6
+                    
                 except:
                     popt, pcov = opt.curve_fit(lambda f, T:  harmonic(f, f_ex, T, g_ex), freqLP[fit_points], dataout[3][fit_points]/(2*pi))
-                    
                     popt = [f_ex, popt[0], g_ex]
                     g = popt[2]
                     f = popt[0]
                     tout =  ((f_ex*2.*np.pi)**2)*mass*( np.sum(2.*np.pi*harmonic(freqLP, *popt))*(freqLP[1] - freqLP[0])/(pi*kb) )/1e-6
                     if list_of_plots[i] == 1:
                         plt.semilogy(freqLP[index0:index1], np.sqrt( 2.*np.pi*harmonic(freqLP[index0:index1], *popt)) , color = colors[i], linewidth=LT)
+                        
             fresout.append(f)
             gammaout.append(g)
             temp_out.append(tout)
             if list_of_plots[i] == 1:
-                plt.scatter(freqLP[fit_points], xpsdout[fit_points], marker = ".", color = colors[i], s = 4)
-                plt.scatter(freqLP[not_fit_points], xpsdout[not_fit_points], marker = ".", alpha = 0.2, color = colors[i],s = 4)
-    plt.semilogy(freqLP[index0:index1], xpsd_nosphereout[index0:index1], label = "Noise", color = "#add8e6")
-    plt.semilogy(freqLP[index0:index1], np.sqrt( 2.*np.pi*harmonic(freqLP[index0:index1], *poptN)) , linewidth=LT, color = "#add8e6")
+                plt.scatter(freqLP[fit_points], xpsdout[fit_points], marker = ".", color = colors[i], s = 2)
+                plt.scatter(freqLP[not_fit_points], xpsdout[not_fit_points], marker = ".", alpha = 0.2, color = colors[i],s = 2)
+    ###plt.semilogy(freqLP[index0:index1], xpsd_nosphereout[index0:index1], label = "Noise", color = "#add8e6")
+    ###plt.semilogy(freqLP[index0:index1], np.sqrt( 2.*np.pi*harmonic(freqLP[index0:index1], *poptN)) , linewidth=LT, color = "#add8e6")
     plt.legend()
     plt.ylabel("$\sqrt{S_{xx}^{out}}$ [m/$\sqrt{Hz}$]")
     plt.tick_params(
@@ -280,16 +282,17 @@ def selected_plot(folder_list, folder_nosphere, list_of_plots):
 
             temp_in.append(tin)
             if list_of_plots[i] == 1:
-                plt.scatter(freqLP[fit_points], xpsd[fit_points], marker = ".", color = colors[i], s = 4)
-                plt.scatter(freqLP[not_fit_points], xpsd[not_fit_points], marker = ".", alpha = 0.2, color = colors[i],s = 4)
-    plt.semilogy(freqLP[index0:index1], xpsd_nosphere[index0:index1], color = "#add8e6")
-    plt.semilogy(freqLP[index0:index1], np.sqrt( 2.*np.pi*harmonic(freqLP[index0:index1], *poptN)) , linewidth=LT, color = "#add8e6")
+                plt.scatter(freqLP[fit_points], xpsd[fit_points], marker = ".", color = colors[i], s = 2)
+                plt.scatter(freqLP[not_fit_points], xpsd[not_fit_points], marker = ".", alpha = 0.2, color = colors[i],s = 2)
+    ###plt.semilogy(freqLP[index0:index1], xpsd_nosphere[index0:index1], color = "#add8e6")
+    ###plt.semilogy(freqLP[index0:index1], np.sqrt( 2.*np.pi*harmonic(freqLP[index0:index1], *poptN)) , linewidth=LT, color = "#add8e6")
     plt.ylabel("$\sqrt{S_{xx}^{in}}$ [m/$\sqrt{Hz}$]")
     plt.xlabel("Frequency [Hz]")
+    fig.set_size_inches(4,4.5)
     plt.tight_layout(pad = 0)
     # plt.text(41, 1e-8, "Inloop sensor")
     plt.grid()
-    plt.ylim(3e-12, 1e-7)
+    plt.ylim(2e-12, 1e-7)
     name = "inloop_" + ".pdf"
     name = os.path.join(folder_save, name)
 
@@ -303,11 +306,14 @@ tout = np.array(tout)
 tin = np.array(tin)
 D = np.abs(np.array(D))
 
-touterr = 0.4*tout
-tinerr = 0.4*tin
+print "gammaout = ", g
+print "temp_out = ", tout
 
-plt.figure(figsize=(5,3))
-plt.rcParams.update({'font.size': 14})
+touterr = 0.44*tout # the 0.44 includes distance of 3.3pm0.4mm.
+tinerr = 0.44*tin
+
+fig  = plt.figure()
+plt.rcParams.update({'font.size': 10})
 plt.errorbar(100*D, tout, yerr = touterr, fmt = "o", label = "Outloop")
 plt.errorbar(100*D, tin, yerr = tinerr, fmt = "o", label = "Inloop")
 # plt.hlines(toutN, np.min(D)-2e-3, np.max(D)+2e-3)
@@ -318,6 +324,7 @@ plt.yscale('log')
 plt.xscale('log')
 plt.legend()
 plt.grid()
+fig.set_size_inches(4,4.5)
 plt.tight_layout(pad = 0)
 
 D = np.abs(np.array(D))
@@ -357,7 +364,7 @@ plt.plot(space, space*pf[0] + pf[1])
 
 
 
-############################## fit model:
+# # fit model
 
 # def Sc(freq, fres, L, Dg, gain, Gamma, nosphere_psd_out, TIME):
     

@@ -127,9 +127,9 @@ tin = tin[ind]
 # tin = tin[2:-1]
 
 
-# below is errorbar due to mass
-touterr = 0.4*tout
-tinerr = 0.4*tin
+# below is errorbar due to mass and distance
+touterr = 0.44*tout
+tinerr = 0.44*tin
 
 popt, pcov = opt.curve_fit(lambda D, L, gain: Sc(freq, L, D, psdnosphereout, 2**19/1e4, gain, mass), D, tout, sigma = touterr)
 print popt
@@ -162,12 +162,12 @@ def test(D, L, gain): # not the best procedure but works
 def test_s(D, L, gain):
     return Ss(freq, L, D, psdnospherein, 2**19/1e4, gain, mass)
 
-Dlist = 3.*np.logspace(-3, 0, 100)
+Dlist = 3.*np.logspace(-3, 0, 300)
 
-plt.figure(figsize=(5,3))
-plt.rcParams.update({'font.size': 14})
-plt.errorbar(D, tout, yerr = touterr, fmt = "o", label = "Outloop", color = "C0")
-plt.errorbar(D, tin, yerr = tinerr, fmt = "o", label = "Inloop",  color = "C1")
+fig = plt.figure()
+plt.rcParams.update({'font.size': 10})
+plt.errorbar(D, tout, yerr = touterr, fmt = "o", label = "Out-of-loop", color = "C0")
+plt.errorbar(D, tin, yerr = tinerr, fmt = "o", label = "In-loop",  color = "C1")
 plt.plot(Dlist, test(Dlist, *popt), "-", color = "C0", alpha = 0.5, linewidth = 2)
 plt.plot(Dlist, test_s(Dlist, *popts), "-", color = "C1", alpha = 0.5, linewidth = 2)
 plt.xlabel("Derivative Gain [Arb. Units]")
@@ -177,6 +177,7 @@ plt.xscale('log')
 plt.xlim(0.003,2)
 plt.legend()
 plt.grid()
+fig.set_size_inches(4,2.75)
 plt.tight_layout(pad = 0)
 
 

@@ -89,35 +89,84 @@ def Intensity_to_loose_gradoverpress(p, Rgas, r, eta, Tgas, MolecularMass, const
     return result
 
 
-def Intensity_to_loose_constant_grad_extra_heat(p, Rgas, r, eta, Tgas, MolecularMass, constant, acomo, c1, c2, c3): # the gradient is constant in pressure and is prop to co2 power
+def Intensity_to_loose_constant_grad_extra_heat(p, Rgas, r, eta, Tgas, MolecularMass, constant, acomo, c1, c2, c3, c4): # the gradient is constant in pressure and is prop to co2 power
 
     M = (4./3.)*pi*(r**3)*1800.
 
     gamma0 = Gamma(eta, p, Tgas, 4.65e-26, r, M)
 
     acomo = np.abs(acomo)
+    c4 = np.abs(c4)
+    
     p0 = P0(r, eta, Rgas, Tgas, MolecularMass, acomo)
 
-    a = ( 1.*constant - 1.0*(gamma0*c1 + c2)/(gamma0 + c3) )*(1.*p/p0 + 1.*p0/p)
+    constant = np.abs(constant)
+    c1 = np.abs(c1)
+
+    #a = ( 1.*constant - 1.0*c1*((gamma0 + c2)/(gamma0 + c3)) )
+
+    aux = ( 1.*constant  - 1.0*c1*((gamma0 + c2)/(gamma0 + c3)) )
+    
+    ma = np.max(aux,0)
+    
+    a = np.sqrt( ma ) - 0.*c4*gamma0**(-0.5)     
+    
+    a = a*(1.*p/p0 + 1.*p0/p)
 
     b = 1.*pi*eta*(r)*np.sqrt(acomo*Rgas/(MolecularMass*Tgas)) # there is a typo in wenqgian's formular. It is linear in the radius
     
     return a/b
 
+def Intensity_to_loose_constant_grad_extra_heat_new(p, Rgas, r, eta, Tgas, MolecularMass, constant, acomo, c1, c2, c3, c4, c5, c6): # the gradient is constant in pressure and is prop to co2 power
+
+    M = (4./3.)*pi*(r**3)*1800.
+
+    gamma0 = Gamma(eta, p, Tgas, 4.65e-26, r, M)
+
+    acomo = 1.*np.abs(acomo)
+    acomo = 0.55
+    c4 = 1.*np.abs(c4)
+    c1 = 1.*np.abs(c1)
+    c2 = 1.*np.abs(c2)
+
+    c5 = 1.*np.abs(c5)
+    c6 = 1.*np.abs(c6)
+    
+    p0 = P0(r, eta, Rgas, Tgas, MolecularMass, acomo)
+
+    constant = 1.*np.abs(constant)
+
+    M = 1.*c1/(gamma0 + c2 + c3)
+
+    G = constant - 1.*( gamma0*c4 + c5)/( gamma0 + c2 + c3 )
+    
+    aux = 1.*(M/c6)**2 + 4.*G/c6
+    aux = np.maximum(aux, 0)
+    
+    a = 0.5*( ( aux )**0.5 - M/c6)
+    
+    a = a*(1.*p/p0 + 1.*p0/p)
+
+    b = 1.*pi*eta*(r)*np.sqrt(acomo*Rgas/(MolecularMass*Tgas)) # there is a typo in wenqgian's formular. It is linear in the radius
+    
+    return a/b
+
+para = [8.31, 7.5e-06, 1.8e-05, 300.0, 0.029, 1e-11, 1.0, 1e1, 1e-5, -5e-1, 1e-13, 1e-13, 1.]
+
 
 Press = np.logspace(-1, 5, 100) # in Pascal
 
-plt.figure()
-plt.loglog(Press/100, force_constant_grad(Press, 1e-2, 8.3, 7.5e-6, 1e-5, 300, 30e-3, 1))
-plt.loglog(Press/100, force_grad_vs_p(Press, 1e-2, 8.3, 7.5e-6, 1e-5, 300, 30e-3, 1, 1))
-plt.xlabel("Pressure mbar")
+# plt.figure()
+# plt.loglog(Press/100, force_constant_grad(Press, 1e-2, 8.3, 7.5e-6, 1e-5, 300, 30e-3, 1))
+# plt.loglog(Press/100, force_grad_vs_p(Press, 1e-2, 8.3, 7.5e-6, 1e-5, 300, 30e-3, 1, 1))
+# plt.xlabel("Pressure mbar")
 
 
 
 folder = r"C:\Users\yalem\GitHub\Documents\Optlev\scripts\wenqiang_power_to_loose"
 file_list = glob.glob(folder+"\*.txt")
 
-plt.figure()
+#plt.figure()
 x = []
 y = []
 for i in file_list:
@@ -135,46 +184,48 @@ pmin_ind = np.where(x > 2)[0][0]
 x = x*1e2 # it is in pascal
 
 
-popt, pcov = opt.curve_fit(lambda press, k, acomo: Intensity_to_loose_constant_grad(press, 8.31, 7.5e-6, 1.8e-5, 300., 29e-3, k, acomo), x[pmin_ind:], y[pmin_ind:])
+popt, pcov = opt.curve_fit(lambda press, k: Intensity_to_loose_constant_grad(press, 8.31, 7.5e-6, 1.8e-5, 300., 29e-3, k, 0.77), x[pmin_ind:], y[pmin_ind:])
 print popt
-popt = [8.31, 7.5e-6, 1.8e-5, 300., 29e-3, popt[0], popt[1]]
+popt = [8.31, 7.5e-6, 1.8e-5, 300., 29e-3, popt[0], 0.77]
 
-popt2, pcov2 = opt.curve_fit(lambda press, k, acomo, cut: Intensity_to_loose_gradoverpress(press, 8.31, 7.5e-6, 1.8e-5, 300., 29e-3, k, acomo, cut), x[pmin_ind:], y[pmin_ind:])
-print popt2
-popt2 = [8.31, 7.5e-6, 1.8e-5, 300., 29e-3, popt2[0], popt2[1], popt2[2]]
+# popt2, pcov2 = opt.curve_fit(lambda press, k, acomo, cut: Intensity_to_loose_gradoverpress(press, 8.31, 7.5e-6, 1.8e-5, 300., 29e-3, k, acomo, cut), x[pmin_ind:], y[pmin_ind:])
+# print popt2
+# popt2 = [8.31, 7.5e-6, 1.8e-5, 300., 29e-3, popt2[0], popt2[1], popt2[2]]
 
-chi2_model_Ashkin = np.sum( (y - Intensity_to_loose_constant_grad(x, *popt))**2 / Intensity_to_loose_constant_grad(x, *popt)  )
+# chi2_model_Ashkin = np.sum( (y - Intensity_to_loose_constant_grad(x, *popt))**2 / Intensity_to_loose_constant_grad(x, *popt)  )
 
-# print chi2_model_Ashkin
+# # print chi2_model_Ashkin
 
-chi2_model_Geraci = np.sum( (y - Intensity_to_loose_gradoverpress(x, *popt2))**2 / Intensity_to_loose_gradoverpress(x, *popt2)  )
+# chi2_model_Geraci = np.sum( (y - Intensity_to_loose_gradoverpress(x, *popt2))**2 / Intensity_to_loose_gradoverpress(x, *popt2)  )
 
-# print chi2_model_Geraci
+# # print chi2_model_Geraci
 
-plt.subplot(2,1,1)
-plt.semilogx(x, y, "o")
-plt.ylabel('laser power(mW/mm^2)')
-plt.title('loosing power')
-plt.plot(Press, Intensity_to_loose_constant_grad(Press, *popt))
-plt.plot(Press, Intensity_to_loose_gradoverpress(Press, *popt2))
-plt.ylim(0, 70)
-plt.xlim(1, 1e5)
-plt.subplot(2,1,2)
-plt.semilogx(x, y - Intensity_to_loose_constant_grad(x, *popt), "o")
-plt.plot(x, y - Intensity_to_loose_gradoverpress(x, *popt2), "x")
-plt.xlim(1, 1e5)
-plt.ylim(-15, 15)
-plt.xlabel('pressure(Pa)')
+# plt.subplot(2,1,1)
+# plt.semilogx(x, y, "o")
+# plt.ylabel('laser power(mW/mm^2)')
+# plt.title('loosing power')
+# plt.plot(Press, Intensity_to_loose_constant_grad(Press, *popt), "--")
+# plt.plot(Press, Intensity_to_loose_gradoverpress(Press, *popt2))
+# plt.ylim(0, 70)
+# plt.xlim(1, 1e5)
+# plt.subplot(2,1,2)
+# plt.semilogx(x, y - Intensity_to_loose_constant_grad(x, *popt), "o")
+# plt.plot(x, y - Intensity_to_loose_gradoverpress(x, *popt2), "x")
+# plt.xlim(1, 1e5)
+# plt.ylim(-15, 15)
+# plt.xlabel('pressure(Pa)')
 # plt.show()
 
-popt3, pcov3 = opt.curve_fit(lambda press, k, acomo, c1, c2 ,c3: Intensity_to_loose_constant_grad_extra_heat(press, 8.31, 7.5e-6, 1.8e-5, 300., 29e-3, k, acomo, c1, c2, c3), x, y)
+popt3, pcov3 = opt.curve_fit(lambda press, k, acomo, c1, c2 ,c3, c4, c5, c6: Intensity_to_loose_constant_grad_extra_heat_new(press, 8.31, 7.5e-6, 1.8e-5, 300., 29e-3, k, acomo, c1, c2, c3, c4, c5, c6), x, y, p0 = [1e-11, 1.0, 1e1, 1e-5, -5e-1, 1e-13, 1e-13, 1.])
 
+#  p0 = [8.9197e-20, -0.549, 1., 1., 1.]
 
-para = [8.31, 7.5e-6, 1.8e-5, 300., 29e-3, popt3[0], popt3[1], popt3[2], popt3[3], popt3[4]]
-#para = [8.31, 7.5e-06, 1.8e-05, 300., 0.029, 1.0000038323705327, 0.05*9.385742448504883, 1.0000038319747386, 1.00000001*0.9999619490210263, 0.9999581160497415]
+para = [8.31, 7.5e-6, 1.8e-5, 300., 29e-3, popt3[0], popt3[1], popt3[2], popt3[3], popt3[4], popt3[5], popt3[6], popt3[7]]
+
 print para
 plt.figure()
-plt.semilogx(Press, Intensity_to_loose_constant_grad_extra_heat(Press, *para), "k--")
+plt.semilogx(Press, Intensity_to_loose_constant_grad_extra_heat_new(Press, *para), "k--")
+# plt.loglog(Press, Press**0.5)
 # plt.semilogx(Press, Intensity_to_loose_gradoverpress_extra_heat(Press, *para2), "--")
 plt.semilogx(Press, Intensity_to_loose_constant_grad(Press, *popt))
 plt.semilogx(x, y, "o")

@@ -6,11 +6,11 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"LPmbar_xyzcool_843.h5"
-fname0 = r"LPmbar_xyzcool_842.h5"
-path = r"C:\data\20191210\10um\3\newpinhole\acceleration2"
+refname = r"LPmbar_xyzcool8_0.h5"
+fname0 = r"LPmbar_xyzcool8_4.h5"
+path = r"C:\data\20191122\10um\2\nosphere"
 
-coherence = True
+realcsdnorm = True
 
 make_plot_vs_time = True
 conv_fac = 4.4e-14
@@ -31,7 +31,7 @@ if fname0 == "":
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**17
+NFFT = 2**19
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -67,10 +67,10 @@ def getdata(fname):
         # plt.figure()
         # plt.loglog(f, np.sqrt(np.abs(np.real(Pxy))))
 	# norm = numpy.median(dat[:, bu.zi])
-        if coherence:
-                f, Pxy = np.abs(np.real(sp.csd(dat[:, 0]-numpy.mean(dat[:, 0]), dat[:, 4] - numpy.mean(dat[:, 4]), Fs, nperseg=NFFT)))
-                f, Pxx = sp.csd(dat[:, 0]-numpy.mean(dat[:, 0]), dat[:, 0]-numpy.mean(dat[:, 0]), Fs, nperseg=NFFT)
-                f, Pyy = sp.csd(dat[:, 4]-numpy.mean(dat[:, 4]), dat[:, 4]-numpy.mean(dat[:, 4]), Fs, nperseg=NFFT)
+        if realcsdnorm:
+                f, Pxy = np.abs(np.real(sp.csd(dat[:, 0]-numpy.mean(dat[:, 0]), dat[:, 4] - numpy.mean(dat[:, 4]), Fs, nperseg=NFFT, scaling = "spectrum")))
+                f, Pxx = sp.csd(dat[:, 0]-numpy.mean(dat[:, 0]), dat[:, 0]-numpy.mean(dat[:, 0]), Fs, nperseg=NFFT, scaling = "spectrum")
+                f, Pyy = sp.csd(dat[:, 4]-numpy.mean(dat[:, 4]), dat[:, 4]-numpy.mean(dat[:, 4]), Fs, nperseg=NFFT, scaling = "spectrum")
                 Cxy = (Pxy**2)/(Pxx*Pyy)
         
 	        return [freqs, xpsd, ypsd, dat, zpsd, xpsd_outloop, f, Cxy]
@@ -140,13 +140,18 @@ plt.ylabel("V/rtHz")
 plt.xlabel("Frequency[Hz]")
 
 
-if refname and coherence:
+if refname and realcsdnorm:
+
+        a = np.where(data0[6] >= 30)[0][0]
+        b = np.where(data0[6] >= 100)[0][0]
         plt.figure()
-        plt.plot(data0[6], np.sqrt(data0[7]))
+        plt.plot(data0[6][a:b], np.sqrt(data0[7][a:b]))
         plt.plot(data1[6], np.sqrt(data1[7]))
         plt.grid()
         plt.ylim(0., 1.01)
         plt.xlim(1, 120)
+        #print np.sqrt(np.mean(data1[7][a:b]))# this is 0.7 for uncorrelated signals and using max NFFT
+        #print np.sqrt(np.mean(data0[7][a:b]))
 
 plt.show()
 

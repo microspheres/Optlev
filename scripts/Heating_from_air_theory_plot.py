@@ -14,7 +14,7 @@ vis_H2 = 1.37e-5 # Pa*s, see https://www.engineeringtoolbox.com/gases-absolute-d
 
 rho = 1800.0 #kg/m^3
 
-D = 15.0e-6 #m
+D = 10.0e-6 #m
 
 R = D/2.
 
