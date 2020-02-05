@@ -6,9 +6,9 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"LPmbar_xyzcool8_0.h5"
-fname0 = r"LPmbar_xyzcool8_4.h5"
-path = r"C:\data\20191122\10um\2\nosphere"
+refname = r"LPmbar_xyzcool_5.h5"
+fname0 = r"LPmbar_xyzcool_5.h5"
+path = r"C:\data\20191122\10um\2\charge"
 
 realcsdnorm = True
 
@@ -49,6 +49,7 @@ def getdata(fname):
 		#dat = 1.0*dat*max_volt/nbit
                 dat = dat * 10./(2**15 - 1)
                 Press = dset.attrs['pressures'][0]
+                print Press
                 
 	else:
 		dat = numpy.loadtxt(fname, skiprows = 5, usecols = [2, 3, 4, 5, 6] )

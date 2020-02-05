@@ -175,10 +175,12 @@ plt.ylabel("Temperature [$\mu$K]")
 plt.yscale('log')
 plt.xscale('log')
 plt.xlim(0.003,2)
+plt.ylim(2.6,490000)
 plt.legend()
 plt.grid()
 fig.set_size_inches(4,2.75)
 plt.tight_layout(pad = 0)
+
 
 
 plt.show()

@@ -8,21 +8,21 @@ X = True
 Y = False
 
 
-path_save = r"C:\Users\yalem\GitHub\Documents\Optlev\scripts\Yukawa\results_20191014"
+path_save = r"C:\Users\yalem\GitHub\Documents\Optlev\scripts\Yukawa\10um_sphere_JAN_2020"
 
 pi = np.pi
 
-Sph_diam = 22e-6
+Sph_diam = 10.3e-6
 
-Drop_rad = 70.0e-6
+Drop_rad = 45.0e-6
 
-Drop_len = 50.0e-6
+Drop_len = 100.0e-6
 
 Drop_x0 = -1.0*Drop_len/2.0
 
-dist = 4.0e-6
+dist = 1.0e-6
 
-wall = 10.0e-6
+wall = 5.0e-6
 
 center_center_distance = Drop_rad + Sph_diam/2. + wall + dist
 

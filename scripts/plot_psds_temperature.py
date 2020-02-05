@@ -91,7 +91,7 @@ def mass(Diameter, rho):
 mass = mass(Diameter, rho)
 
 list_of_plots = [1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0]
-#list_of_plots = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+list_of_plots = [1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0]
 
 
 import matplotlib.cm as cm
@@ -208,8 +208,8 @@ def selected_plot(folder_list, folder_nosphere, list_of_plots):
             if list_of_plots[i] == 1:
                 plt.scatter(freqLP[fit_points], xpsdout[fit_points], marker = ".", color = colors[i], s = 2)
                 plt.scatter(freqLP[not_fit_points], xpsdout[not_fit_points], marker = ".", alpha = 0.2, color = colors[i],s = 2)
-    ###plt.semilogy(freqLP[index0:index1], xpsd_nosphereout[index0:index1], label = "Noise", color = "#add8e6")
-    ###plt.semilogy(freqLP[index0:index1], np.sqrt( 2.*np.pi*harmonic(freqLP[index0:index1], *poptN)) , linewidth=LT, color = "#add8e6")
+    plt.semilogy(freqLP[index0:index1], xpsd_nosphereout[index0:index1], label = "Noise", color = "#add8e6")
+    plt.semilogy(freqLP[index0:index1], np.sqrt( 2.*np.pi*harmonic(freqLP[index0:index1], *poptN)) , linewidth=LT, color = "#add8e6")
     plt.legend()
     plt.ylabel("$\sqrt{S_{xx}^{out}}$ [m/$\sqrt{Hz}$]")
     plt.tick_params(
@@ -284,8 +284,8 @@ def selected_plot(folder_list, folder_nosphere, list_of_plots):
             if list_of_plots[i] == 1:
                 plt.scatter(freqLP[fit_points], xpsd[fit_points], marker = ".", color = colors[i], s = 2)
                 plt.scatter(freqLP[not_fit_points], xpsd[not_fit_points], marker = ".", alpha = 0.2, color = colors[i],s = 2)
-    ###plt.semilogy(freqLP[index0:index1], xpsd_nosphere[index0:index1], color = "#add8e6")
-    ###plt.semilogy(freqLP[index0:index1], np.sqrt( 2.*np.pi*harmonic(freqLP[index0:index1], *poptN)) , linewidth=LT, color = "#add8e6")
+    plt.semilogy(freqLP[index0:index1], xpsd_nosphere[index0:index1], color = "#add8e6")
+    plt.semilogy(freqLP[index0:index1], np.sqrt( 2.*np.pi*harmonic(freqLP[index0:index1], *poptN)) , linewidth=LT, color = "#add8e6")
     plt.ylabel("$\sqrt{S_{xx}^{in}}$ [m/$\sqrt{Hz}$]")
     plt.xlabel("Frequency [Hz]")
     fig.set_size_inches(4,4.5)
@@ -336,11 +336,15 @@ pg = np.polyfit(D[fit_points], g[fit_points], 1)
 
 print "k =", pg
 
-
 plt.figure()
 plt.plot(D, g, ".")
 plt.plot(D[fit_points], g[fit_points], "x")
 plt.plot(space, space*pg[0] + pg[1])
+
+F = np.sqrt(4.*kb*(2.*pi*g)*(tout*1e-6)*(4./3 *pi * 1800 * (10.3e-6 / 2)**3))
+plt.figure()
+plt.loglog(D, F, ".")
+
 
 # D = np.abs(np.array(D))
 f = np.abs(np.array(f))

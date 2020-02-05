@@ -92,16 +92,20 @@ def get_poits(filedata, comb, path):
     plt.loglog(freqs[index], drivepsd[index], "r.")
 
     plt.figure()
+    plt.rcParams.update({'font.size': 15})
     plt.loglog(freqs[index], xin_psd, "r.")
     plt.loglog(freqs[index], xout_psd, "b.")
     plt.loglog(freqs, harmonic(freqs, *poptin), "r-")
     plt.loglog(freqs, harmonic(freqs, *poptout), "b-")
+    plt.xlabel("Frequency [Hz]")
+    plt.ylabel("Transfer function")
+    plt.tight_layout()
 
     gammain = poptin[2]
     gammaout = poptout[2]
 
     sin2 = pcovin[2][2]
-    sout2 =pcovout[2][2]
+    sout2 = pcovout[2][2]
     s = 1./(1./sin2 + 1./sout2)
     
     gamma_combined = 1.*s*(gammain/sin2 + gammaout/sout2)
