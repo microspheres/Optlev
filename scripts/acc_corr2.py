@@ -429,8 +429,8 @@ fig = plt.figure()
 plt.rcParams.update({'font.size': 10})
 ax1 = plt.subplot(3,1,(1,2))
 ax1.semilogy(frequency, 1000.*np.sqrt(npsd), linewidth = 0.5)
-dk = (9e3 + 0.0019* ((frequency**2 - 59**2)**2 + (frequency*0.238)**2 ) )**0.5
-ax1.semilogy(frequency, dk, linewidth = 2, label = "1")
+#dk = (9e3 + 0.0019* ((frequency**2 - 59**2)**2 + (frequency*0.238)**2 ) )**0.5
+#ax1.semilogy(frequency, dk, linewidth = 2, label = "1")
 
 ax1.set_xlabel("Frequency [Hz]")
 ax1.set_ylabel("Sensitivity [ng$/\sqrt{Hz}$]")
