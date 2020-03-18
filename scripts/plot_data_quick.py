@@ -6,14 +6,14 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"LPmbar_xyzcool_5.h5"
-fname0 = r"LPmbar_xyzcool_5.h5"
-path = r"C:\data\20191122\10um\2\charge"
+refname = r"1.h5"
+fname0 = r""
+path = r"C:\data\20200311\two_spheres\15um_german\4\1"
 
 realcsdnorm = True
 
 make_plot_vs_time = True
-conv_fac = 4.4e-14
+
 if fname0 == "":
 	filelist = glob.glob(path+"\*.h5")
 
@@ -31,7 +31,7 @@ if fname0 == "":
 		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**19
+NFFT = 2**14
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -58,7 +58,7 @@ def getdata(fname):
 	ypsd, freqs = matplotlib.mlab.psd(dat[:, bu.yi]-numpy.mean(dat[:, bu.yi]), Fs = Fs, NFFT = NFFT)
         zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
 
-        xpsd_outloop, freqs = matplotlib.mlab.psd(dat[:, 4]-numpy.mean(dat[:, 4]), Fs = Fs, NFFT = NFFT)
+        xpsd_outloop, freqs = matplotlib.mlab.psd(dat[:, 5]-numpy.mean(dat[:, 5]), Fs = Fs, NFFT = NFFT)
         # Ddrive = dat[:, bu.drive]*np.gradient(dat[:,bu.drive])
         # DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT))
         print pid
@@ -77,12 +77,9 @@ def getdata(fname):
 	        return [freqs, xpsd, ypsd, dat, zpsd, xpsd_outloop, f, Cxy]
         return [freqs, xpsd, ypsd, dat, zpsd, xpsd_outloop]
 
+
 data0 = getdata(os.path.join(path, fname0))
 
-def rotate(vec1, vec2, theta):
-    vecn1 = numpy.cos(theta)*vec1 + numpy.sin(theta)*vec2
-    vecn2 = numpy.sin(theta)*vec1 + numpy.cos(theta)*vec2
-    return [vec1, vec2]
 
 
 if refname:
@@ -151,8 +148,8 @@ if refname and realcsdnorm:
         plt.grid()
         plt.ylim(0., 1.01)
         plt.xlim(1, 120)
-        #print np.sqrt(np.mean(data1[7][a:b]))# this is 0.7 for uncorrelated signals and using max NFFT
-        #print np.sqrt(np.mean(data0[7][a:b]))
+        print np.sqrt(np.mean(data1[7][a:b]))# this is 0.7 for uncorrelated signals and using max NFFT
+        print np.sqrt(np.mean(data0[7][a:b]))
 
 plt.show()
 

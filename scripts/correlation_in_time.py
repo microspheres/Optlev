@@ -39,7 +39,7 @@ x = allan[0]
 popt, pcov = opt.curve_fit(fit_func, x, dev, sigma = err)
 
 plt.figure()
-plt.errorbar(x, dev, yerr = err, fmt = ".")
+plt.errorbar(x, dev, yerr = 0*err, fmt = ".")
 plt.loglog(x, fit_func(x, *popt))
 
 
@@ -53,7 +53,7 @@ T = []
 for i in range(len(c)):
     if i > 30 and i%10 == 0:
         try:
-            bins = 30
+            bins = 10
             h, bc = histo(c[:i], bins)
             sigma = np.sqrt(h)
             for j in range(len(sigma)):
@@ -72,11 +72,11 @@ popt2, pcov2 = opt.curve_fit(fit_func, T, S, sigma = S)
 
 
 plt.figure()
-plt.errorbar(T, M, yerr = S, fmt = ".")
-plt.ylim(-3,3)
-plt.grid()
-# plt.loglog(T, S, ".")
-# plt.loglog(T, fit_func(T, *popt2))
+# plt.errorbar(T, M, yerr = S, fmt = ".")
+# plt.ylim(-3,3)
+# plt.grid()
+plt.loglog(T, S, ".")
+plt.loglog(T, fit_func(T, *popt2))
 
 plt.show()
 

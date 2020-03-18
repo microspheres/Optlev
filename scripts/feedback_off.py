@@ -18,32 +18,32 @@ path_list = [r"C:\data\20190912\prechamber\9\onoff", ]
 
 path_list = [r"C:\data\20190923\prechamber\3\Lowcharge\ONOFF2", ]
 
-path_list = [r"C:\data\20190923\prechamber\3\onoff3"]
+# path_list = [r"C:\data\20190923\prechamber\3\onoff3"]
 
-path_list = [r"C:\data\20191004\22um\prechamber_ATM\7\ONOFF4"]
-# path_list = [r"C:\data\20191004\22um\prechamber\1\ONOFF4"]
-path_list = [r"C:\data\20191014\22um\prechamber_ATM\3\ONOFF3"]
-path_list = [r"C:\data\20191014\22um\prechamber_ATM\3\ONOFF5"]
-path_list = [r"C:\data\20191014\22um\prechamber_LP\1\ONOFF"]
-path_list = [r"C:\data\20191014\22um\prechamber_LP\5\ONOFF"]
-path_list = [r"C:\data\20191014\22um\prechamber_LP\5\ONOFF2"]
-path_list = [r"C:\data\20191014\22um\prechamber_LP\5\ONOFF3"]
-path_list = [r"C:\data\20191014\22um\prechamber_LP\5\ONOFF4"]
-path_list = [r"C:\data\20191014\22um\prechamber_LP\5\ONOFF5"]
-path_list = [r"C:\data\paper\10um\PreChamber_LP\2\ONOFF\2"]
-path_list = [r"C:\data\paper2\22um\PreChamber_LP\2\ONOFF\7"]
-path_list = [r"C:\data\paper2\22um\PreChamber_LP\3\ONOFF13"]
-path_list = [r"C:\data\paper3\22um\PreChamber_ATM\2\ONOFF_for_calibration"]
+# path_list = [r"C:\data\20191004\22um\prechamber_ATM\7\ONOFF4"]
+# # path_list = [r"C:\data\20191004\22um\prechamber\1\ONOFF4"]
+# path_list = [r"C:\data\20191014\22um\prechamber_ATM\3\ONOFF3"]
+# path_list = [r"C:\data\20191014\22um\prechamber_ATM\3\ONOFF5"]
+# path_list = [r"C:\data\20191014\22um\prechamber_LP\1\ONOFF"]
+# path_list = [r"C:\data\20191014\22um\prechamber_LP\5\ONOFF"]
+# path_list = [r"C:\data\20191014\22um\prechamber_LP\5\ONOFF2"]
+# path_list = [r"C:\data\20191014\22um\prechamber_LP\5\ONOFF3"]
+# path_list = [r"C:\data\20191014\22um\prechamber_LP\5\ONOFF4"]
+# path_list = [r"C:\data\20191014\22um\prechamber_LP\5\ONOFF5"]
+# path_list = [r"C:\data\paper\10um\PreChamber_LP\2\ONOFF\2"]
+# path_list = [r"C:\data\paper2\22um\PreChamber_LP\2\ONOFF\7"]
+# path_list = [r"C:\data\paper2\22um\PreChamber_LP\3\ONOFF13"]
+# path_list = [r"C:\data\paper3\22um\PreChamber_ATM\2\ONOFF_for_calibration"]
 path_list = [r"C:\data\paper3\22um\PreChamber_ATM\2\ONOFF\5"]
 
 #path_list = [r"C:\data\201908020\22um_SiO2_pinhole\5\ONOFF\1", ]
 
-N = 15 # number of div
+N = 50 # number of div
 
 channel = bu.xi
 
 plot_temp = True
-v2_to_m2 = 1.122e-14
+v2_to_m2 = 3.788654e-15
 Diameter = 22.6e-6
 rho = 1800.0
 
@@ -240,9 +240,9 @@ def get_fb_off(path, axe, plot_temp, v2_to_m2, mass, freq_res):
     for i in Xall:
         xall = i[0:len(Xall[0])-100]
         if len(xall) == len(Xall[0])-100:
-            # plt.figure()
-            # plt.plot(i)
-            # plt.show()
+            plt.figure()
+            plt.plot(i)
+            plt.show()
             Xallnew.append(xall)
     
     time = range(len(Xallnew[0]))/fs
@@ -317,6 +317,7 @@ def get_fb_off(path, axe, plot_temp, v2_to_m2, mass, freq_res):
         ax2.set_ylim(t1, t2)
         ax.set_ylim(X2sum[0], X2sum[-1])
         ax2.set_ylabel("COM Temperature [K]")
+        #ax2.set_yscale("log")
     ax.set_xlabel("Time [s]")
     ax.set_ylabel("$<volt>^2$")
     plt.tight_layout(pad = 0)

@@ -13,11 +13,11 @@ if several_folders:
     folder_temp = r"C:\data\20191122\10um\2\temp_x9"
     plot = False
 
-folder_calibration = r"C:\data\20191210\10um\3\newpinhole\calibration1e"
+folder_calibration = r"C:\data\paper3\22um\PreChamber_ATM\2\calibration3e"
 
-folder_meas = r"C:\data\20191210\10um\3\newpinhole\acceleration2"
+folder_meas = r"C:\data\paper3\22um\PreChamber_ATM\2\calibration3e"
 
-folder_hp = r"C:\data\20191210\10um\3\1mbar"
+folder_hp = r"C:\data\paper3\22um\PreChamber_ATM\2\1mbar"
 file_high_pressure = r"1mbar_zcool.h5"
 
 file_list = glob.glob(folder_calibration+"\*.h5")
@@ -26,14 +26,13 @@ NFFT = 2**18
 
 drive_col = 3
 
-#Diameter = 22.6e-6 #meters
-Diameter = 10.3e-6
+Diameter = 22.6e-6 #meters
+#Diameter = 10.3e-6
 rho = 1800
 
 d = 0.0033
-#d = 0.002
 
-number_of_charge = 1.0
+number_of_charge = 3.0
 
 elec_charge = number_of_charge*(1.60218e-19)
 
@@ -116,6 +115,7 @@ def find_resonance(folder_hp, file_high_pressure, channelX):
     # plt.semilogy(freq, psd(freq, *popt))
     # plt.xlim(10, 150)
     # plt.show()
+    # print popt[1]
     return [popt[1], freq, xpsd2]
 
 
@@ -165,10 +165,10 @@ def calibration(folder_calibration, folder_hp, file_high_pressure, channelX, NFF
     gamma_cali = np.abs(popt_g[2])
 
     print "gamma", gamma_cali
-    # plt.figure()
-    # plt.loglog(freq[1200:2000], xpsd[1200:2000])
-    # plt.loglog(freq, psdLP(freq, *popt_g))
-    # plt.show()
+    plt.figure()
+    plt.loglog(freq[1200:2000], xpsd[1200:2000])
+    plt.loglog(freq, psdLP(freq, *popt_g))
+    plt.show()
 
     V = np.sqrt(a[2])
     print "voltage for calibration Vpp = ", 2*V
@@ -299,10 +299,10 @@ def get_folder_list(folder_temp):
 if several_folders:
     folder_list = get_folder_list(folder_temp)
     for i in folder_list:
-        plot_psd_acc(i, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_outloop", 4, NFFT)
+        #plot_psd_acc(i, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_outloop", 4, NFFT)
         plot_psd_acc(i, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_inloop", bu.xi, NFFT)
 else:
-    plot_psd_acc(folder_meas, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_outloop", 4, NFFT)
+    #plot_psd_acc(folder_meas, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_outloop", 4, NFFT)
     plot_psd_acc(folder_meas, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_inloop", bu.xi, NFFT)
     plt.show()
 
