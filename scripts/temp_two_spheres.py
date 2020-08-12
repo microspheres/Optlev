@@ -5,7 +5,9 @@ from scipy.optimize import curve_fit
 import scipy.signal as sp
 import glob, os
 import h5py
-colors = ['#1f78b4', '#e66101', '#33a02c', '#984ea3', '#F27781', '#18298C', '#04BF8A', '#F2CF1D', '#F29F05', '#7155D9', '#8D07F6', '#9E91F2', '#F29B9B', '#F25764', '#6FB7BF', '#B6ECF2', '#5D1314', '#B3640F']
+colors = ['#1f78b4', '#e66101', '#33a02c', '#984ea3', '#F27781', '#18298C', '#04BF8A', '#F2CF1D', '#F29F05', '#7155D9', '#8D07F6', '#9E91F2', '#F29B9B', '#F25764', '#6FB7BF', '#B6ECF2', '#5D1314', '#B3640F', ]
+
+colors = colors + colors
 
 Fs = 450.
 
@@ -19,41 +21,44 @@ M = 3.2e-12
 
 kb = 1.38e-23
 
-c = 1e-6/(3.3) # from pixel to m
+c = 1e-6/(1.) # from pixel to m
 
-# fL1 = 40.
-# fL2 = 107.
+# Z-direction
 
-# fR1 = 20.
-# fR2 = 50.
+fL1 = 80.
+fL2 = 200.
 
-fL1 = 65.
-fL2 = 90.
+fR1 = 42.
+fR2 = 70.
 
-fR1 = 20.
-fR2 = 50.
+f_avoid_L = [119., 121.]
+p0R = [54., 20, 4e-9]
+p0L = [124., 100., 4e-9]
 
-f_avoid_L = [106., 113.]
+fLmax = 170.
+
+
+# X-direction
+
+# day 11
+#fL1 = 42.
+#fL2 = 140.
+
+# day 13
+#fL1 = 65.
+#fL2 = 140.
+
+#fR1 = 20.
+#fR2 = 50.
+
+#f_avoid_L = [106., 113.]
 #f_avoid_L = [69., 80.]
 # p0R = [32., 70, 4]
 # p0L = [74., 2., 4e-9]
 
-p0R = [37., 70, 4e-9]
-p0L = [53., 100., 4e-9]
-fLmax = 80.
-
-# pathlist = [r"C:\data\20200315\two_spheres\15um_german\2\1", r"C:\data\20200315\two_spheres\15um_german\2\2", r"C:\data\20200315\two_spheres\15um_german\2\3", r"C:\data\20200315\two_spheres\15um_german\2\4", r"C:\data\20200315\two_spheres\15um_german\2\5", r"C:\data\20200315\two_spheres\15um_german\2\6", r"C:\data\20200315\two_spheres\15um_german\2\7", r"C:\data\20200315\two_spheres\15um_german\2\8", r"C:\data\20200315\two_spheres\15um_german\2\9", r"C:\data\20200315\two_spheres\15um_german\2\10", r"C:\data\20200315\two_spheres\15um_german\2\11", r"C:\data\20200315\two_spheres\15um_german\2\12", r"C:\data\20200315\two_spheres\15um_german\2\13", r"C:\data\20200315\two_spheres\15um_german\2\14", r"C:\data\20200315\two_spheres\15um_german\2\15", r"C:\data\20200315\two_spheres\15um_german\2\16", r"C:\data\20200315\two_spheres\15um_german\2\17", r"C:\data\20200315\two_spheres\15um_german\2\1_redo" ]
-
-# pathlist = [r"C:\data\20200315\two_spheres\15um_german\3\1", r"C:\data\20200315\two_spheres\15um_german\3\2", r"C:\data\20200315\two_spheres\15um_german\3\3", r"C:\data\20200315\two_spheres\15um_german\3\4", r"C:\data\20200315\two_spheres\15um_german\3\5", r"C:\data\20200315\two_spheres\15um_german\3\6", r"C:\data\20200315\two_spheres\15um_german\3\7", r"C:\data\20200315\two_spheres\15um_german\3\8", r"C:\data\20200315\two_spheres\15um_german\3\9", r"C:\data\20200315\two_spheres\15um_german\3\10", r"C:\data\20200315\two_spheres\15um_german\3\11", r"C:\data\20200315\two_spheres\15um_german\3\12", r"C:\data\20200315\two_spheres\15um_german\3\13", r"C:\data\20200315\two_spheres\15um_german\3\14", r"C:\data\20200315\two_spheres\15um_german\3\15", r"C:\data\20200315\two_spheres\15um_german\3\1_redo",]
-# p0R = [32., 70, 4e-9]
-# p0L = [60., 2., 4e-9]
-# fL1 = 47.
-# fL2 = 100.
-
-# fR1 = 20.
-# fR2 = 50.
-
-pathlist = [r"C:\data\20200315\two_spheres\15um_german\4\1", r"C:\data\20200315\two_spheres\15um_german\4\2", r"C:\data\20200315\two_spheres\15um_german\4\3", r"C:\data\20200315\two_spheres\15um_german\4\4", r"C:\data\20200315\two_spheres\15um_german\4\1_redo", r"C:\data\20200315\two_spheres\15um_german\4\2_redo", r"C:\data\20200315\two_spheres\15um_german\4\3_redo", r"C:\data\20200315\two_spheres\15um_german\4\4_redo",]
+#p0R = [37., 70, 4e-9]
+#p0L = [53., 100., 4e-9]
+#fLmax = 80.
 
 pathlist = [r"C:\data\20200313\two_spheres\15um_german\1\1", r"C:\data\20200313\two_spheres\15um_german\1\2", r"C:\data\20200313\two_spheres\15um_german\1\3", r"C:\data\20200313\two_spheres\15um_german\1\4",]
 
@@ -61,9 +66,17 @@ pathlist = [r"C:\data\20200313\two_spheres\15um_german\1\1", r"C:\data\20200313\
 
 pathlist = [r"C:\data\20200311\two_spheres\15um_german\3\1", r"C:\data\20200311\two_spheres\15um_german\4\2", r"C:\data\20200311\two_spheres\15um_german\4\3", r"C:\data\20200311\two_spheres\15um_german\4\4", r"C:\data\20200311\two_spheres\15um_german\4\1_redo", r"C:\data\20200311\two_spheres\15um_german\4\2_redo", r"C:\data\20200311\two_spheres\15um_german\4\3_redo", r"C:\data\20200311\two_spheres\15um_german\4\4_redo",  ]
 
-pathlist = glob.glob(os.path.join(r"C:\data\20200311\two_spheres\15um_german\3", "*", ""))
-pathlist = [r"C:\data\20200313\two_spheres\15um_german\2\1", r"C:\data\20200313\two_spheres\15um_german\2\1_redo", ]
+pathlist = glob.glob(os.path.join(r"C:\data\20200311\two_spheres\15um_german\4", "*", ""))
+pathlist = pathlist[0:8]
+#print pathlist
+
+pathlist = [r"C:\data\20200313\two_spheres\15um_german\2\1", ]
+
 savepsd = False
+
+Use_Xdirection = False
+
+#pathlist = [r"C:\data\20200311\two_spheres\15um_german\3\1"]
 
 def get_pressANDpid(path):
     fname = glob.glob(path+"\*.h5")[0]
@@ -94,8 +107,13 @@ def getinfo_X(pathlist):
         filename = glob.glob(i+"\*.npy")[0]
         Data1L, Data1R, Data1Lx, Data1Rx = np.load(filename, encoding = 'latin1')
 
-        DataL = c*Data1Lx
-        DataR = c*Data1Rx
+        if Use_Xdirection:
+            DataL = c*Data1Lx
+            DataR = c*Data1Rx
+        else:
+            DataL = c*Data1L
+            DataR = c*Data1R
+            
 
         psd1L, freqs = matplotlib.mlab.psd(DataL, NFFT = NFFT, Fs = Fs)
         psd1R, freqs = matplotlib.mlab.psd(DataR, NFFT = NFFT, Fs = Fs)
@@ -123,6 +141,7 @@ def getinfo_X(pathlist):
         iR1 = np.where(freqs > fR2)[0][0]
 
         poptR, pcovR = curve_fit(psd, freqs[iR0:iR1], psd1R[iR0:iR1], p0 = p0R,)#sigma = np.sqrt(psd1R[iR0:iR1]) )
+        #poptR = p0R
 
         fb = np.linspace(1, 200, 2000)
 
@@ -151,7 +170,6 @@ def getinfo_X(pathlist):
         f, Pyy = sp.csd(DataR, DataR, Fs, nperseg=NFFT, scaling = "spectrum")
         Cxy = (Pxy**2)/(Pxx*Pyy)
 
-
         ColorL = colors[counter]
         ColorR = colors[counter+2]
         #plt.loglog(freqs[fit_L], psd1L[fit_L], label = LabelL, color = ColorL)
@@ -163,7 +181,7 @@ def getinfo_X(pathlist):
         plt.loglog(fb, psd(fb, *poptR), color = ColorR)
 
         plt.xlabel("Frequency [Hz]")
-        plt.ylabel("$S_{xx}$ [m$^2$/Hz]")
+        plt.ylabel("$S_{zz}$ [m$^2$/Hz]")
 
         # plt.legend()
         # plt.yscale("linear")

@@ -1,6 +1,6 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <Project Type="Project" LVVersion="18008000">
-	<Property Name="varPersistentID:{39140995-E4E8-49C6-8A93-393F295C7627}" Type="Ref"></Property>
+	<Property Name="varPersistentID:{E59E3AA2-FFD4-45A7-891F-E6E954A428E3}" Type="Ref">/My Computer/Dependencies/AFG-2225.lvlib/input 1</Property>
 	<Item Name="My Computer" Type="My Computer">
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="server.control.propertiesEnabled" Type="Bool">true</Property>
@@ -11,54 +11,54 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
-		<Item Name="kinesis" Type="Folder" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/kinesis">
+		<Item Name="kinesis" Type="Folder" URL="../kinesis">
 			<Property Name="NI.DISK" Type="Bool">true</Property>
 		</Item>
 		<Item Name="Sub VIs" Type="Folder">
-			<Item Name="flash_lamp (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/flash_lamp (SubVI).vi"/>
-			<Item Name="move_tilt_stage(Sub VI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/move_tilt_stage(Sub VI).vi"/>
-			<Item Name="open_tilt_stage_motor.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/open_tilt_stage_motor.vi"/>
-			<Item Name="set_piezos (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/set_piezos (SubVI).vi"/>
-			<Item Name="set_synth.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/set_synth.vi"/>
-			<Item Name="tilt_stage_boolean_math.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/tilt_stage_boolean_math.vi"/>
+			<Item Name="flash_lamp (SubVI).vi" Type="VI" URL="../DAQ/flash_lamp (SubVI).vi"/>
+			<Item Name="move_tilt_stage(Sub VI).vi" Type="VI" URL="../move_tilt_stage(Sub VI).vi"/>
+			<Item Name="open_tilt_stage_motor.vi" Type="VI" URL="../open_tilt_stage_motor.vi"/>
+			<Item Name="set_piezos (SubVI).vi" Type="VI" URL="../DAQ/set_piezos (SubVI).vi"/>
+			<Item Name="set_synth.vi" Type="VI" URL="../set_synth.vi"/>
+			<Item Name="tilt_stage_boolean_math.vi" Type="VI" URL="../tilt_stage_boolean_math.vi"/>
 		</Item>
-		<Item Name="AFG-2225.lvlib" Type="Library" URL="/C/LABVIEWFOLDER/instr.lib/AFG-2225/AFG-2225.lvlib"/>
+		<Item Name="AFG-2225.lvlib" Type="Library" URL="../../../../../../../LABVIEWFOLDER/instr.lib/AFG-2225/AFG-2225.lvlib"/>
 		<Item Name="Agilent 33XXX Series.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Agilent 33XXX Series/Agilent 33XXX Series.lvlib"/>
-		<Item Name="bead_dropper_Gadi.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/bead_dropper_Gadi.vi"/>
-		<Item Name="boolean_run_tilt_stage.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/boolean_run_tilt_stage.vi"/>
-		<Item Name="change_voltages_in_process_list.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/change_voltages_in_process_list.vi"/>
-		<Item Name="DAQ.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/DAQ.vi"/>
-		<Item Name="DeviceOpen.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Examples/Tilt Stage/Device VIs/DeviceOpen.vi"/>
-		<Item Name="dipole_voltage_control(Sub VI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/dipole_voltage_control(Sub VI).vi"/>
-		<Item Name="dipole_voltage_control_logic(SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/dipole_voltage_control_logic(SubVI).vi"/>
-		<Item Name="EOM.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/FPGA code/FPGA Bitfiles/EOM.vi"/>
-		<Item Name="Gwinstek_chan_1_2.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Gwinstek_chan_1_2.vi"/>
-		<Item Name="Gwinstek_chan_1_2_sub.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Gwinstek_chan_1_2_sub.vi"/>
-		<Item Name="initialize_oscilloscope_chan1.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/initialize_oscilloscope_chan1.vi"/>
-		<Item Name="load_arbitrary_waveform.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/load_arbitrary_waveform.vi"/>
-		<Item Name="Move Stage.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Move Stage.vi"/>
-		<Item Name="Move Tilt Stage Axis.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Move Tilt Stage Axis.vi"/>
-		<Item Name="Move Tilt Stage.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Move Tilt Stage.vi"/>
-		<Item Name="move_tilt_stage_usb.vi" Type="VI" URL="/C/Users/yalem/GitHub/move_tilt_stage_usb.vi"/>
-		<Item Name="name_dipole_voltage.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/name_dipole_voltage.vi"/>
-		<Item Name="Powermeter.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/Powermeter.vi"/>
-		<Item Name="Powermeter_eom.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/Powermeter_eom.vi"/>
-		<Item Name="pressures.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/pressures.vi"/>
-		<Item Name="pressures_sub.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/pressures_sub.vi"/>
-		<Item Name="rotation_mount.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/rotation_mount.vi"/>
-		<Item Name="set_dipole_voltage.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/set_dipole_voltage.vi"/>
-		<Item Name="set_instruments (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/set_instruments (SubVI).vi"/>
-		<Item Name="set_QWP.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/set_QWP.vi"/>
-		<Item Name="set_tilt_stage (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/set_tilt_stage (SubVI).vi"/>
-		<Item Name="take_data (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/take_data (SubVI).vi"/>
-		<Item Name="test_tilt_stage_positions.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/test_tilt_stage_positions.vi"/>
-		<Item Name="TIC Query Command daq.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/TIC Query Command daq.vi"/>
-		<Item Name="TIC Query Command.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/TIC Query Command.vi"/>
-		<Item Name="TIC Read Gauge Pressure or Volts daq.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/TIC Read Gauge Pressure or Volts daq.vi"/>
-		<Item Name="TIC Read Gauge Pressure or Volts.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/TIC Read Gauge Pressure or Volts.vi"/>
-		<Item Name="valve_lights.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/valve_lights.vi"/>
-		<Item Name="valves.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/valves.vi"/>
-		<Item Name="variable_steps_logic.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/variable_steps_logic.vi"/>
+		<Item Name="bead_dropper_Gadi.vi" Type="VI" URL="../bead_dropper_Gadi.vi"/>
+		<Item Name="boolean_run_tilt_stage.vi" Type="VI" URL="../DAQ/boolean_run_tilt_stage.vi"/>
+		<Item Name="change_voltages_in_process_list.vi" Type="VI" URL="../DAQ/change_voltages_in_process_list.vi"/>
+		<Item Name="DAQ.vi" Type="VI" URL="../DAQ/DAQ.vi"/>
+		<Item Name="DeviceOpen.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/DeviceOpen.vi"/>
+		<Item Name="dipole_voltage_control(Sub VI).vi" Type="VI" URL="../DAQ/dipole_voltage_control(Sub VI).vi"/>
+		<Item Name="dipole_voltage_control_logic(SubVI).vi" Type="VI" URL="../DAQ/dipole_voltage_control_logic(SubVI).vi"/>
+		<Item Name="EOM.vi" Type="VI" URL="../FPGA code/FPGA Bitfiles/EOM.vi"/>
+		<Item Name="Gwinstek_chan_1_2.vi" Type="VI" URL="../Gwinstek_chan_1_2.vi"/>
+		<Item Name="Gwinstek_chan_1_2_sub.vi" Type="VI" URL="../Gwinstek_chan_1_2_sub.vi"/>
+		<Item Name="initialize_oscilloscope_chan1.vi" Type="VI" URL="../initialize_oscilloscope_chan1.vi"/>
+		<Item Name="load_arbitrary_waveform.vi" Type="VI" URL="../load_arbitrary_waveform.vi"/>
+		<Item Name="Move Stage.vi" Type="VI" URL="../Move Stage.vi"/>
+		<Item Name="Move Tilt Stage Axis.vi" Type="VI" URL="../Move Tilt Stage Axis.vi"/>
+		<Item Name="Move Tilt Stage.vi" Type="VI" URL="../Move Tilt Stage.vi"/>
+		<Item Name="move_tilt_stage_usb.vi" Type="VI" URL="../../../../move_tilt_stage_usb.vi"/>
+		<Item Name="name_dipole_voltage.vi" Type="VI" URL="../DAQ/name_dipole_voltage.vi"/>
+		<Item Name="Powermeter.vi" Type="VI" URL="../../Powermeter.vi"/>
+		<Item Name="Powermeter_eom.vi" Type="VI" URL="../../Powermeter_eom.vi"/>
+		<Item Name="pressures.vi" Type="VI" URL="../pressures.vi"/>
+		<Item Name="pressures_sub.vi" Type="VI" URL="../pressures_sub.vi"/>
+		<Item Name="rotation_mount.vi" Type="VI" URL="../rotation_mount.vi"/>
+		<Item Name="set_dipole_voltage.vi" Type="VI" URL="../DAQ/set_dipole_voltage.vi"/>
+		<Item Name="set_instruments (SubVI).vi" Type="VI" URL="../DAQ/set_instruments (SubVI).vi"/>
+		<Item Name="set_QWP.vi" Type="VI" URL="../set_QWP.vi"/>
+		<Item Name="set_tilt_stage (SubVI).vi" Type="VI" URL="../DAQ/set_tilt_stage (SubVI).vi"/>
+		<Item Name="take_data (SubVI).vi" Type="VI" URL="../DAQ/take_data (SubVI).vi"/>
+		<Item Name="test_tilt_stage_positions.vi" Type="VI" URL="../test_tilt_stage_positions.vi"/>
+		<Item Name="TIC Query Command daq.vi" Type="VI" URL="../TIC Query Command daq.vi"/>
+		<Item Name="TIC Query Command.vi" Type="VI" URL="../TIC Query Command.vi"/>
+		<Item Name="TIC Read Gauge Pressure or Volts daq.vi" Type="VI" URL="../TIC Read Gauge Pressure or Volts daq.vi"/>
+		<Item Name="TIC Read Gauge Pressure or Volts.vi" Type="VI" URL="../TIC Read Gauge Pressure or Volts.vi"/>
+		<Item Name="valve_lights.vi" Type="VI" URL="../valve_lights.vi"/>
+		<Item Name="valves.vi" Type="VI" URL="../valves.vi"/>
+		<Item Name="variable_steps_logic.vi" Type="VI" URL="../DAQ/variable_steps_logic.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="instr.lib" Type="Folder">
 				<Item Name="Agilent 2000 3000 X-Series.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Agilent 2000 3000 X-Series/Agilent 2000 3000 X-Series.lvlib"/>
@@ -621,68 +621,59 @@
 				<Item Name="Write File+ (string).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Write File+ (string).vi"/>
 				<Item Name="Write Spreadsheet String.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Write Spreadsheet String.vi"/>
 			</Item>
-			<Item Name="AbortMotion.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/AbortMotion.vi"/>
-			<Item Name="AFG-2225.lvlib" Type="Library" URL="/C/Users/yalem/Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/AFG-2225.lvlib"/>
-			<Item Name="AG-UC2-UC8_Close.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Close.vi"/>
-			<Item Name="AG-UC2-UC8_Open.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Open.vi"/>
-			<Item Name="AgilisCmdLib.dll" Type="Document" URL="/C/Program Files/Newport/Piezo Motion Control/Newport AG-UC2-UC8 Applet/Samples/LabVIEW 2009/AgilisCmdLib.dll"/>
-			<Item Name="arange (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/arange (SubVI).vi"/>
-			<Item Name="check_folder (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/check_folder (SubVI).vi"/>
-			<Item Name="check_if_should_flash (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/check_if_should_flash (SubVI).vi"/>
-			<Item Name="ChooseCorrectInstrument.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Stanford/opt_lev-master/labview/agilis/move_stage/ChooseCorrectInstrument.vi"/>
-			<Item Name="clean_up_data_tasks (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/clean_up_data_tasks (SubVI).vi"/>
-			<Item Name="clean_up_instruments (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/clean_up_instruments (SubVI).vi"/>
-			<Item Name="CmdLib.dll" Type="Document" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Examples/Tilt Stage/CmdLib.dll"/>
-			<Item Name="create_file_name (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/create_file_name (SubVI).vi"/>
-			<Item Name="create_process_list (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/create_process_list (SubVI).vi"/>
-			<Item Name="DeviceClose.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Examples/Tilt Stage/Device VIs/DeviceClose.vi"/>
-			<Item Name="Get Full Terminal Name.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/Get Full Terminal Name.vi"/>
-			<Item Name="get_position_robust (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/get_position_robust (SubVI).vi"/>
-			<Item Name="GetErrorMsg.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetErrorMsg.vi"/>
-			<Item Name="GetMasterDeviceAddress.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Examples/Tilt Stage/Device VIs/GetMasterDeviceAddress.vi"/>
-			<Item Name="GetMotionDone.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetMotionDone.vi"/>
-			<Item Name="GetPosition.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetPosition.vi"/>
-			<Item Name="initialize_instruments (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/initialize_instruments (SubVI).vi"/>
-			<Item Name="InitSingleDevice.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Examples/Tilt Stage/Device VIs/InitSingleDevice.vi"/>
+			<Item Name="AbortMotion.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/AbortMotion.vi"/>
+			<Item Name="AFG-2225.lvlib" Type="Library" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/AFG-2225.lvlib"/>
+			<Item Name="AG-UC2-UC8_Close.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Close.vi"/>
+			<Item Name="AG-UC2-UC8_Open.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Open.vi"/>
+			<Item Name="AgilisCmdLib.dll" Type="Document" URL="../../../../../../../Program Files/Newport/Piezo Motion Control/Newport AG-UC2-UC8 Applet/Samples/LabVIEW 2009/AgilisCmdLib.dll"/>
+			<Item Name="arange (SubVI).vi" Type="VI" URL="../DAQ/arange (SubVI).vi"/>
+			<Item Name="check_folder (SubVI).vi" Type="VI" URL="../DAQ/check_folder (SubVI).vi"/>
+			<Item Name="check_if_should_flash (SubVI).vi" Type="VI" URL="../DAQ/check_if_should_flash (SubVI).vi"/>
+			<Item Name="ChooseCorrectInstrument.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/ChooseCorrectInstrument.vi"/>
+			<Item Name="clean_up_data_tasks (SubVI).vi" Type="VI" URL="../DAQ/clean_up_data_tasks (SubVI).vi"/>
+			<Item Name="clean_up_instruments (SubVI).vi" Type="VI" URL="../DAQ/clean_up_instruments (SubVI).vi"/>
+			<Item Name="CmdLib.dll" Type="Document" URL="../Examples/Tilt Stage/CmdLib.dll"/>
+			<Item Name="create_file_name (SubVI).vi" Type="VI" URL="../DAQ/create_file_name (SubVI).vi"/>
+			<Item Name="create_process_list (SubVI).vi" Type="VI" URL="../DAQ/create_process_list (SubVI).vi"/>
+			<Item Name="DeviceClose.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/DeviceClose.vi"/>
+			<Item Name="Get Full Terminal Name.vi" Type="VI" URL="../DAQ/Get Full Terminal Name.vi"/>
+			<Item Name="get_position_robust (SubVI).vi" Type="VI" URL="../get_position_robust (SubVI).vi"/>
+			<Item Name="GetErrorMsg.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetErrorMsg.vi"/>
+			<Item Name="GetMasterDeviceAddress.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/GetMasterDeviceAddress.vi"/>
+			<Item Name="GetMotionDone.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetMotionDone.vi"/>
+			<Item Name="GetPosition.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetPosition.vi"/>
+			<Item Name="initialize_instruments (SubVI).vi" Type="VI" URL="../DAQ/initialize_instruments (SubVI).vi"/>
+			<Item Name="InitSingleDevice.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/InitSingleDevice.vi"/>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="lvStorage.dll" Type="Document" URL="lvStorage.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
-			<Item Name="make_synth_array (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/make_synth_array (SubVI).vi"/>
-			<Item Name="make_tilt_stage_array (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/make_tilt_stage_array (SubVI).vi"/>
-			<Item Name="Microspherefeedb_FPGATarget2_(FPGA)PIDXYZlase_ErjQEsBLsCA.lvbitx" Type="Document" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/FPGA code/FPGA Bitfiles/Microspherefeedb_FPGATarget2_(FPGA)PIDXYZlase_ErjQEsBLsCA.lvbitx"/>
-			<Item Name="Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_eom.lvbitx" Type="Document" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/FPGA code/FPGA Bitfiles/Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_eom.lvbitx"/>
-			<Item Name="move_tilt_stage_simpler(Sub VI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/move_tilt_stage_simpler(Sub VI).vi"/>
+			<Item Name="make_synth_array (SubVI).vi" Type="VI" URL="../DAQ/make_synth_array (SubVI).vi"/>
+			<Item Name="make_tilt_stage_array (SubVI).vi" Type="VI" URL="../DAQ/make_tilt_stage_array (SubVI).vi"/>
+			<Item Name="Microspherefeedb_FPGATarget2_(FPGA)PIDXYZlase_Y-TtBVY85Jw.lvbitx" Type="Document" URL="../FPGA code/FPGA Bitfiles/Microspherefeedb_FPGATarget2_(FPGA)PIDXYZlase_Y-TtBVY85Jw.lvbitx"/>
+			<Item Name="Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_eom.lvbitx" Type="Document" URL="../FPGA code/FPGA Bitfiles/Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_eom.lvbitx"/>
+			<Item Name="move_tilt_stage_simpler(Sub VI).vi" Type="VI" URL="../move_tilt_stage_simpler(Sub VI).vi"/>
 			<Item Name="NiFpgaLv.dll" Type="Document" URL="NiFpgaLv.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
-			<Item Name="niFpgaNodeNameForErrorReporting.ctl" Type="VI" URL="/&lt;vilib&gt;/rvi/interface/common/niFpgaNodeNameForErrorReporting.ctl"/>
 			<Item Name="nilvaiu.dll" Type="Document" URL="nilvaiu.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
-			<Item Name="niLvFpga_Open_PXIe-7856R.vi" Type="VI" URL="/&lt;vilib&gt;/FPGAPlugInAG/PXIe-7856R/niLvFpga_Open_PXIe-7856R.vi"/>
-			<Item Name="niLvFpgaAdjustHostInterfaceError.vi" Type="VI" URL="/&lt;vilib&gt;/rvi/errors/niLvFpgaAdjustHostInterfaceError.vi"/>
-			<Item Name="niLvFpgaErrorClusterFromErrorCode.vi" Type="VI" URL="/&lt;vilib&gt;/rvi/errors/niLvFpgaErrorClusterFromErrorCode.vi"/>
-			<Item Name="niLvFpgaFormatErrorSource.vi" Type="VI" URL="/&lt;vilib&gt;/rvi/errors/niLvFpgaFormatErrorSource.vi"/>
-			<Item Name="niLvFpgaWhatHappensToTopLevelVI.ctl" Type="VI" URL="/&lt;vilib&gt;/rvi/errors/niLvFpgaWhatHappensToTopLevelVI.ctl"/>
-			<Item Name="nirio_resource_hc.ctl" Type="VI" URL="/&lt;vilib&gt;/userdefined/High Color/nirio_resource_hc.ctl"/>
-			<Item Name="nirviErrorClusterFromErrorCode.vi" Type="VI" URL="/&lt;vilib&gt;/RVI Host/nirviSupport.llb/nirviErrorClusterFromErrorCode.vi"/>
-			<Item Name="nirviWhatTheDeviceIsDoing.ctl" Type="VI" URL="/&lt;vilib&gt;/rvi/ClientSDK/nirviWhatTheDeviceIsDoing.ctl"/>
-			<Item Name="open_stage_simpler (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/open_stage_simpler (SubVI).vi"/>
-			<Item Name="oscilloscopes_Acquire_Multiple_Waveforms.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/oscilloscopes_Acquire_Multiple_Waveforms.vi"/>
-			<Item Name="read_data (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/read_data (SubVI).vi"/>
-			<Item Name="relative_move_robust (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/relative_move_robust (SubVI).vi"/>
-			<Item Name="RelativeMove.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/RelativeMove.vi"/>
-			<Item Name="save_data (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/save_data (SubVI).vi"/>
-			<Item Name="set_tilt_stage_simpler (SubVI).vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/set_tilt_stage_simpler (SubVI).vi"/>
-			<Item Name="SetAcceleration.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Examples/Tilt Stage/Command VIs/SetAcceleration.vi"/>
-			<Item Name="SetVelocity.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Examples/Tilt Stage/Command VIs/SetVelocity.vi"/>
-			<Item Name="SetZeroPosition.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/SetZeroPosition.vi"/>
-			<Item Name="Shutdown.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Examples/Tilt Stage/Device VIs/Shutdown.vi"/>
-			<Item Name="sweep_Gadi.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/sweep_Gadi.vi"/>
-			<Item Name="TIC Build Gauge Command.vi" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Turbo Instrument Controller.llb/TIC Build Gauge Command.vi"/>
-			<Item Name="Type Def - Gauge Num Selection.ctl" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Turbo Instrument Controller.llb/Type Def - Gauge Num Selection.ctl"/>
-			<Item Name="Type Def - Units.ctl" Type="VI" URL="/C/Users/yalem/GitHub/Documents/Optlev/LabView Code/Turbo Instrument Controller.llb/Type Def - Units.ctl"/>
+			<Item Name="open_stage_simpler (SubVI).vi" Type="VI" URL="../open_stage_simpler (SubVI).vi"/>
+			<Item Name="oscilloscopes_Acquire_Multiple_Waveforms.vi" Type="VI" URL="../oscilloscopes_Acquire_Multiple_Waveforms.vi"/>
+			<Item Name="read_data (SubVI).vi" Type="VI" URL="../DAQ/read_data (SubVI).vi"/>
+			<Item Name="relative_move_robust (SubVI).vi" Type="VI" URL="../relative_move_robust (SubVI).vi"/>
+			<Item Name="RelativeMove.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/RelativeMove.vi"/>
+			<Item Name="save_data (SubVI).vi" Type="VI" URL="../DAQ/save_data (SubVI).vi"/>
+			<Item Name="set_tilt_stage_simpler (SubVI).vi" Type="VI" URL="../set_tilt_stage_simpler (SubVI).vi"/>
+			<Item Name="SetAcceleration.vi" Type="VI" URL="../Examples/Tilt Stage/Command VIs/SetAcceleration.vi"/>
+			<Item Name="SetVelocity.vi" Type="VI" URL="../Examples/Tilt Stage/Command VIs/SetVelocity.vi"/>
+			<Item Name="SetZeroPosition.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/SetZeroPosition.vi"/>
+			<Item Name="Shutdown.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/Shutdown.vi"/>
+			<Item Name="sweep_Gadi.vi" Type="VI" URL="../sweep_Gadi.vi"/>
+			<Item Name="TIC Build Gauge Command.vi" Type="VI" URL="../Turbo Instrument Controller.llb/TIC Build Gauge Command.vi"/>
+			<Item Name="Type Def - Gauge Num Selection.ctl" Type="VI" URL="../Turbo Instrument Controller.llb/Type Def - Gauge Num Selection.ctl"/>
+			<Item Name="Type Def - Units.ctl" Type="VI" URL="../Turbo Instrument Controller.llb/Type Def - Units.ctl"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build"/>
 	</Item>

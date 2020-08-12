@@ -179,7 +179,7 @@ def corr(file_list_meas, v_to_m_in, v_to_m_out, folder_calibration, fres, cross_
         Psd.append(psd)
         psdin = Pxx[index0:index1]*(v_to_m_in*v_to_m_in*(acin_psd**2))/((9.8e-6)**2)
         Psdin.append(psdin)
-        psdout = Pyy[index0:index1]*(v_to_m_out*v_to_m_out*(acout_psd**2))/((9.8e-6)**2)
+s       psdout = Pyy[index0:index1]*(v_to_m_out*v_to_m_out*(acout_psd**2))/((9.8e-6)**2)
         Psdout.append(psdout)
         # plt.figure()
         # plt.loglog(frequency, psd)

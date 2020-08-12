@@ -6,13 +6,13 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"1.h5"
+refname = r"5mbar_zcool.h5"
 fname0 = r""
-path = r"C:\data\20200311\two_spheres\15um_german\4\1"
+path = r"C:\data\20200608\10um_SiO2\1\2mbar"
 
-realcsdnorm = True
+realcsdnorm = False
 
-make_plot_vs_time = True
+make_plot_vs_time = False
 
 if fname0 == "":
 	filelist = glob.glob(path+"\*.h5")
@@ -28,10 +28,10 @@ if fname0 == "":
 	fname0 = mrf		
 
 
-		 
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**14
+NFFT = 2**13
+
 
 def getdata(fname):
 	print "Opening file: ", fname
@@ -58,7 +58,7 @@ def getdata(fname):
 	ypsd, freqs = matplotlib.mlab.psd(dat[:, bu.yi]-numpy.mean(dat[:, bu.yi]), Fs = Fs, NFFT = NFFT)
         zpsd, freqs = matplotlib.mlab.psd(dat[:, bu.zi]-numpy.mean(dat[:, bu.zi]), Fs = Fs, NFFT = NFFT)
 
-        xpsd_outloop, freqs = matplotlib.mlab.psd(dat[:, 5]-numpy.mean(dat[:, 5]), Fs = Fs, NFFT = NFFT)
+        xpsd_outloop, freqs = matplotlib.mlab.psd(dat[:, 4]-numpy.mean(dat[:, 4]), Fs = Fs, NFFT = NFFT)
         # Ddrive = dat[:, bu.drive]*np.gradient(dat[:,bu.drive])
         # DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT))
         print pid
@@ -107,9 +107,13 @@ if make_plot_vs_time:
                 plt.plot(data1[3][:, bu.zi] - np.mean(data1[3][:, bu.zi]) )
 
         plt.subplot(4, 1, 4)
-        plt.plot(data0[3][:, 4] - np.mean(data0[3][:, 4]) )
+        from scipy import signal
+        b, a = signal.butter(5, 0.03, btype='low')
+        y = signal.filtfilt(b, a, data0[3][:, bu.xi]- np.mean(data0[3][:, bu.xi]) )
+        plt.plot( data0[3][:, 3] - 0*np.mean(data0[3][:, 4]) )
+        plt.plot( y - 0*np.mean(data0[3][:, 4]) )
         if(refname):
-                plt.plot(data1[3][:, 4] - np.mean(data1[3][:, 4]) )
+                plt.plot(y - 0*np.mean(data1[3][:, 4]) )
        
 
 fig = plt.figure()

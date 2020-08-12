@@ -88,6 +88,9 @@ def mass(Diameter, rho):
     m = (4/3.)*(np.pi)*((Diameter/2)**3)*rho
     return m
 
+def noisepower(f, a, b):
+    return np.abs(1.*b/(f**a))
+
 mass = mass(Diameter, rho)
 
 list_of_plots = [1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0]
@@ -106,6 +109,21 @@ def selected_plot(folder_list, folder_nosphere, list_of_plots):
 
     freqLP = data_no_sphereout[1]
     xpsd_nosphereout = np.sqrt(data_no_sphereout[3]*trans_out)
+
+    #p, t = opt.curve_fit(noisepower,freqLP[1:3100], xpsd_nosphereout[1:3100], p0 = [0.5, 1e-10])
+    #print freqLP[3100]
+    #print p
+    #plt.figure()
+    #plt.loglog(freqLP, xpsd_nosphereout)
+    #plt.loglog(freqLP[1:], noisepower(freqLP[1:], *p), label = "noise with no sphere outloop sensor $1/f^{0.9}$")
+    #plt.loglog(freqLP, 1e-11*np.ones(len(freqLP)), label = "baseline sphere motion high feedback outloop sensor at 60 Hz")
+    #plt.xlim(0,1000)
+    #plt.ylim(1e-12, 1e-8)
+    #plt.xlabel("Frequency [Hz]")
+    #plt.ylabel("$\sqrt{S_{xx}^{out}}$ [m/$\sqrt{Hz}$]")
+    #plt.legend()
+    #plt.tight_layout(pad = 0)
+    #plt.show()
 
     index0 = np.where( freqLP >= freq_fit_min )[0][0]
     index1 = np.where( freqLP >= freq_fit_max )[0][0]
@@ -368,7 +386,7 @@ plt.plot(space, space*pf[0] + pf[1])
 
 
 
-# # fit model
+# # fit model and generate the squasing_info.npy
 
 # def Sc(freq, fres, L, Dg, gain, Gamma, nosphere_psd_out, TIME):
     

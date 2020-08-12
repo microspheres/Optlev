@@ -13,26 +13,26 @@ if several_folders:
     folder_temp = r"C:\data\20191122\10um\2\temp_x9"
     plot = False
 
-folder_calibration = r"C:\data\paper3\22um\PreChamber_ATM\2\calibration3e"
+folder_calibration = r"C:\data\20200608\10um_SiO2\1\20200619\calibration_1e_HiZ"
 
-folder_meas = r"C:\data\paper3\22um\PreChamber_ATM\2\calibration3e"
+folder_meas = r"C:\data\20200608\10um_SiO2\1\20200619\calibration_1e_HiZ"
 
-folder_hp = r"C:\data\paper3\22um\PreChamber_ATM\2\1mbar"
-file_high_pressure = r"1mbar_zcool.h5"
+folder_hp = r"C:\data\20200608\10um_SiO2\1\2mbar"
+file_high_pressure = r"5mbar_zcool.h5"
 
-file_list = glob.glob(folder_calibration+"\*.h5")
+#file_list = glob.glob(folder_calibration+"\*.h5")
 
 NFFT = 2**18
 
 drive_col = 3
 
-Diameter = 22.6e-6 #meters
-#Diameter = 10.3e-6
+#Diameter = 22.6e-6 #meters
+Diameter = 10.3e-6
 rho = 1800
 
-d = 0.0033
+d = 0.00399
 
-number_of_charge = 3.0
+number_of_charge = 1.0
 
 elec_charge = number_of_charge*(1.60218e-19)
 
@@ -109,13 +109,13 @@ def find_resonance(folder_hp, file_high_pressure, channelX):
     freq = a[0]
     xpsd = np.sqrt(a[1])
     xpsd2 = a[1]
-    popt, pcov = opt.curve_fit(psd, freq[1000:2500], xpsd[1000:2500], p0 = [3000, 65, 20])
-    # plt.figure()
-    # plt.semilogy(freq[1000:2500], xpsd[1000:2500])
-    # plt.semilogy(freq, psd(freq, *popt))
-    # plt.xlim(10, 150)
-    # plt.show()
-    # print popt[1]
+    popt, pcov = opt.curve_fit(psd, freq[1000:3000], xpsd[1000:3000], p0 = [3000, 65, 20])
+    #plt.figure()
+    #plt.semilogy(freq[1000:3000], xpsd[1000:3000])
+    #plt.semilogy(freq, psd(freq, *popt))
+    #plt.xlim(10, 150)
+    #plt.show()
+    #print popt[1]
     return [popt[1], freq, xpsd2]
 
 
@@ -136,14 +136,18 @@ def get_drive_and_motion(folder_calibration, channelX, NFFT): # return freq, fre
     f0arg = np.argmax(drivepsd2)
     f0 = freq[f0arg]
     
-    V2 = (np.sum(drivepsd2[f0arg-3:f0arg+3]))*(freq[f0arg+1] - freq[f0arg])*2.
+    V2 = (np.sum(drivepsd2[f0arg-3:f0arg+3]))*(freq[f0arg+1] - freq[f0arg])*2. # this multicative 2 even though corrrect, does not change ge results as long as the same factor us in the line below. May not be correct when using python 3, but again, it does not change the result as long as corrected in the next line below too. This factor 2 is related to the factor 0.5 in the calibration def.
 
     X2 = (np.sum(xpsd2[f0arg-3:f0arg+3]))*(freq[f0arg+1] - freq[f0arg])*2.
+
+    print np.sqrt(V2)
+
+    print "here", np.sqrt(X2)
     
-    # plt.figure()
-    # plt.loglog(freq, drivepsd2)
-    # plt.loglog(freq[f0arg], drivepsd2[f0arg], "ro")
-    # plt.show()
+    #plt.figure()
+    #plt.loglog(freq, drivepsd2)
+    #plt.loglog(freq[f0arg], drivepsd2[f0arg], "ro")
+    #plt.show()
     return [f0, f0arg, V2, X2, xpsd2, freq, xDg]
 
 
@@ -160,28 +164,37 @@ def calibration(folder_calibration, folder_hp, file_high_pressure, channelX, NFF
     fit_points2 = np.logical_and(freq > 57.4, freq < 59)
     fit_points3 = np.logical_and(freq > 61, freq < freq[2000])
     fit = fit_points1 + fit_points2 + fit_points3
-    popt_g, pcov_g = opt.curve_fit(psdLP, freq[fit], xpsd[fit], p0 = [0.01, 60, 1])
+    fit = np.logical_and(freq > 70., freq < 100.)
+    popt_g, pcov_g = opt.curve_fit(psdLP, freq[fit], xpsd[fit], p0 = [0.01, 85, 25])
     f_resonance = popt_g[1]
     gamma_cali = np.abs(popt_g[2])
 
     print "gamma", gamma_cali
-    plt.figure()
-    plt.loglog(freq[1200:2000], xpsd[1200:2000])
-    plt.loglog(freq, psdLP(freq, *popt_g))
-    plt.show()
+    print "f0", f_resonance
+    #print f_resonance
+    #plt.figure()
+    #plt.loglog(freq[1200:3000], xpsd[1200:3000])
+    #plt.loglog(freq, psdLP(freq, *popt_g))
+    #plt.show()
 
     V = np.sqrt(a[2])
     print "voltage for calibration Vpp = ", 2*V
+
+    
+    gamma_cali = 32.29
+    f_resonance = 82.12
     
     field_amp = 200.*V/d
     force_amp = (elec_charge)*field_amp
     acc_amp = force_amp/mass
     x_amp = acc_amp/np.sqrt( (( 2.*np.pi*f_resonance)**2 - (2.*np.pi*f_field)**2 )**2 + (2.*np.pi*f_field*2.*np.pi*gamma_cali)**2 )
-    #x_amp = acc_amp/np.sqrt( (( 2.*np.pi*f_resonance)**2 - (2.*np.pi*f_field)**2 )**2 )
+    # x_amp = acc_amp/np.sqrt( (( 2.*np.pi*f_resonance)**2 - (2.*np.pi*f_field)**2 )**2 )
     # the zero above is because there is no difference for small derivative gain.
-    x_amp2 = 0.5*(x_amp**2) # the 0.5 comes from the fft**2. To see that use parseval theorem in x_amp from and find that x_amp2 = 0.5*x_amp**2
+    x_amp2 = 2.*0.5*(x_amp**2) # the 0.5 comes from the fft**2. To see that use parseval theorem in x_amp and find that x_amp2 = 0.5*x_amp**2 (tip, use a sine wave: we want to compare the power from X2, which is already integrated in freq domain , and this should be up to the conversion, equal to x_amp2 = [integral of (x_amp*(sin(wt))**2 dt)] = 0.5x_amp**2). I am multiplying by 2 because X2 is the amplitude^2 corresponding to the psd, so that we want to compare apples to apples so we compared x_amp^2
 
     X2 = a[3]
+
+    print "xamp theo", x_amp
 
     conversion_v2_to_m2 = 1.0*x_amp2/X2
 
@@ -192,7 +205,8 @@ def calibration(folder_calibration, folder_hp, file_high_pressure, channelX, NFF
     if channelX == 4:
         name = "out"
     saveinfo = conversion_v2_to_m2
-    savename = str(folder_meas) + "\\" + "v2tom2_" + name
+    #savename = str(folder_meas) + "\\" + "v2tom2_" + name
+    savename = str(folder_calibration) + "\\" + "v2tom2_" + name
     np.save(savename, saveinfo)
 
     return [conversion_v2_to_m2, f_field, f_arg_field, gamma_cali, f_resonance]
@@ -299,11 +313,11 @@ def get_folder_list(folder_temp):
 if several_folders:
     folder_list = get_folder_list(folder_temp)
     for i in folder_list:
-        #plot_psd_acc(i, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_outloop", 4, NFFT)
+        plot_psd_acc(i, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_outloop", 4, NFFT)
         plot_psd_acc(i, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_inloop", bu.xi, NFFT)
 else:
-    #plot_psd_acc(folder_meas, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_outloop", 4, NFFT)
+    plot_psd_acc(folder_meas, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_outloop", 4, NFFT)
     plot_psd_acc(folder_meas, folder_hp, file_high_pressure, freq_plot_min, freq_plot_max, r"\info_inloop", bu.xi, NFFT)
-    plt.show()
-
-  # print get_drive_and_motion(folder_calibration)
+    
+plt.show()
+# print get_drive_and_motion(folder_calibration)
