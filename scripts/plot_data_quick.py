@@ -6,10 +6,9 @@ import numpy as np
 import bead_util as bu
 import glob
 
-refname = r"5mbar_zcool.h5"
+refname = r"1mbar_zcool.h5"
 fname0 = r""
-path = r"C:\data\20200608\10um_SiO2\1\2mbar"
-
+path = r"C:\data\20201102\10um_150umhole\4\1mbar"
 realcsdnorm = False
 
 make_plot_vs_time = False
@@ -29,7 +28,8 @@ if fname0 == "":
 
 
 
-Fs = 10e3  ## this is ignored with HDF5 files
+Fs = 10e3  #
+# this is ignored with HDF5 files
 NFFT = 2**13
 
 
@@ -71,7 +71,7 @@ def getdata(fname):
         if realcsdnorm:
                 f, Pxy = np.abs(np.real(sp.csd(dat[:, 0]-numpy.mean(dat[:, 0]), dat[:, 4] - numpy.mean(dat[:, 4]), Fs, nperseg=NFFT, scaling = "spectrum")))
                 f, Pxx = sp.csd(dat[:, 0]-numpy.mean(dat[:, 0]), dat[:, 0]-numpy.mean(dat[:, 0]), Fs, nperseg=NFFT, scaling = "spectrum")
-                f, Pyy = sp.csd(dat[:, 4]-numpy.mean(dat[:, 4]), dat[:, 4]-numpy.mean(dat[:, 4]), Fs, nperseg=NFFT, scaling = "spectrum")
+                f, Pyy = sp.csd(dat[:, 5]-numpy.mean(dat[:, 5]), dat[:, 5]-numpy.mean(dat[:, 5]), Fs, nperseg=NFFT, scaling = "spectrum")
                 Cxy = (Pxy**2)/(Pxx*Pyy)
         
 	        return [freqs, xpsd, ypsd, dat, zpsd, xpsd_outloop, f, Cxy]
