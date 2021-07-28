@@ -8,7 +8,7 @@ import glob
 
 refname = r"1mbar_zcool.h5"
 fname0 = r""
-path = r"C:\data\20201102\10um_150umhole\4\1mbar"
+path = r"F:\data\20210709\Paul_trap_10um\2\1mbar"
 realcsdnorm = False
 
 make_plot_vs_time = False
@@ -30,7 +30,7 @@ if fname0 == "":
 
 Fs = 10e3  #
 # this is ignored with HDF5 files
-NFFT = 2**13
+NFFT = 2**12
 
 
 def getdata(fname):
@@ -62,7 +62,6 @@ def getdata(fname):
         # Ddrive = dat[:, bu.drive]*np.gradient(dat[:,bu.drive])
         # DdrivePSD, freqs =  matplotlib.mlab.psd(Ddrive-numpy.mean(Ddrive), Fs = Fs, NFFT = NFFT))
         print pid
-
 
         # f, Pxy = sp.csd(dat[:, 0]-numpy.mean(dat[:, 0]), dat[:, 4] - numpy.mean(dat[:, 4]), Fs, nperseg=NFFT)
         # plt.figure()
