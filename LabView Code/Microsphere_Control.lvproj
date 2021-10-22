@@ -1,5 +1,6 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <Project Type="Project" LVVersion="18008000">
+	<Property Name="varPersistentID:{6F1F9C66-4A06-44C0-A5DA-08D7C37054DB}" Type="Ref">/My Computer/AFG-2225.lvlib/input 1</Property>
 	<Item Name="My Computer" Type="My Computer">
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="server.control.propertiesEnabled" Type="Bool">true</Property>
@@ -21,7 +22,7 @@
 			<Item Name="set_synth.vi" Type="VI" URL="../set_synth.vi"/>
 			<Item Name="tilt_stage_boolean_math.vi" Type="VI" URL="../tilt_stage_boolean_math.vi"/>
 		</Item>
-		<Item Name="AFG-2225.lvlib" Type="Library" URL="../../../../../../../LABVIEWFOLDER/instr.lib/AFG-2225/AFG-2225.lvlib"/>
+		<Item Name="AFG-2225.lvlib" Type="Library" URL="/&lt;instrlib&gt;/AFG-2225/AFG-2225.lvlib"/>
 		<Item Name="Agilent 33XXX Series.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Agilent 33XXX Series/Agilent 33XXX Series.lvlib"/>
 		<Item Name="bead_dropper.vi" Type="VI" URL="../bead_dropper.vi"/>
 		<Item Name="boolean_run_tilt_stage.vi" Type="VI" URL="../DAQ/boolean_run_tilt_stage.vi"/>
@@ -621,7 +622,6 @@
 				<Item Name="Write Spreadsheet String.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Write Spreadsheet String.vi"/>
 			</Item>
 			<Item Name="AbortMotion.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/AbortMotion.vi"/>
-			<Item Name="AFG-2225.lvlib" Type="Library" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/AFG-2225.lvlib"/>
 			<Item Name="AG-UC2-UC8_Close.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Close.vi"/>
 			<Item Name="AG-UC2-UC8_Open.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/AG-UC2-UC8_Open.vi"/>
 			<Item Name="AgilisCmdLib.dll" Type="Document" URL="../../../../../../../Program Files/Newport/Piezo Motion Control/Newport AG-UC2-UC8 Applet/Samples/LabVIEW 2009/AgilisCmdLib.dll"/>
@@ -631,16 +631,22 @@
 			<Item Name="ChooseCorrectInstrument.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/ChooseCorrectInstrument.vi"/>
 			<Item Name="clean_up_data_tasks (SubVI).vi" Type="VI" URL="../DAQ/clean_up_data_tasks (SubVI).vi"/>
 			<Item Name="clean_up_instruments (SubVI).vi" Type="VI" URL="../DAQ/clean_up_instruments (SubVI).vi"/>
+			<Item Name="Close.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Close.vi"/>
 			<Item Name="CmdLib.dll" Type="Document" URL="../Examples/Tilt Stage/CmdLib.dll"/>
+			<Item Name="Configure Standard Waveform.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Configure/Configure Standard Waveform.vi"/>
 			<Item Name="create_file_name (SubVI).vi" Type="VI" URL="../DAQ/create_file_name (SubVI).vi"/>
 			<Item Name="create_process_list (SubVI).vi" Type="VI" URL="../DAQ/create_process_list (SubVI).vi"/>
+			<Item Name="Default Instrument Setup.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Private/Default Instrument Setup.vi"/>
 			<Item Name="DeviceClose.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/DeviceClose.vi"/>
+			<Item Name="Enable Output.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Action-Status/Enable Output.vi"/>
+			<Item Name="Error Query.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Utility/Error Query.vi"/>
 			<Item Name="Get Full Terminal Name.vi" Type="VI" URL="../DAQ/Get Full Terminal Name.vi"/>
 			<Item Name="get_position_robust (SubVI).vi" Type="VI" URL="../get_position_robust (SubVI).vi"/>
 			<Item Name="GetErrorMsg.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetErrorMsg.vi"/>
 			<Item Name="GetMasterDeviceAddress.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/GetMasterDeviceAddress.vi"/>
 			<Item Name="GetMotionDone.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetMotionDone.vi"/>
 			<Item Name="GetPosition.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetPosition.vi"/>
+			<Item Name="Initialize.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Initialize.vi"/>
 			<Item Name="initialize_instruments (SubVI).vi" Type="VI" URL="../DAQ/initialize_instruments (SubVI).vi"/>
 			<Item Name="InitSingleDevice.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/InitSingleDevice.vi"/>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
@@ -663,6 +669,7 @@
 			<Item Name="read_data (SubVI).vi" Type="VI" URL="../DAQ/read_data (SubVI).vi"/>
 			<Item Name="relative_move_robust (SubVI).vi" Type="VI" URL="../relative_move_robust (SubVI).vi"/>
 			<Item Name="RelativeMove.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/RelativeMove.vi"/>
+			<Item Name="Reset.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Utility/Reset.vi"/>
 			<Item Name="save_data (SubVI).vi" Type="VI" URL="../DAQ/save_data (SubVI).vi"/>
 			<Item Name="set_tilt_stage_simpler (SubVI).vi" Type="VI" URL="../set_tilt_stage_simpler (SubVI).vi"/>
 			<Item Name="SetAcceleration.vi" Type="VI" URL="../Examples/Tilt Stage/Command VIs/SetAcceleration.vi"/>
