@@ -1,5 +1,6 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
-<Project Type="Project" LVVersion="16008000">
+<Project Type="Project" LVVersion="18008000">
+	<Property Name="varPersistentID:{6F1F9C66-4A06-44C0-A5DA-08D7C37054DB}" Type="Ref">/My Computer/AFG-2225.lvlib/input 1</Property>
 	<Item Name="My Computer" Type="My Computer">
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="server.control.propertiesEnabled" Type="Bool">true</Property>
@@ -21,8 +22,9 @@
 			<Item Name="set_synth.vi" Type="VI" URL="../set_synth.vi"/>
 			<Item Name="tilt_stage_boolean_math.vi" Type="VI" URL="../tilt_stage_boolean_math.vi"/>
 		</Item>
+		<Item Name="AFG-2225.lvlib" Type="Library" URL="/&lt;instrlib&gt;/AFG-2225/AFG-2225.lvlib"/>
 		<Item Name="Agilent 33XXX Series.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Agilent 33XXX Series/Agilent 33XXX Series.lvlib"/>
-		<Item Name="bead_dropper_Gadi.vi" Type="VI" URL="../bead_dropper_Gadi.vi"/>
+		<Item Name="bead_dropper.vi" Type="VI" URL="../bead_dropper.vi"/>
 		<Item Name="boolean_run_tilt_stage.vi" Type="VI" URL="../DAQ/boolean_run_tilt_stage.vi"/>
 		<Item Name="change_voltages_in_process_list.vi" Type="VI" URL="../DAQ/change_voltages_in_process_list.vi"/>
 		<Item Name="DAQ.vi" Type="VI" URL="../DAQ/DAQ.vi"/>
@@ -30,6 +32,8 @@
 		<Item Name="dipole_voltage_control(Sub VI).vi" Type="VI" URL="../DAQ/dipole_voltage_control(Sub VI).vi"/>
 		<Item Name="dipole_voltage_control_logic(SubVI).vi" Type="VI" URL="../DAQ/dipole_voltage_control_logic(SubVI).vi"/>
 		<Item Name="EOM.vi" Type="VI" URL="../FPGA code/FPGA Bitfiles/EOM.vi"/>
+		<Item Name="Gwinstek_chan_1_2.vi" Type="VI" URL="../Gwinstek_chan_1_2.vi"/>
+		<Item Name="Gwinstek_chan_1_2_sub.vi" Type="VI" URL="../Gwinstek_chan_1_2_sub.vi"/>
 		<Item Name="initialize_oscilloscope_chan1.vi" Type="VI" URL="../initialize_oscilloscope_chan1.vi"/>
 		<Item Name="load_arbitrary_waveform.vi" Type="VI" URL="../load_arbitrary_waveform.vi"/>
 		<Item Name="Move Stage.vi" Type="VI" URL="../Move Stage.vi"/>
@@ -39,14 +43,20 @@
 		<Item Name="name_dipole_voltage.vi" Type="VI" URL="../DAQ/name_dipole_voltage.vi"/>
 		<Item Name="Powermeter.vi" Type="VI" URL="../../Powermeter.vi"/>
 		<Item Name="Powermeter_eom.vi" Type="VI" URL="../../Powermeter_eom.vi"/>
+		<Item Name="pressures.vi" Type="VI" URL="../pressures.vi"/>
+		<Item Name="pressures_sub.vi" Type="VI" URL="../pressures_sub.vi"/>
 		<Item Name="rotation_mount.vi" Type="VI" URL="../rotation_mount.vi"/>
 		<Item Name="set_dipole_voltage.vi" Type="VI" URL="../DAQ/set_dipole_voltage.vi"/>
 		<Item Name="set_instruments (SubVI).vi" Type="VI" URL="../DAQ/set_instruments (SubVI).vi"/>
 		<Item Name="set_QWP.vi" Type="VI" URL="../set_QWP.vi"/>
 		<Item Name="set_tilt_stage (SubVI).vi" Type="VI" URL="../DAQ/set_tilt_stage (SubVI).vi"/>
+		<Item Name="take_data (SubVI).vi" Type="VI" URL="../DAQ/take_data (SubVI).vi"/>
 		<Item Name="test_tilt_stage_positions.vi" Type="VI" URL="../test_tilt_stage_positions.vi"/>
+		<Item Name="TIC Query Command daq.vi" Type="VI" URL="../TIC Query Command daq.vi"/>
+		<Item Name="TIC Query Command.vi" Type="VI" URL="../TIC Query Command.vi"/>
+		<Item Name="TIC Read Gauge Pressure or Volts daq.vi" Type="VI" URL="../TIC Read Gauge Pressure or Volts daq.vi"/>
+		<Item Name="TIC Read Gauge Pressure or Volts.vi" Type="VI" URL="../TIC Read Gauge Pressure or Volts.vi"/>
 		<Item Name="valve_lights.vi" Type="VI" URL="../valve_lights.vi"/>
-		<Item Name="valve_pressures.vi" Type="VI" URL="../valve_pressures.vi"/>
 		<Item Name="valves.vi" Type="VI" URL="../valves.vi"/>
 		<Item Name="variable_steps_logic.vi" Type="VI" URL="../DAQ/variable_steps_logic.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
@@ -56,7 +66,6 @@
 				<Item Name="PM100D Initialize.vi" Type="VI" URL="/&lt;instrlib&gt;/PM100D/PM100D.llb/PM100D Initialize.vi"/>
 				<Item Name="PM100D Measure Power.vi" Type="VI" URL="/&lt;instrlib&gt;/PM100D/PM100D.llb/PM100D Measure Power.vi"/>
 				<Item Name="PM100D Set Wavelength.vi" Type="VI" URL="/&lt;instrlib&gt;/PM100D/PM100D.llb/PM100D Set Wavelength.vi"/>
-				<Item Name="PM100D VXIpnp Error Converter.vi" Type="VI" URL="/&lt;instrlib&gt;/PM100D/PM100D.llb/PM100D VXIpnp Error Converter.vi"/>
 				<Item Name="Rohde&amp;Schwarz HMC 804x Power Supplies.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Rohde&amp;Schwarz HMC 804x Power Supplies/Rohde&amp;Schwarz HMC 804x Power Supplies.lvlib"/>
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
@@ -142,7 +151,9 @@
 				<Item Name="Clear Errors.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Clear Errors.vi"/>
 				<Item Name="ClearError.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/tdmsutil.llb/ClearError.vi"/>
 				<Item Name="Close File+.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Close File+.vi"/>
+				<Item Name="CloseDataObjectRefnum.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/storage/Storage.llb/CloseDataObjectRefnum.vi"/>
 				<Item Name="CloseDataStorage.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/storage/Storage.llb/CloseDataStorage.vi"/>
+				<Item Name="CloseDataStorageRefnum.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/storage/Storage.llb/CloseDataStorageRefnum.vi"/>
 				<Item Name="compatCalcOffset.vi" Type="VI" URL="/&lt;vilib&gt;/_oldvers/_oldvers.llb/compatCalcOffset.vi"/>
 				<Item Name="compatFileDialog.vi" Type="VI" URL="/&lt;vilib&gt;/_oldvers/_oldvers.llb/compatFileDialog.vi"/>
 				<Item Name="compatOpenFileOperation.vi" Type="VI" URL="/&lt;vilib&gt;/_oldvers/_oldvers.llb/compatOpenFileOperation.vi"/>
@@ -152,11 +163,11 @@
 				<Item Name="DAQmx Advance Trigger (Digital Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Advance Trigger (Digital Edge).vi"/>
 				<Item Name="DAQmx Advance Trigger (None).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Advance Trigger (None).vi"/>
 				<Item Name="DAQmx Clear Task.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/task.llb/DAQmx Clear Task.vi"/>
-				<Item Name="DAQmx Create AI Channel (sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create AI Channel (sub).vi"/>
-				<Item Name="DAQmx Create AI Channel TEDS(sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create AI Channel TEDS(sub).vi"/>
-				<Item Name="DAQmx Create AO Channel (sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create AO Channel (sub).vi"/>
+				<Item Name="DAQmx Create Channel (AI-Acceleration-4 Wire DC Voltage).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Channel (AI-Acceleration-4 Wire DC Voltage).vi"/>
 				<Item Name="DAQmx Create Channel (AI-Acceleration-Accelerometer).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Channel (AI-Acceleration-Accelerometer).vi"/>
+				<Item Name="DAQmx Create Channel (AI-Acceleration-Charge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Channel (AI-Acceleration-Charge).vi"/>
 				<Item Name="DAQmx Create Channel (AI-Bridge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Channel (AI-Bridge).vi"/>
+				<Item Name="DAQmx Create Channel (AI-Charge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Channel (AI-Charge).vi"/>
 				<Item Name="DAQmx Create Channel (AI-Current-Basic).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Channel (AI-Current-Basic).vi"/>
 				<Item Name="DAQmx Create Channel (AI-Current-RMS).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Channel (AI-Current-RMS).vi"/>
 				<Item Name="DAQmx Create Channel (AI-Force-Bridge-Polynomial).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Channel (AI-Force-Bridge-Polynomial).vi"/>
@@ -227,16 +238,12 @@
 				<Item Name="DAQmx Create Channel (TEDS-AI-Torque-Bridge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Channel (TEDS-AI-Torque-Bridge).vi"/>
 				<Item Name="DAQmx Create Channel (TEDS-AI-Voltage-Basic).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Channel (TEDS-AI-Voltage-Basic).vi"/>
 				<Item Name="DAQmx Create Channel (TEDS-AI-Voltage-Custom with Excitation).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Channel (TEDS-AI-Voltage-Custom with Excitation).vi"/>
-				<Item Name="DAQmx Create CI Channel (sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create CI Channel (sub).vi"/>
-				<Item Name="DAQmx Create CO Channel (sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create CO Channel (sub).vi"/>
-				<Item Name="DAQmx Create DI Channel (sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create DI Channel (sub).vi"/>
-				<Item Name="DAQmx Create DO Channel (sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create DO Channel (sub).vi"/>
-				<Item Name="DAQmx Create Strain Rosette AI Channels (sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Strain Rosette AI Channels (sub).vi"/>
 				<Item Name="DAQmx Create Virtual Channel.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Create Virtual Channel.vi"/>
 				<Item Name="DAQmx Fill In Error Info.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/miscellaneous.llb/DAQmx Fill In Error Info.vi"/>
 				<Item Name="DAQmx Read (Analog 1D DBL 1Chan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog 1D DBL 1Chan NSamp).vi"/>
 				<Item Name="DAQmx Read (Analog 1D DBL NChan 1Samp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog 1D DBL NChan 1Samp).vi"/>
 				<Item Name="DAQmx Read (Analog 1D Wfm NChan 1Samp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog 1D Wfm NChan 1Samp).vi"/>
+				<Item Name="DAQmx Read (Analog 1D Wfm NChan NSamp Duration).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog 1D Wfm NChan NSamp Duration).vi"/>
 				<Item Name="DAQmx Read (Analog 1D Wfm NChan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog 1D Wfm NChan NSamp).vi"/>
 				<Item Name="DAQmx Read (Analog 2D DBL NChan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog 2D DBL NChan NSamp).vi"/>
 				<Item Name="DAQmx Read (Analog 2D I16 NChan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog 2D I16 NChan NSamp).vi"/>
@@ -245,6 +252,7 @@
 				<Item Name="DAQmx Read (Analog 2D U32 NChan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog 2D U32 NChan NSamp).vi"/>
 				<Item Name="DAQmx Read (Analog DBL 1Chan 1Samp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog DBL 1Chan 1Samp).vi"/>
 				<Item Name="DAQmx Read (Analog Wfm 1Chan 1Samp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog Wfm 1Chan 1Samp).vi"/>
+				<Item Name="DAQmx Read (Analog Wfm 1Chan NSamp Duration).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog Wfm 1Chan NSamp Duration).vi"/>
 				<Item Name="DAQmx Read (Analog Wfm 1Chan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Analog Wfm 1Chan NSamp).vi"/>
 				<Item Name="DAQmx Read (Counter 1D DBL 1Chan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Counter 1D DBL 1Chan NSamp).vi"/>
 				<Item Name="DAQmx Read (Counter 1D DBL NChan 1Samp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Counter 1D DBL NChan 1Samp).vi"/>
@@ -269,6 +277,7 @@
 				<Item Name="DAQmx Read (Digital 1D U32 1Chan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital 1D U32 1Chan NSamp).vi"/>
 				<Item Name="DAQmx Read (Digital 1D U32 NChan 1Samp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital 1D U32 NChan 1Samp).vi"/>
 				<Item Name="DAQmx Read (Digital 1D Wfm NChan 1Samp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital 1D Wfm NChan 1Samp).vi"/>
+				<Item Name="DAQmx Read (Digital 1D Wfm NChan NSamp Duration).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital 1D Wfm NChan NSamp Duration).vi"/>
 				<Item Name="DAQmx Read (Digital 1D Wfm NChan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital 1D Wfm NChan NSamp).vi"/>
 				<Item Name="DAQmx Read (Digital 2D Bool NChan 1Samp NLine).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital 2D Bool NChan 1Samp NLine).vi"/>
 				<Item Name="DAQmx Read (Digital 2D U8 NChan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital 2D U8 NChan NSamp).vi"/>
@@ -279,6 +288,7 @@
 				<Item Name="DAQmx Read (Digital U16 1Chan 1Samp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital U16 1Chan 1Samp).vi"/>
 				<Item Name="DAQmx Read (Digital U32 1Chan 1Samp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital U32 1Chan 1Samp).vi"/>
 				<Item Name="DAQmx Read (Digital Wfm 1Chan 1Samp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital Wfm 1Chan 1Samp).vi"/>
+				<Item Name="DAQmx Read (Digital Wfm 1Chan NSamp Duration).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital Wfm 1Chan NSamp Duration).vi"/>
 				<Item Name="DAQmx Read (Digital Wfm 1Chan NSamp).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Digital Wfm 1Chan NSamp).vi"/>
 				<Item Name="DAQmx Read (Raw 1D I8).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Raw 1D I8).vi"/>
 				<Item Name="DAQmx Read (Raw 1D I16).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Raw 1D I16).vi"/>
@@ -288,18 +298,19 @@
 				<Item Name="DAQmx Read (Raw 1D U32).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read (Raw 1D U32).vi"/>
 				<Item Name="DAQmx Read.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/read.llb/DAQmx Read.vi"/>
 				<Item Name="DAQmx Reference Trigger (Analog Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Reference Trigger (Analog Edge).vi"/>
+				<Item Name="DAQmx Reference Trigger (Analog Multi Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Reference Trigger (Analog Multi Edge).vi"/>
 				<Item Name="DAQmx Reference Trigger (Analog Window).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Reference Trigger (Analog Window).vi"/>
 				<Item Name="DAQmx Reference Trigger (Digital Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Reference Trigger (Digital Edge).vi"/>
 				<Item Name="DAQmx Reference Trigger (Digital Pattern).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Reference Trigger (Digital Pattern).vi"/>
 				<Item Name="DAQmx Reference Trigger (None).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Reference Trigger (None).vi"/>
-				<Item Name="DAQmx Rollback Channel If Error.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Rollback Channel If Error.vi"/>
-				<Item Name="DAQmx Set CJC Parameters (sub).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/create/channels.llb/DAQmx Set CJC Parameters (sub).vi"/>
 				<Item Name="DAQmx Start Task.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/task.llb/DAQmx Start Task.vi"/>
 				<Item Name="DAQmx Start Trigger (Analog Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (Analog Edge).vi"/>
+				<Item Name="DAQmx Start Trigger (Analog Multi Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (Analog Multi Edge).vi"/>
 				<Item Name="DAQmx Start Trigger (Analog Window).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (Analog Window).vi"/>
 				<Item Name="DAQmx Start Trigger (Digital Edge).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (Digital Edge).vi"/>
 				<Item Name="DAQmx Start Trigger (Digital Pattern).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (Digital Pattern).vi"/>
 				<Item Name="DAQmx Start Trigger (None).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (None).vi"/>
+				<Item Name="DAQmx Start Trigger (Time).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/trigger.llb/DAQmx Start Trigger (Time).vi"/>
 				<Item Name="DAQmx Stop Task.vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/task.llb/DAQmx Stop Task.vi"/>
 				<Item Name="DAQmx Timing (Burst Export Clock).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/timing.llb/DAQmx Timing (Burst Export Clock).vi"/>
 				<Item Name="DAQmx Timing (Burst Import Clock).vi" Type="VI" URL="/&lt;vilib&gt;/DAQmx/configure/timing.llb/DAQmx Timing (Burst Import Clock).vi"/>
@@ -537,6 +548,7 @@
 				<Item Name="LVBoundsTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVBoundsTypeDef.ctl"/>
 				<Item Name="LVDateTimeRec.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVDateTimeRec.ctl"/>
 				<Item Name="LVRectTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVRectTypeDef.ctl"/>
+				<Item Name="Merge Errors.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Merge Errors.vi"/>
 				<Item Name="NI_AALBase.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/NI_AALBase.lvlib"/>
 				<Item Name="NI_AALPro.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/NI_AALPro.lvlib"/>
 				<Item Name="NI_FileType.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/lvfile.llb/NI_FileType.lvlib"/>
@@ -619,16 +631,22 @@
 			<Item Name="ChooseCorrectInstrument.vi" Type="VI" URL="../Stanford/opt_lev-master/labview/agilis/move_stage/ChooseCorrectInstrument.vi"/>
 			<Item Name="clean_up_data_tasks (SubVI).vi" Type="VI" URL="../DAQ/clean_up_data_tasks (SubVI).vi"/>
 			<Item Name="clean_up_instruments (SubVI).vi" Type="VI" URL="../DAQ/clean_up_instruments (SubVI).vi"/>
+			<Item Name="Close.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Close.vi"/>
 			<Item Name="CmdLib.dll" Type="Document" URL="../Examples/Tilt Stage/CmdLib.dll"/>
+			<Item Name="Configure Standard Waveform.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Configure/Configure Standard Waveform.vi"/>
 			<Item Name="create_file_name (SubVI).vi" Type="VI" URL="../DAQ/create_file_name (SubVI).vi"/>
 			<Item Name="create_process_list (SubVI).vi" Type="VI" URL="../DAQ/create_process_list (SubVI).vi"/>
+			<Item Name="Default Instrument Setup.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Private/Default Instrument Setup.vi"/>
 			<Item Name="DeviceClose.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/DeviceClose.vi"/>
+			<Item Name="Enable Output.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Action-Status/Enable Output.vi"/>
+			<Item Name="Error Query.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Utility/Error Query.vi"/>
 			<Item Name="Get Full Terminal Name.vi" Type="VI" URL="../DAQ/Get Full Terminal Name.vi"/>
 			<Item Name="get_position_robust (SubVI).vi" Type="VI" URL="../get_position_robust (SubVI).vi"/>
 			<Item Name="GetErrorMsg.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetErrorMsg.vi"/>
 			<Item Name="GetMasterDeviceAddress.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/GetMasterDeviceAddress.vi"/>
 			<Item Name="GetMotionDone.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetMotionDone.vi"/>
 			<Item Name="GetPosition.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/GetPosition.vi"/>
+			<Item Name="Initialize.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Initialize.vi"/>
 			<Item Name="initialize_instruments (SubVI).vi" Type="VI" URL="../DAQ/initialize_instruments (SubVI).vi"/>
 			<Item Name="InitSingleDevice.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/InitSingleDevice.vi"/>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
@@ -637,7 +655,7 @@
 			</Item>
 			<Item Name="make_synth_array (SubVI).vi" Type="VI" URL="../DAQ/make_synth_array (SubVI).vi"/>
 			<Item Name="make_tilt_stage_array (SubVI).vi" Type="VI" URL="../DAQ/make_tilt_stage_array (SubVI).vi"/>
-			<Item Name="Microspherefeedb_FPGATarget_MultiChannelfFee_-5RO42C0JZ0.lvbitx" Type="Document" URL="../FPGA code/FPGA Bitfiles/Microspherefeedb_FPGATarget_MultiChannelfFee_-5RO42C0JZ0.lvbitx"/>
+			<Item Name="Microspherefeedb_FPGATarget2_(FPGA)PIDXYZlase_Y-TtBVY85Jw.lvbitx" Type="Document" URL="../FPGA code/FPGA Bitfiles/Microspherefeedb_FPGATarget2_(FPGA)PIDXYZlase_Y-TtBVY85Jw.lvbitx"/>
 			<Item Name="Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_eom.lvbitx" Type="Document" URL="../FPGA code/FPGA Bitfiles/Microspherefeedb_FPGATarget_MyCompilation_PIDXYZ_eom.lvbitx"/>
 			<Item Name="move_tilt_stage_simpler(Sub VI).vi" Type="VI" URL="../move_tilt_stage_simpler(Sub VI).vi"/>
 			<Item Name="NiFpgaLv.dll" Type="Document" URL="NiFpgaLv.dll">
@@ -648,12 +666,10 @@
 			</Item>
 			<Item Name="open_stage_simpler (SubVI).vi" Type="VI" URL="../open_stage_simpler (SubVI).vi"/>
 			<Item Name="oscilloscopes_Acquire_Multiple_Waveforms.vi" Type="VI" URL="../oscilloscopes_Acquire_Multiple_Waveforms.vi"/>
-			<Item Name="PM100D_32.dll" Type="Document" URL="PM100D_32.dll">
-				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
-			</Item>
 			<Item Name="read_data (SubVI).vi" Type="VI" URL="../DAQ/read_data (SubVI).vi"/>
 			<Item Name="relative_move_robust (SubVI).vi" Type="VI" URL="../relative_move_robust (SubVI).vi"/>
 			<Item Name="RelativeMove.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/RelativeMove.vi"/>
+			<Item Name="Reset.vi" Type="VI" URL="../../../../../Downloads/LVdriver_AFG-2225_V1_E/AFG-2225/Public/Utility/Reset.vi"/>
 			<Item Name="save_data (SubVI).vi" Type="VI" URL="../DAQ/save_data (SubVI).vi"/>
 			<Item Name="set_tilt_stage_simpler (SubVI).vi" Type="VI" URL="../set_tilt_stage_simpler (SubVI).vi"/>
 			<Item Name="SetAcceleration.vi" Type="VI" URL="../Examples/Tilt Stage/Command VIs/SetAcceleration.vi"/>
@@ -661,8 +677,9 @@
 			<Item Name="SetZeroPosition.vi" Type="VI" URL="../DAQ/set_tilt_stage_standalone (SubVI) Folder/Tilt Stage/Command VIs/SetZeroPosition.vi"/>
 			<Item Name="Shutdown.vi" Type="VI" URL="../Examples/Tilt Stage/Device VIs/Shutdown.vi"/>
 			<Item Name="sweep_Gadi.vi" Type="VI" URL="../sweep_Gadi.vi"/>
-			<Item Name="take_data (SubVI).vi" Type="VI" URL="../DAQ/take_data (SubVI).vi"/>
-			<Item Name="VISA_Query.vi" Type="VI" URL="../VISA_Query.vi"/>
+			<Item Name="TIC Build Gauge Command.vi" Type="VI" URL="../Turbo Instrument Controller.llb/TIC Build Gauge Command.vi"/>
+			<Item Name="Type Def - Gauge Num Selection.ctl" Type="VI" URL="../Turbo Instrument Controller.llb/Type Def - Gauge Num Selection.ctl"/>
+			<Item Name="Type Def - Units.ctl" Type="VI" URL="../Turbo Instrument Controller.llb/Type Def - Units.ctl"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build"/>
 	</Item>

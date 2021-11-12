@@ -287,8 +287,8 @@ def laser_reject(laser, low_freq, high_freq, thresh, N, Fs, plt_filt):
 
 
 def good_corr(drive, response, fsamp, fdrive):
-    corr = np.zeros(fsamp/fdrive)
-    response = np.append(response, np.zeros( fsamp/fdrive-1 ))
+    corr = np.zeros(int(fsamp/fdrive))
+    response = np.append(response, np.zeros( int(fsamp/fdrive-1) ))
     n_corr = len(drive)
     for i in range(len(corr)):
         #Correct for loss of points at end
@@ -318,7 +318,6 @@ def corr_func(drive, response, fsamp, fdrive, good_pts = [], filt = False, band_
     if len(good_pts):
         response[-good_pts] = 0.
         lentrace = np.sum(good_pts)    
-
 
     corr_full = good_corr(drive, response, fsamp, fdrive)/(lentrace*drive_amp)
     return corr_full

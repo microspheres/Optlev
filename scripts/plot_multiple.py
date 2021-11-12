@@ -6,9 +6,9 @@ import numpy as np
 import bead_util as bu
 import glob
 
-single_channel = False
+single_channel = True
 VEOM_h5 = True
-measuring_with_xyz = True
+measuring_with_xyz = False
 
 scope = True # gets the correct FS
 
@@ -17,21 +17,20 @@ def list_file_time_order(filelist):
     return filelist
 
 
-savetxt = True
+savetxt = False
 
-#path = r"C:\data\20180215\bead4_VAT_POL_NS\EOM_4e-2mbar_meas9"
-#path = r"C:\data\20180702\bead2_SiO2_15um_POL_NS\rotation3"
-#path = r"C:\data\20180129\bead1_um_POL_NS_SiO2_10um\meas_new_turbo_3_V+10"
-path = r"C:\data\20180925\bead1_SiO2_15um_POL_NS\rotation2"
+path = r"F:\data\20210709\Paul_trap_10um\4\spin"
 
 file_list = glob.glob(path+"\*.h5")
 
 file_list = list_file_time_order(file_list)
 
-file_list = file_list[-5:]
+# file_list = file_list[30:40:3]
+file_list = file_list[-6:]
+# file_list = file_list[0:30:3]
 
 Fs = 10e3  ## this is ignored with HDF5 files
-NFFT = 2**14
+NFFT = 2**15
 
 if single_channel:
     a = 0
@@ -53,13 +52,12 @@ def getdata(fname):
 		#max_volt = dset.attrs['max_volt']
 		#nbit = dset.attrs['nbit']
 		Fs = dset.attrs['Fsamp']
-                Press = dset.attrs['temps'][0]
+                Press = dset.attrs['pressures'][0]
                 Volt = 0.0
                 if VEOM_h5:
                     Volt = dset.attrs['EOM_voltage']
                 if scope:
                     Fs = dset.attrs['FS_scope']
-                		
 		#dat = 1.0*dat*max_volt/nbit
                 dat = dat * 10./(2**15 - 1)
                 Time = dset.attrs["Time"]
@@ -76,8 +74,9 @@ def getdata(fname):
 	return [freqs, 0, 0, 0, 0, xpsd_old, Press, Volt, Time]
 
 
-freq = getdata(file_list[0])[0]
-time0 = getdata(file_list[0])[8]
+ab = getdata(file_list[0])
+freq = ab[0]
+time0 = ab[8]
 N = 1
 cmap = bu.get_color_map(len(file_list)/N)
 for idx,c in zip(range(len(file_list)/N), cmap):
@@ -92,9 +91,10 @@ for idx,c in zip(range(len(file_list)/N), cmap):
             v = ", v="+str("%.1f" % aa[7])
         tot_psd = 0
         for j in range(N):
-           cpsd = getdata(file_list[idx*N + j])[5]
-           tot_psd += cpsd
-           time = getdata(file_list[idx*N + j])[8] - time0
+            aux_get = getdata(file_list[idx*N + j])
+            cpsd = aux_get[5]
+            tot_psd += cpsd
+            time = aux_get[8] - time0
         plt.loglog(freq, tot_psd/N, label = aux+aux_press+v, color = c)
         name = str(aux)+str(aux_press)+str(v)+" time= "+str(time)
         name = os.path.join(path, name)
@@ -106,4 +106,6 @@ for idx,c in zip(range(len(file_list)/N), cmap):
 plt.ylabel(r'Sensor response [$V^2/Hz$]', fontsize = 20)
 plt.xlabel(r'Frequency [Hz]', fontsize = 20)
 plt.rcParams.update({'font.size':20})
+plt.grid()
+plt.tight_layout(pad = 0)
 plt.show()

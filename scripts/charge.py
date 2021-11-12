@@ -11,23 +11,24 @@ import scipy.signal as sp
 import scipy.optimize as opt
 import cPickle as pickle
 
-path = r"C:\data\20180925\bead1_SiO2_15um_POL_NS\charge"
+path = r"F:\data\20210616\Paul_trap_10um\2\chargeHP"
 ts = 1.
 
-fdrive = 48. #31.
+fdrive = 35. #31.
 make_plot = True
 
 data_columns = [0, bu.xi] # column to calculate the correlation against
-drive_column = bu.drive # column containing drive signal
+drive_column = 3 # column containing drive signal
 
 def getphase(fname):
         print "Getting phase from: ", fname 
         dat, attribs, cf = bu.getdata(os.path.join(path, fname))
         fsamp = attribs["Fsamp"]
         xdat = dat[:,data_columns[1]]
+        xdat = xdat - np.mean(xdat)
 
         xdat = np.append(xdat, np.zeros( int(fsamp/fdrive) ))
-        corr2 = np.correlate(xdat,dat[:,drive_column])
+        corr2 = np.correlate(xdat,dat[:,drive_column] - np.mean(dat[:,drive_column]))
         maxv = np.argmax(corr2) 
 
         cf.close()
@@ -83,7 +84,7 @@ corr_data = []
 
 if make_plot:
     fig0 = plt.figure()
-    plt.hold(False)
+    # plt.hold(False)
 
 last_file = ""
 while( True ):
@@ -112,7 +113,8 @@ while( True ):
     np.savetxt( os.path.join(path, "current_corr.txt"), [corr,] )
 
     if make_plot:
+        plt.clf()
         plt.plot(np.array(corr_data))
+        plt.grid()
         plt.draw()
         plt.pause(0.001)
-        plt.grid()
