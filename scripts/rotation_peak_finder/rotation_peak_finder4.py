@@ -12,8 +12,8 @@ def list_file_time_order(filelist):
     return filelist
 
 
-path1 = r"C:\data\20171206\bead6_um_QWP_NS_VAT\004mbar_from_below"
-path2 = r"C:\data\20171206\bead6_um_QWP_NS_VAT\003mbar_from_above_2"
+path1 = r"C:\data\20190108\15um\rotation"
+path2 = r"C:\data\20190108\15um\rotation"
 
 
 

@@ -37,7 +37,7 @@ radius = 15.0*1e-6 #m #22um sphere
 parameters = [517000., 0.1, 5000, "up", NFFT]  # last entry shoulp help with aliasing. Gets "up", "down" or "none". "up" for curves that go up," down" for curves that go down and "none" for nothing to happens.
 
 
-path_list = [r"C:\data\20180323\bead3_SiO2_15um_POL_NS\meas5_spin_scan"]
+path_list = [r"C:\data\20190108\15um\rotation"]
 
 
 
